@@ -1,0 +1,66 @@
+#!/bin/bash
+#
+#       /etc/rc.d/init.d/consul-template
+#
+#       Daemonize the consul-template agent.
+#
+# chkconfig:   2345 95 95
+# description: Populate config files with the values in Consul's KV store
+# processname: consul-template
+# pidfile: /var/run/consul-template/pidfile
+
+# Source function library.
+. /etc/init.d/functions
+
+CONSUL=<%= scope.lookupvar('consul_template::bin_dir') %>/consul-template
+CONFIG=<%= scope.lookupvar('consul_template::config_dir') %>
+PID_FILE=/var/run/consul-template/pidfile
+LOG_FILE=/var/log/consul-template
+
+[ -e /etc/sysconfig/consul-template ] && . /etc/sysconfig/consul-template
+
+start() {
+        echo -n "Starting consul-template: "
+        daemon --user=<%= scope.lookupvar('consul_template::user') %> \
+            --pidfile="$PID_FILE" \
+            "$CONSUL" -config "$CONFIG"/config.json <%= scope.lookupvar('consul_template::extra_options') %> >> "$LOG_FILE" &
+        retcode=$?
+        touch /var/lock/subsys/consul-template
+        return $retcode
+}
+
+stop() {
+        echo -n "Shutting down consul-template: "
+        "$CONSUL" leave
+
+        retcode=$?
+        rm -f /var/lock/subsys/consul-template
+        return $retcode
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        "$CONSUL" info
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    reload)
+        kill -HUP `cat $PID_FILE`
+        ;;
+    condrestart)
+        [ -f /var/lock/subsys/consul-template ] && restart || :
+        ;;
+    *)
+        echo "Usage: consul-template {start|stop|status|reload|restart}"
+        exit 1
+        ;;
+esac
+exit $?

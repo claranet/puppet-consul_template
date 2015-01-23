@@ -33,8 +33,6 @@ class consul_template::params {
       default      => 'systemd',
     },
     'Debian'             => 'debian',
-    'SLES'               => 'sles',
-    'Darwin'             => 'launchd',
     default => undef
   }
 }

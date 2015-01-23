@@ -1,0 +1,16 @@
+# Consul Agent (Upstart unit)
+description "Consul Agent"
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on runlevel [06]
+
+env CONSUL=<%= scope.lookupvar('consul_template::bin_dir') %>/consul-template
+env CONFIG=<%= scope.lookupvar('consul_template::config_dir') %>
+
+
+script
+    exec sudo -u <%= scope.lookupvar('consul_template::user') %> -g <%= scope.lookupvar('consul_template::group') %> $CONSUL -config $CONFIG/config.json <%= scope.lookupvar('consul::extra_options') %>
+end script
+
+respawn
+respawn limit 10 10
+kill timeout 10
