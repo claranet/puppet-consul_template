@@ -22,8 +22,8 @@ To declare a file that you wish to populate from Consul key-values, you use the
 that you want to update.
 
 ```puppet
-consul_template::watch { 'common.json':
-    template    => template('data/common.json.ctmpl.erb'),
+consul_template::watch { 'common':
+    template    => 'data/common.json.ctmpl.erb',
     destination => '/tmp/common.json',
     command     => 'true',
 }

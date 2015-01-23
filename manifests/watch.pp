@@ -12,7 +12,7 @@ define consul_template::watch (
 
   file { "${consul_template::config_dir}/${name}.ctmpl":
     ensure  => present,
-    content => $template,
+    content => template($template),
   } ->
 
   concat::fragment { "${name}.ctmpl":
