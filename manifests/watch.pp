@@ -3,11 +3,13 @@
 # This class is called from consul_template
 # This is a single instance of a configuration file to watch
 # for changes in Consul and update the local file
-class consul_template::watch (
+define consul_template::watch (
   $template,
   $destination,
   $command,
 ) {
+  include consul_template
+
   file { "${consul_template::config_dir}/${name}.ctmpl":
     ensure  => present,
     content => $template,
