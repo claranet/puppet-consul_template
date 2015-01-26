@@ -1,6 +1,6 @@
 {
   "name": "gdhbashton-consul_template",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "author": "Gavin Hamill <gdh@bashton.com>",
   "license": "GPL-2.0",
   "summary": "Install and manage Consul Template and its jobs",
