@@ -1,7 +1,7 @@
 # == Class consul_template::params
 #
-# This class is meant to be called from consul_template
-# It sets variables according to platform
+# This class is meant to be called from consul_template.
+# It sets variables according to platform.
 #
 class consul_template::params {
 
@@ -33,6 +33,6 @@ class consul_template::params {
       default      => 'systemd',
     },
     'Debian'             => 'debian',
-    default => undef
+    default => 'sysv'
   }
 }

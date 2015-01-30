@@ -2,4 +2,6 @@
 pkg
 spec/fixtures
 .rspec_system
-Gemfile.lock
+.vagrant
+.bundle
+vendor

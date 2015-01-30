@@ -33,9 +33,6 @@ consul_template::watch { 'common':
 
 Depends on the JSON gem, or a modern ruby.
 
-##Thanks
-To solarkennedy whose consul module I shamelessly based this one on.
-
 ##Development
 Open an [issue](https://github.com/gdhbashton/puppet-consul_template/issues) or 
 [fork](https://github.com/gdhbashton/puppet-consul_template/fork) and open a 

@@ -1,8 +1,8 @@
 # == Class consul_template::config
 #
-# This class is called from consul_template
+# This class is called from consul_template for service config.
 #
-class consul_template::config(
+class consul_template::config (
   $consul_host,
   $consul_port,
   $consul_token,

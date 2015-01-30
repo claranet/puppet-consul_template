@@ -21,7 +21,7 @@ LOG_FILE=/var/log/consul-template
 
 start() {
         echo -n "Starting consul-template: "
-        daemon --user=<%= scope.lookupvar('consul_template::user') %> \
+        daemon \
             --pidfile="$PID_FILE" \
             "$CONSUL" -config "$CONFIG"/config.json <%= scope.lookupvar('consul_template::extra_options') %> >> "$LOG_FILE" &
         retcode=$?
