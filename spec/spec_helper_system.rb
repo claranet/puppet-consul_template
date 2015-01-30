@@ -10,7 +10,7 @@ RSpec.configure do |c|
 
   c.before :suite do
     puppet_install
-    puppet_module_install(:source => proj_root, :module_name => 'consul')
+    puppet_module_install(:source => proj_root, :module_name => 'consul_template')
     shell('puppet module install puppetlabs-stdlib')
   end
 end

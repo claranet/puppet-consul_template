@@ -1,6 +1,6 @@
-# == Class consul_template::watch
+# == Definition consul_template::watch
 #
-# This class is called from consul_template
+# This definition is called from consul_template
 # This is a single instance of a configuration file to watch
 # for changes in Consul and update the local file
 define consul_template::watch (

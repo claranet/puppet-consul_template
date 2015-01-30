@@ -1,7 +1,7 @@
 # == Class consul_template::params
 #
-# This class is meant to be called from consul_template
-# It sets variables according to platform
+# This class is meant to be called from consul_template.
+# It sets variables according to platform.
 #
 class consul_template::params {
 
@@ -9,12 +9,6 @@ class consul_template::params {
   $package_name      = 'consul-template'
   $package_ensure    = 'latest'
   $version = '0.6.0'
-
-  case $::architecture {
-    'x86_64', 'amd64': { $arch = 'amd64' }
-    'i386':            { $arch = '386'   }
-    default:           { fail("Unsupported kernel architecture: ${::architecture}") }
-  }
 
   $os = downcase($::kernel)
 
@@ -33,6 +27,6 @@ class consul_template::params {
       default      => 'systemd',
     },
     'Debian'             => 'debian',
-    default => undef
+    default => 'sysv'
   }
 }

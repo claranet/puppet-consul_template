@@ -1,9 +1,9 @@
 {
-  "name": "gdhbashton-consul_template",
-  "version": "0.1.3",
-  "author": "Gavin Hamill <gdh@bashton.com>",
-  "license": "GPL-2.0",
+  "name": "puppet-consul_template",
+  "version": "0.2.0",
+  "author": "gdhbashton",
   "summary": "Install and manage Consul Template and its jobs",
+  "license": "Apache-2.0",
   "source": "https://github.com/gdhbashton/puppet-consul_template",
   "project_page": "https://github.com/gdhbashton/puppet-consul_template",
   "issues_url": "https://github.com/gdhbashton/puppet-consul_template/issues",
