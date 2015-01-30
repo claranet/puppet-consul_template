@@ -8,7 +8,8 @@ describe 'consul_template' do
         let(:facts) {{
           :osfamily       => osfamily,
           :concat_basedir => '/foo',
-          :path           => '/bin:/sbin:/usr/bin:/usr/sbin'
+          :path           => '/bin:/sbin:/usr/bin:/usr/sbin',
+          :architecture   => 'x86_64'
         }}
 
         it { is_expected.to compile.with_all_deps }
