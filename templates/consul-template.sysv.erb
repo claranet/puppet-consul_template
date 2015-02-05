@@ -38,6 +38,23 @@ stop() {
         return $retcode
 }
 
+status() {
+    if [ -f "$PID_FILE" ]
+    then
+        if ps -p `cat $PID_FILE` > /dev/null 2&1
+        then
+            echo -n "Process running."
+            return 0
+        else
+            echo -n "PID exists but process not running."
+            return 1
+        fi
+    else
+        echo -n "Process not running."
+        return 1
+    fi
+}
+
 case "$1" in
     start)
         start
@@ -46,7 +63,7 @@ case "$1" in
         stop
         ;;
     status)
-        "$CONSUL" info
+        status
         ;;
     restart)
         stop
