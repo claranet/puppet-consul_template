@@ -8,3 +8,4 @@ description   ''
 project_page  'https://github.com/gdhbashton/puppet-consul_template'
 
 dependency 'puppetlabs/stdlib'
+dependency 'puppetlabs/concat', '>= 1.1.0'
