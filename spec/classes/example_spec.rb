@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe 'consul_template' do
+describe 'consul_template', :type => :class do
   context 'supported operating systems' do
     ['Debian', 'RedHat'].each do |osfamily|
-      describe "consul_template class without any parameters on #{osfamily}" do
+      describe "consul_template class with no parameters on OS family #{osfamily}" do
         let(:params) {{ }}
         let(:facts) {{
           :osfamily       => osfamily,

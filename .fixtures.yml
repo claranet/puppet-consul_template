@@ -4,4 +4,4 @@ fixtures:
     staging: "https://github.com/nanliu/puppet-staging.git"
     concat: "https://github.com/puppetlabs/puppet-concat.git"
   symlinks:
-    consul: "#{source_dir}"
+    consul_template: "#{source_dir}"
