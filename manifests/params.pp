@@ -32,7 +32,10 @@ class consul_template::params {
       /(12|13|14)/ => 'sysv',
       default      => 'systemd',
     },
-    'Debian'             => 'debian',
+    'Debian'             => $::operatingsystemmajrelease ? {
+      /(4|5|6|7)/ => 'debian',
+      default     => 'systemd'
+    },
     default => 'sysv'
   }
 }
