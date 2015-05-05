@@ -19,10 +19,10 @@ class consul_template::params {
   $os = downcase($::kernel)
 
   $init_style = $::operatingsystem ? {
-    'Ubuntu'             => $::lsbdistrelease ? {
-      '8.04'           => 'debian',
-      /(10|12|14)\.04/ => 'upstart',
-      default => undef
+    'Ubuntu'  => $::lsbdistrelease ? {
+      '8.04'  => 'debian',
+      '15.04' => 'systemd',
+      default => 'upstart'
     },
     /CentOS|RedHat/      => $::operatingsystemmajrelease ? {
       /(4|5|6)/ => 'sysv',
