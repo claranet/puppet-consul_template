@@ -1,83 +1,112 @@
-#!/bin/bash
-#
-#       /etc/rc.d/init.d/consul-template
-#
-#       Daemonize the consul-template agent.
-#
-# chkconfig:   2345 95 95
-# description: Populate config files with the values in Consul's KV store
-# processname: consul-template
-# pidfile: /var/run/consul-template/pidfile
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          consul-template
+# Required-Start:    $network $remote_fs $syslog
+# Required-Stop:     $network $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Consul Template Service Discovery Platform
+# Description:       Consul Template convenient way to populate values from
+#                    Consul into the filesystem using the consul-template daemon.
+### END INIT INFO
 
-# Source function library.
-. /etc/init.d/functions
+NAME="consul-template"
+CONSUL_TEMPLATE=<%= scope.lookupvar('consul_template::bin_dir') %>/consul-template
+CONFIG=<%= scope.lookupvar('consul_template::config_dir') %>/config.json
+OPTIONS=<%= scope.lookupvar('consul_template::extra_options') %>
+LOGLEVEL=<%= scope.lookupvar('consul_template::log_level') %>
+CMD="${CONSUL_TEMPLATE} -config ${CONFIG} ${OPTIONS}"
 
-CONSUL=<%= scope.lookupvar('consul_template::bin_dir') %>/consul-template
-CONFIG=<%= scope.lookupvar('consul_template::config_dir') %>
-PID_FILE=/var/run/consul-template/pidfile
-LOG_FILE=/var/log/consul-template
+PIDFILE="/var/run/$NAME.pid"
+LOGFILE="/var/log/$NAME.log"
 
-[ -e /etc/sysconfig/consul-template ] && . /etc/sysconfig/consul-template
+export GOMAXPROCS=${GOMAXPROCS}
 
-start() {
-        echo -n "Starting consul-template: "
-        daemon \
-            --pidfile="$PID_FILE" \
-            "$CONSUL" -config "$CONFIG"/config.json <%= scope.lookupvar('consul_template::extra_options') %> >> "$LOG_FILE" &
-        retcode=$?
-        touch /var/lock/subsys/consul-template
-        return $retcode
+get_pid() {
+    cat "$PIDFILE"
 }
 
-stop() {
-        echo -n "Shutting down consul-template: "
-        "$CONSUL" leave
-
-        retcode=$?
-        rm -f /var/lock/subsys/consul-template
-        return $retcode
-}
-
-status() {
-    if [ -f "$PID_FILE" ]
-    then
-        if ps -p `cat $PID_FILE` > /dev/null 2&1
-        then
-            echo -n "Process running."
-            return 0
-        else
-            echo -n "PID exists but process not running."
-            return 1
-        fi
-    else
-        echo -n "Process not running."
-        return 1
-    fi
+is_running() {
+    [ -f "$PIDFILE" ] && ps `get_pid` > /dev/null 2>&1
 }
 
 case "$1" in
     start)
-        start
-        ;;
+    if is_running; then
+        echo "$NAME already running"
+    else
+        echo "Starting $NAME"
+        CONSUL_TEMPLATE_LOG=${LOGLEVEL} $CMD >> "$LOGFILE" 2>&1 &
+        echo $! > "$PIDFILE"
+        if ! is_running; then
+            echo "Unable to start $NAME, see $LOGFILE"
+            exit 1
+        fi
+    fi
+    ;;
     stop)
-        stop
-        ;;
-    status)
-        status
-        ;;
+    if is_running; then
+        echo -n "Stopping $NAME..."
+        kill `get_pid`
+        for i in 1 2 3 4 5 6 7 8 9 10
+        do
+            if ! is_running; then
+                break
+            fi
+
+            echo -n "."
+            sleep 1
+        done
+        echo
+
+        if is_running; then
+            echo "$NAME not stopped; may still be shutting down or shutdown may have failed"
+            exit 1
+        else
+            echo "$NAME stopped"
+            if [ -f "$PIDFILE" ]; then
+                rm "$PIDFILE"
+            fi
+        fi
+    else
+        echo "$NAME not running"
+    fi
+    ;;
     restart)
-        stop
-        start
-        ;;
-    reload)
-        kill -HUP `cat $PID_FILE`
-        ;;
-    condrestart)
-        [ -f /var/lock/subsys/consul-template ] && restart || :
-        ;;
-    *)
-        echo "Usage: consul-template {start|stop|status|reload|restart}"
+    $0 stop
+    if is_running; then
+        echo "Unable to stop $NAME, will not attempt to start"
         exit 1
-        ;;
+    fi
+    $0 start
+    ;;
+    status)
+    if is_running; then
+        echo "$NAME is running"
+    else
+        echo "$NAME is stopped"
+        exit 1
+    fi
+    ;;
+    reload)
+    if is_running; then
+        echo -n "Reloading $NAME..."
+        kill -HUP `get_pid`
+        sleep 1
+        echo
+
+        if ! is_running; then
+            echo "$NAME has died, see $LOGFILE"
+            exit 1
+        fi
+    else
+        echo "$NAME not running"
+    fi
+    ;;
+    *)
+    echo "Usage: $0 {start|stop|restart|reload|status}"
+    exit 1
+    ;;
 esac
-exit $?
+
+exit 0
