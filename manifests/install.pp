@@ -2,7 +2,7 @@
 #
 class consul_template::install {
 
-  User<| |> -> Group<| |>
+  User<| |> -> File<| |>
   Group<| |> -> File<| |>
 
   if $consul_template::data_dir {
