@@ -21,5 +21,6 @@ define consul_template::watch (
     target  => 'consul-template/config.json',
     content => "template {\n  source = \"${consul_template::config_dir}/${name}.ctmpl\"\n  destination = \"${destination}\"\n  command = \"${command}\"\n}\n\n",
     order   => '10',
+    notify  => Service['consul-template']
   }
 }
