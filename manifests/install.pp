@@ -2,9 +2,6 @@
 #
 class consul_template::install {
 
-  User<| |> -> File<| |>
-  Group<| |> -> File<| |>
-
   if $consul_template::data_dir {
     file { $consul_template::data_dir:
       ensure => 'directory',
