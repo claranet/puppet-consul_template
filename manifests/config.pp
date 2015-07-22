@@ -23,6 +23,7 @@ class consul_template::config (
     order   => '01'
   }
 
+
   file { $consul_template::config_dir:
     ensure  => 'directory',
     purge   => $purge,
