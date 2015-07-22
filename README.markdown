@@ -48,7 +48,8 @@ Or to specify parameters:
 class { 'consul_template':
     service_enable => false
     log_level      => 'debug',
-    init_style     => 'upstart'
+    init_style     => 'upstart',
+    consul_wait    => '5s:30s'
 }
 ```
 
