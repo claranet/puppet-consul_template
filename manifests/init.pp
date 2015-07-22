@@ -43,6 +43,7 @@ class consul_template (
   $consul_port       = '8500',
   $consul_token      = '',
   $consul_retry      = '10s',
+  $consul_wait       = undef,
   $init_style        = $consul_template::params::init_style,
   $log_level         = $consul_template::params::log_level,
 ) inherits ::consul_template::params {
