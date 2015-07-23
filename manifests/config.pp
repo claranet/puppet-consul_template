@@ -16,6 +16,14 @@ class consul_template::config (
     order   => '00',
   }
 
+  # Set the log level
+  concat::fragment { 'log_level':
+    target  => 'consul-template/config.json',
+    content => inline_template("log_level = \"${::consul_template::log_level}\"\n"),
+    order   => '01'
+  }
+
+
   file { $consul_template::config_dir:
     ensure  => 'directory',
     purge   => $purge,
