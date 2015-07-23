@@ -23,6 +23,14 @@ class consul_template::config (
     order   => '01'
   }
 
+  # Set wait param if specified
+  if $::consul_template::consul_wait {
+    concat::fragment { 'consul_wait':
+      target  => 'consul-template/config.json',
+      content => inline_template("wait = \"${::consul_template::consul_wait}\"\n\n"),
+      order   => '02',
+    }
+  }
 
   file { $consul_template::config_dir:
     ensure  => 'directory',

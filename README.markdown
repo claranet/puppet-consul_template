@@ -30,6 +30,7 @@ set to 'package', its installed using the system package manager.
 - `consul_port` Default: 8500. Port number the API is running on
 - `consul_token` Default: ''. ACL token to use when querying consul
 - `consul_retry` Default: 10s. Time in seconds to wait before retrying consul requests
+- `consul_wait` Default: undef. Min:Max time to wait before consul-template renders a new template to disk and triggers refresh. Specified in the format min:max according to [Go time duration format](http://golang.org/pkg/time/#ParseDuration)
 - `init_style` Init style to use for consul-template service.
 - `log_level` Default: info. Logging level to use for consul-template service. Can be 'debug', 'warn', 'err', 'info'
 
@@ -47,7 +48,8 @@ Or to specify parameters:
 class { 'consul_template':
     service_enable => false
     log_level      => 'debug',
-    init_style     => 'upstart'
+    init_style     => 'upstart',
+    consul_wait    => '5s:30s'
 }
 ```
 
