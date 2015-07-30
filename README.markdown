@@ -62,9 +62,13 @@ that you want to update.
 
 ```puppet
 consul_template::watch { 'common':
-    template    => 'data/common.json.ctmpl.erb',
-    destination => '/tmp/common.json',
-    command     => 'true',
+    template      => 'data/common.json.ctmpl.erb',
+    template_vars => {
+        'var1' => 'foo',
+        'var2' => 'bar',
+    },
+    destination   => '/tmp/common.json',
+    command       => 'true',
 }
 ```
 
