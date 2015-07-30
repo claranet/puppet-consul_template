@@ -5,6 +5,7 @@
 # for changes in Consul and update the local file
 define consul_template::watch (
   $template = undef,
+  $template_vars = {},
   $destination,
   $command,
 ) {
