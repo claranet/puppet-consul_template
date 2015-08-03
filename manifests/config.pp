@@ -32,6 +32,31 @@ class consul_template::config (
     }
   }
 
+  if $::consul_template::vault_enabled {
+    concat::fragment { 'vault-base':
+      target  => 'consul-template/config.json',
+      content => inline_template("vault {\n  address = \"${::consul_template::vault_address}\"\n  token = \"${::consul_template::vault_token}\"\n"),
+      order   => '03',
+    }
+    if $::consul_template::vault_ssl {
+      concat::fragment { 'vault-ssl1':
+        target  => 'consul-template/config.json',
+        content => inline_template("  ssl {\n    enabled = true\n    verify = ${::consul_template::vault_ssl_verify}\n"),
+        order   => '04',
+      }
+      concat::fragment { 'vault-ssl2':
+        target  => 'consul-template/config.json',
+        content => inline_template("    cert = \"${::consul_template::vault_ssl_cert}\"\n    ca_cert = \"${::consul_template::vault_ssl_ca_cert}\"\n  }\n"),
+        order   => '05',
+      }
+    }
+    concat::fragment { 'vault-baseclose':
+      target  => 'consul-template/config.json',
+      content => "}\n\n",
+      order   => '06',
+    }
+  }
+
   file { $consul_template::config_dir:
     ensure  => 'directory',
     purge   => $purge,
