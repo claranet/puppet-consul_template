@@ -1,5 +1,5 @@
 {
-  "name": "puppet-consul_template",
+  "name": "gdhbashton-consul_template",
   "version": "0.2.0",
   "author": "gdhbashton",
   "summary": "Install and manage Consul Template and its jobs",
@@ -22,7 +22,7 @@
     },
     {
     "operatingsystem":"Ubuntu",
-    "operatingsystemrelease":[ "10.04", "12.04" ]
+    "operatingsystemrelease":[ "10.04", "12.04", "14.04" ]
     }
    ],
   "dependencies": [
