@@ -1,28 +1,46 @@
 # == Definition consul_template::watch
 #
-# This definition is called from consul_template
 # This is a single instance of a configuration file to watch
 # for changes in Consul and update the local file
+
+# consul_template::watch { '/etc/init.d/elasticsearch.d/cluster.yml':
+#   source => '/etc/consul-template.d/cluster.yml.ctmpl',
+# }
+
+# consul_template::watch { 'es_dynamic':
+#   source => '/etc/consul-template.d/dynamic.yml.ctmpl',
+#   destination => '/etc/init.d/elasticsearch.d/dynamic.yml',
+#   command => 'update_dynamic_vars'
+# }
+
+# consul_template::watch { '/etc/init.d/elasticsearch.d/cluster.yml':
+#   content => template('elasticsearch/cluster.yml.ctmpl'),
+# }
 define consul_template::watch (
-  $template = undef,
-  $template_vars = {},
+  $ensure  = present,
+  $id      = $title,
+  $source  = undef,
+  $content = undef,
   $destination,
-  $command,
+  $command = undef
 ) {
   include consul_template
 
-  if $template != undef {
-    file { "${consul_template::config_dir}/${name}.ctmpl":
-      ensure  => present,
-      content => template($template),
-      before  => Concat::Fragment["${name}.ctmpl"],
-      notify  => Service['consul-template'],
+  if $content != undef {
+    $source = "${consul_template::template_dir}/${id}.ctmpl"
+    file { $source:
+      ensure  => $ensure,
+      content => $content,
     }
+  } elsif $source == undef {
+    fail("Must pass either source or content to consul_template::watch")
   }
-  concat::fragment { "${name}.ctmpl":
-    target  => 'consul-template/config.json',
-    content => "template {\n  source = \"${consul_template::config_dir}/${name}.ctmpl\"\n  destination = \"${destination}\"\n  command = \"${command}\"\n}\n\n",
-    order   => '10',
-    notify  => Service['consul-template']
+
+  file { "${consul_template::source_dir}/${id}.hcl":
+    mode => '0644',
+    owner => 'root',
+    group => 'root',
+    content => template('consul_template/etc/consul-template/config.d/watch.hcl.erb'),
+    notify  => Service['consul_template'],
   }
 }

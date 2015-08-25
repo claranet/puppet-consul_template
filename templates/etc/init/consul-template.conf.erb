@@ -1,0 +1,28 @@
+# Consul Agent (Upstart unit)
+description "Consul Agent"
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on runlevel [06]
+
+env CMD=/usr/bin/consul-template
+env CONFIG=<%= @config_dir %>
+
+setuid <%= @user %>
+setgid <%= @user %>
+
+script
+    . /etc/default/consul-template
+    export GOMAXPROCS
+    export CONSUL_TOKEN
+
+    exec $CMD \
+      -consul $CONSUL \
+      -retry $RETRY \
+      -wait $WAIT \
+      -max-stale $MAX_STALE \
+      -log-level $LOG_LEVEL \
+      -config $CONFIG
+end script
+
+respawn
+respawn limit 10 10
+kill timeout 10

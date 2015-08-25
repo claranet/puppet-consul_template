@@ -3,77 +3,65 @@
 # This class is called from consul_template for service config.
 #
 class consul_template::config (
-  $consul_host,
-  $consul_port,
-  $consul_token,
-  $consul_retry,
-  $purge = true,
+  $ensure       = 'present',
+
+  $consul_host  = '127.0.0.1',
+  $consul_port  = '8500',
+
+  $token        = undef,
+  $retry        = '5s',
+  $wait         = undef,
+  $max_stale    = '1s',
+
+  $user         = 'consul-template',
+  $config_dir   = '/etc/consul-template/config.d',
+  $template_dir = '/etc/consul-template/template.d',
+  $log_level    = 'warn',
 ) {
 
-  concat::fragment { 'header':
-    target  => 'consul-template/config.json',
-    content => inline_template("consul = \"<%= @consul_host %>:<%= @consul_port %>\"\ntoken = \"<%= @consul_token %>\"\nretry = \"<%= @consul_retry %>\"\n\n"),
-    order   => '00',
+  $dir_ensure = $ensure ? {
+    present => 'directory',
+    default => 'absent',
   }
 
-  # Set the log level
-  concat::fragment { 'log_level':
-    target  => 'consul-template/config.json',
-    content => inline_template("log_level = \"${::consul_template::log_level}\"\n"),
-    order   => '01'
+  user { $user:
+    ensure => $ensure,
+    gid    => $user,
   }
 
-  # Set wait param if specified
-  if $::consul_template::consul_wait {
-    concat::fragment { 'consul_wait':
-      target  => 'consul-template/config.json',
-      content => inline_template("wait = \"${::consul_template::consul_wait}\"\n\n"),
-      order   => '02',
-    }
+  group { $user:
+    ensure => $ensure,
   }
 
-  # Set max-stale param if specified
-  if $::consul_template::consul_max_stale {
-    concat::fragment { 'consul_max_stale':
-      target  => 'consul-template/config.json',
-      content => inline_template("max-stale = \"${::consul_template::consul_max_stale}\"\n\n"),
-      order   => '03',
-    }
+  # don't allow just any user to exec
+  file { '/usr/bin/consul-template':
+    mode  => '0750',
+    owner => 'root',
+    group => $user,
   }
 
-  if $::consul_template::vault_enabled {
-    concat::fragment { 'vault-base':
-      target  => 'consul-template/config.json',
-      content => inline_template("vault {\n  address = \"${::consul_template::vault_address}\"\n  token = \"${::consul_template::vault_token}\"\n"),
-      order   => '04',
-    }
-    if $::consul_template::vault_ssl {
-      concat::fragment { 'vault-ssl1':
-        target  => 'consul-template/config.json',
-        content => inline_template("  ssl {\n    enabled = true\n    verify = ${::consul_template::vault_ssl_verify}\n"),
-        order   => '05',
-      }
-      concat::fragment { 'vault-ssl2':
-        target  => 'consul-template/config.json',
-        content => inline_template("    cert = \"${::consul_template::vault_ssl_cert}\"\n    ca_cert = \"${::consul_template::vault_ssl_ca_cert}\"\n  }\n"),
-        order   => '06',
-      }
-    }
-    concat::fragment { 'vault-baseclose':
-      target  => 'consul-template/config.json',
-      content => "}\n\n",
-      order   => '07',
-    }
+  file { $config_dir:
+    ensure => $dir_ensure,
+    mode   => '0755',
+    owner  => 'root',
+    group  => $user,
   }
 
-  file { [$consul_template::config_dir, "${consul_template::config_dir}/config"]:
-    ensure  => 'directory',
-    purge   => $purge,
-    recurse => $purge,
-  } ->
-  concat { 'consul-template/config.json':
-    path   => "${consul_template::config_dir}/config/config.json",
-    notify => Service['consul-template'],
+  file { "/etc/default/consul-template":
+    ensure  => $ensure,
+    mode    => '0750',
+    owner   => 'root',
+    group   => $user,
+    content => template('consul_template/etc/default/consul-template'),
   }
 
+  if $ensure == 'present' {
+    Group[$user]
+      -> User[$user]
+      -> File["/etc/default/consul-template"]
+  } else {
+    File["/etc/default/consul-template"]
+      -> User[$user]
+      -> Group[$user]
+  }
 }
