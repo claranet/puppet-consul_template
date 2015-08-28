@@ -45,6 +45,15 @@
 #
 # [*vault_ssl_ca_cert*]
 #   What is the path to the ca cert.pem
+#
+# [*data_dir*]
+#   Path to a directory to create to hold some data. Defaults to ''
+#
+# [*manage_user*]
+#   Name of a user to create if it does not exist. Defaults to ''
+#
+# [*manage_group*]
+#   Name of a group to create if it does not exist. Defaults to ''
 
 class consul_template (
   $purge_config_dir  = true,
@@ -74,6 +83,9 @@ class consul_template (
   $vault_ssl_verify  = true,
   $vault_ssl_cert    = '',
   $vault_ssl_ca_cert = '',
+  $data_dir          = '',
+  $manage_user       = '',
+  $manage_group      = '',
 ) inherits ::consul_template::params {
 
   validate_bool($purge_config_dir)
