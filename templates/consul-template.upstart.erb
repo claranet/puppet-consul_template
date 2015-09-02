@@ -8,7 +8,7 @@ env CONFIG=<%= scope.lookupvar('consul_template::config_dir') %>
 
 
 script
-    exec $CONSUL -config $CONFIG/config.json <%= scope.lookupvar('consul_template::extra_options') %>
+    exec $CONSUL -config $CONFIG/config <%= scope.lookupvar('consul_template::extra_options') %>
 end script
 
 respawn
