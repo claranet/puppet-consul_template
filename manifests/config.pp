@@ -57,13 +57,13 @@ class consul_template::config (
     }
   }
 
-  file { $consul_template::config_dir:
+  file { [$consul_template::config_dir, "${consul_template::config_dir}/config"]:
     ensure  => 'directory',
     purge   => $purge,
     recurse => $purge,
   } ->
   concat { 'consul-template/config.json':
-    path   => "${consul_template::config_dir}/config.json",
+    path   => "${consul_template::config_dir}/config/config.json",
     notify => Service['consul-template'],
   }
 

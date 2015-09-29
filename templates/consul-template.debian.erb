@@ -17,7 +17,7 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin:<%= scope.lookupvar('consul_template::bin_dir
 DESC="Consul Template KV file populater"
 NAME=consul-template
 DAEMON=<%= scope.lookupvar('consul_template::bin_dir') %>/$NAME
-DAEMON_ARGS="-config <%= scope.lookupvar('consul_template::config_dir') %>/config.json <%= scope.lookupvar('consul_template::extra_options') %>"
+DAEMON_ARGS="-config <%= scope.lookupvar('consul_template::config_dir') %>/config <%= scope.lookupvar('consul_template::extra_options') %>"
 USER=<%= scope.lookupvar('consul_template::user') %>
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME

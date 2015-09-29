@@ -12,7 +12,7 @@
 
 NAME="consul-template"
 CONSUL_TEMPLATE=<%= scope.lookupvar('consul_template::bin_dir') %>/consul-template
-CONFIG=<%= scope.lookupvar('consul_template::config_dir') %>/config.json
+CONFIG=<%= scope.lookupvar('consul_template::config_dir') %>/config
 OPTIONS=<%= scope.lookupvar('consul_template::extra_options') %>
 LOGLEVEL=<%= scope.lookupvar('consul_template::log_level') %>
 CMD="${CONSUL_TEMPLATE} -config ${CONFIG} ${OPTIONS}"

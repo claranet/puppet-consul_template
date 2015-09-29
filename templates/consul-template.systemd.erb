@@ -5,7 +5,7 @@ After=basic.target network.target
 
 [Service]
 ExecStart=<%= scope.lookupvar('consul_template::bin_dir') %>/consul-template \
-  -config <%= scope.lookupvar('consul_template::config_dir') %>/config.json <%= scope.lookupvar('consul_template::extra_options') %>
+  -config <%= scope.lookupvar('consul_template::config_dir') %>/config <%= scope.lookupvar('consul_template::extra_options') %>
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure
