@@ -9,7 +9,7 @@ class consul_template::params {
   $log_level         = 'info'
   $package_name      = 'consul-template'
   $package_ensure    = 'latest'
-  $version = '0.6.0'
+  $version = '0.10.0'
 
   case $::architecture {
     'x86_64', 'amd64': { $arch = 'amd64' }
