@@ -16,18 +16,23 @@ class consul_template::install {
     if $::operatingsystem != 'darwin' {
       ensure_packages(['tar'])
     }
-    staging::file { 'consul-template.tar.gz':
+    staging::file { "consul-template-${consul_template::version}.tar.gz":
       source => $consul_template::download_url
     } ->
-    staging::extract { 'consul-template.tar.gz':
+    staging::extract { "consul-template-${consul_template::version}.tar.gz":
       target  => $consul_template::bin_dir,
-      creates => "${consul_template::bin_dir}/consul-template",
+      creates => "${consul_template::bin_dir}/consul-template-${consul_template::version}",
       strip   => 1,
     } ->
-    file { "${consul_template::bin_dir}/consul-template":
-      owner => 'root',
-      group => 0, # 0 instead of root because OS X uses "wheel".
-      mode  => '0555',
+    file {
+        "${consul_template::bin_dir}/consul-template":
+            ensure => link,
+            target => "${consul_template::bin_dir}/consul-template$-{consul_template::version}";
+
+        "${consul_template::bin_dir}/consul-template$-{consul_template::version}":
+            owner => 'root',
+            group => 0, # 0 instead of root because OS X uses "wheel".
+            mode  => '0555';
     }
 
   } elsif $consul_template::install_method == 'package' {
