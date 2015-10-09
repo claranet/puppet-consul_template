@@ -22,7 +22,6 @@ class consul_template::install {
     staging::extract { "consul-template-${consul_template::version}.zip":
       target  => $consul_template::bin_dir,
       creates => "${consul_template::bin_dir}/consul-template-${consul_template::version}",
-      strip   => 1,
     } ->
     file {
         "${consul_template::bin_dir}/consul-template":
