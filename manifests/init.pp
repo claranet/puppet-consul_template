@@ -62,7 +62,7 @@ class consul_template (
   $version           = $consul_template::params::version,
   $install_method    = $consul_template::params::install_method,
   $os                = $consul_template::params::os,
-  $download_url      = "https://github.com/hashicorp/consul-template/releases/download/v${version}/consul_template_${version}_${os}_${arch}.tar.gz",
+  $download_url      = "https://github.com/hashicorp/consul-template/releases/download/v${version}/consul_template_${version}_${os}_${arch}.zip",
   $package_name      = $consul_template::params::package_name,
   $package_ensure    = $consul_template::params::package_ensure,
   $config_dir        = '/etc/consul-template',
