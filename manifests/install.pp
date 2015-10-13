@@ -13,9 +13,7 @@ class consul_template::install {
 
   if $consul_template::install_method == 'url' {
 
-    if $::operatingsystem != 'darwin' {
-      ensure_packages(['tar'])
-    }
+    include staging
     staging::file { "consul-template-${consul_template::version}.zip":
       source => $consul_template::download_url
     } ->
