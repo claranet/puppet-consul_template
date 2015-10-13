@@ -19,17 +19,19 @@ class consul_template::install {
     staging::file { "consul-template-${consul_template::version}.zip":
       source => $consul_template::download_url
     } ->
-    staging::extract { "consul-template-${consul_template::version}.zip":
-      target  => "${staging::path}/consul-template-${consul_template::version}",
-      creates => "${staging::path}/consul-template-${consul_template::version}/consul-template";
+    file { "${::staging::path}/consul-template-${consul_template::version}":
+        ensure => directory,
+    } -> staging::extract { "consul-template-${consul_template::version}.zip":
+      target  => "${::staging::path}/consul-template-${consul_template::version}",
+      creates => "${::staging::path}/consul-template-${consul_template::version}/consul-template";
     } -> file {
-      "${staging::path}/consul-template-${consul_template::version}/consul-template":
+      "${::staging::path}/consul-template-${consul_template::version}/consul-template":
         owner => 'root',
         group => 0, # 0 instead of root because OS X uses "wheel".
         mode  => '0555';
       "${consul_template::bin_dir}/consul-template":
         ensure => link,
-        target => "${staging::path}/consul-template-${consul_template::version}/consul-template";
+        target => "${::staging::path}/consul-template-${consul_template::version}/consul-template";
     }
 
   } elsif $consul_template::install_method == 'package' {

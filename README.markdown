@@ -15,7 +15,7 @@
 - `purge_config_dir` **Default**: true. If enabled, removes config files no longer managed by Puppet.
 - `bin_dir` **Default**: /usr/local/bin. Path to the consul-template binaries
 - `arch` **Default**: Read from facter. System architecture to use (amd64, x86_64, i386)
-- `version` **Default**: 0.6.0. Version of consul-template to install
+- `version` **Default**: 0.11.0. Version of consul-template to install
 - `install_method` **Default**: url. When set to 'url', consul-template is downloaded and installed from source. If
 set to 'package', its installed using the system package manager.
 - `os` **Default**: Read from facter.
