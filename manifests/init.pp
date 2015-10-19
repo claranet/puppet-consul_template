@@ -56,40 +56,51 @@
 #   Name of a group to create if it does not exist. Defaults to ''
 
 class consul_template (
-  $purge_config_dir  = true,
-  $bin_dir           = '/usr/local/bin',
-  $arch              = $consul_template::params::arch,
-  $version           = $consul_template::params::version,
-  $install_method    = $consul_template::params::install_method,
-  $os                = $consul_template::params::os,
-  $download_url      = "https://github.com/hashicorp/consul-template/releases/download/v${version}/consul-template_${version}_${os}_${arch}.tar.gz",
-  $package_name      = $consul_template::params::package_name,
-  $package_ensure    = $consul_template::params::package_ensure,
-  $config_dir        = '/etc/consul-template',
-  $extra_options     = '',
-  $service_enable    = true,
-  $service_ensure    = 'running',
-  $consul_host       = 'localhost',
-  $consul_port       = '8500',
-  $consul_token      = '',
-  $consul_retry      = '10s',
-  $consul_wait       = undef,
-  $consul_max_stale  = undef,
-  $init_style        = $consul_template::params::init_style,
-  $log_level         = $consul_template::params::log_level,
-  $vault_enabled     = false,
-  $vault_address     = '',
-  $vault_token       = '',
-  $vault_ssl         = true,
-  $vault_ssl_verify  = true,
-  $vault_ssl_cert    = '',
-  $vault_ssl_ca_cert = '',
-  $data_dir          = '',
-  $manage_user       = '',
-  $manage_group      = '',
+  $purge_config_dir   = true,
+  $bin_dir            = '/usr/local/bin',
+  $arch               = $consul_template::params::arch,
+  $version            = $consul_template::params::version,
+  $install_method     = $consul_template::params::install_method,
+  $os                 = $consul_template::params::os,
+  $download_url       = undef,
+  $download_url_base  = $consul_template::params::download_url_base,
+  $download_extension = $consul_template::params::download_extension,
+  $package_name       = $consul_template::params::package_name,
+  $package_ensure     = $consul_template::params::package_ensure,
+  $config_dir         = '/etc/consul-template',
+  $extra_options      = '',
+  $service_enable     = true,
+  $service_ensure     = 'running',
+  $consul_host        = 'localhost',
+  $consul_port        = '8500',
+  $consul_token       = '',
+  $consul_retry       = '10s',
+  $consul_wait        = undef,
+  $consul_max_stale   = undef,
+  $init_style         = $consul_template::params::init_style,
+  $log_level          = $consul_template::params::log_level,
+  $vault_enabled      = false,
+  $vault_address      = '',
+  $vault_token        = '',
+  $vault_ssl          = true,
+  $vault_ssl_verify   = true,
+  $vault_ssl_cert     = '',
+  $vault_ssl_ca_cert  = '',
+  $data_dir           = '',
+  $manage_user        = '',
+  $manage_group       = '',
 ) inherits ::consul_template::params {
 
   validate_bool($purge_config_dir)
+
+  if versioncmp($version, '0.11.0') >= 0 {
+    $download_filename  = 'consul_template'
+  } else {
+    $download_filename  = 'consul-template'
+    $download_extension = 'tar.gz'
+  }
+
+  $real_download_url = pick($download_url, "${download_url_base}v${version}/${download_filename}_${version}_${os}_${arch}.${download_extension}")
 
   class { '::consul_template::install': } ->
   class { '::consul_template::config':

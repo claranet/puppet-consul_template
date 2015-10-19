@@ -5,11 +5,13 @@
 #
 class consul_template::params {
 
-  $install_method    = 'url'
-  $log_level         = 'info'
-  $package_name      = 'consul-template'
-  $package_ensure    = 'latest'
-  $version = '0.10.0'
+  $install_method     = 'url'
+  $log_level          = 'info'
+  $package_name       = 'consul-template'
+  $package_ensure     = 'latest'
+  $version            = '0.11.0'
+  $download_url_base  = 'https://github.com/hashicorp/consul-template/releases/download/'
+  $download_extension = 'zip'
 
   case $::architecture {
     'x86_64', 'amd64': { $arch = 'amd64' }

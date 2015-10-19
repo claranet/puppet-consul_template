@@ -15,11 +15,13 @@
 - `purge_config_dir` **Default**: true. If enabled, removes config files no longer managed by Puppet.
 - `bin_dir` **Default**: /usr/local/bin. Path to the consul-template binaries
 - `arch` **Default**: Read from facter. System architecture to use (amd64, x86_64, i386)
-- `version` **Default**: 0.10.0. Version of consul-template to install
+- `version` **Default**: 0.11.0. Version of consul-template to install
 - `install_method` **Default**: url. When set to 'url', consul-template is downloaded and installed from source. If
 set to 'package', its installed using the system package manager.
 - `os` **Default**: Read from facter.
-- `download_url` **Default**: https://github.com/hashicorp/consul-template/releases/download/v${version}/consul-template_${version}_${os}_${arch}.tar.gz. URL to download consul-template from (when `install_method` is set to 'url')
+- `download_url` **Default**: undef. URL to download consul-template from (when `install_method` is set to 'url')
+- `download_url_base ` **Default**: https://github.com/hashicorp/consul-template/releases/download/ Base URL to download consul-template from (when `install_method` is set to 'url')
+- `download_extension` **Default**: zip. File extension of consul-template binary to be downloaded (when `install_method` is set to 'url')
 - `package_name` **Default**: consul-template. Name of package to install
 - `package_ensure` **Default**: latest.
 - `config_dir` **Default**: /etc/consul-template. Path to store the consul-template configuration

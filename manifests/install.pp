@@ -16,10 +16,10 @@ class consul_template::install {
     if $::operatingsystem != 'darwin' {
       ensure_packages(['tar'])
     }
-    staging::file { 'consul-template.tar.gz':
-      source => $consul_template::download_url
+    staging::file { "consul-template.${consul_template::download_extension}":
+      source => $consul_template::real_download_url,
     } ->
-    staging::extract { 'consul-template.tar.gz':
+    staging::extract { "consul-template.${consul_template::download_extension}":
       target  => $consul_template::bin_dir,
       creates => "${consul_template::bin_dir}/consul-template",
       strip   => 1,
