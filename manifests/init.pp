@@ -94,7 +94,8 @@ class consul_template (
   validate_bool($purge_config_dir)
 
   if versioncmp($version, '0.11.0') >= 0 {
-    $real_download_filename  = $download_extension
+    $download_filename  = 'consul_template'
+    $real_download_extension = $download_extension
   } else {
     $download_filename  = 'consul-template'
     $real_download_extension = 'tar.gz'
