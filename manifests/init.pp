@@ -94,13 +94,13 @@ class consul_template (
   validate_bool($purge_config_dir)
 
   if versioncmp($version, '0.11.0') >= 0 {
-    $download_filename  = 'consul_template'
+    $real_download_filename  = $download_extension
   } else {
     $download_filename  = 'consul-template'
-    $download_extension = 'tar.gz'
+    $real_download_extension = 'tar.gz'
   }
 
-  $real_download_url = pick($download_url, "${download_url_base}v${version}/${download_filename}_${version}_${os}_${arch}.${download_extension}")
+  $real_download_url = pick($download_url, "${download_url_base}v${version}/${download_filename}_${version}_${os}_${arch}.${real_download_extension}")
 
   class { '::consul_template::install': } ->
   class { '::consul_template::config':
