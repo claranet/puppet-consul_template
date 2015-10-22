@@ -17,13 +17,13 @@ class consul_template::install {
     if $::operatingsystem != 'darwin' {
       ensure_packages(['tar'])
     }
-    staging::file { "consul-template_${consul_template::version}.${consul_template::download_extension}":
+    staging::file { "consul-template_${consul_template::version}.${consul_template::real_download_extension}":
       source => $consul_template::real_download_url,
     } ->
     file { "${::staging::path}/consul-template-${consul_template::version}":
       ensure => directory,
     } ->
-    staging::extract { "consul-template_${consul_template::version}.${consul_template::download_extension}":
+    staging::extract { "consul-template_${consul_template::version}.${consul_template::real_download_extension}":
       target  => "${::staging::path}/consul-template-${consul_template::version}",
       creates => "${::staging::path}/consul-template-${consul_template::version}/consul-template",
       strip   => 1,
