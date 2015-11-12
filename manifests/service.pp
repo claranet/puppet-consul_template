@@ -45,7 +45,7 @@ class consul_template::service(
   # Upstart service
   file { '/etc/init/consul-template.conf':
     ensure  => $ensure,
-    mode    => '0444',
+    mode    => '0644',
     owner   => 'root',
     group   => 'root',
     content => template('consul_template/etc/init/consul-template.conf.erb'),
