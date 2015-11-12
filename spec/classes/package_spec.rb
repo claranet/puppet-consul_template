@@ -11,7 +11,7 @@ describe 'consul_template::package' do
   let(:params) {
     {
       :ensure  => "present",
-      :version => "0.11.0+github1",
+      :version => "0.11.0",
     }
   }
 
@@ -20,13 +20,13 @@ describe 'consul_template::package' do
   it do
     should contain_apt__pin("consul-template").with({
       :ensure  => "present",
-      :version => "0.11.0+github1",
+      :version => "0.11.0",
     })
   end
 
   it do
     should contain_package("consul-template").with({
-      :ensure => "0.11.0+github1",
+      :ensure => "0.11.0",
     })
   end
 end
