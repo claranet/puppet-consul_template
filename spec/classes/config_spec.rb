@@ -45,11 +45,12 @@ describe 'consul_template::config' do
   end
 
   it { should contain_file(defaults_file).with_content(/CONSUL="127.0.0.1:8500"/) }
-  it { should contain_file(defaults_file).with_content(/CONSUL_TOKEN=""/) }
-  it { should contain_file(defaults_file).with_content(/RETRY="5s"/) }
-  it { should contain_file(defaults_file).with_content(/WAIT=""/) }
-  it { should contain_file(defaults_file).with_content(/MAX_STALE="1s"/) }
-  it { should contain_file(defaults_file).with_content(/LOG_LEVEL="warn"/) }
+  it { should contain_file(defaults_file).with_content(/-retry 5s/) }
+  it { should contain_file(defaults_file).with_content(/-max-stale 1s/) }
+  it { should contain_file(defaults_file).with_content(/-log-level warn/) }
+
+  it { should_not contain_file(defaults_file).with_content(/-token/) }
+  it { should_not contain_file(defaults_file).with_content(/-wait/) }
 
   context "non-default user" do
     let(:params) {{
@@ -76,10 +77,10 @@ describe 'consul_template::config' do
     }
 
     it { should contain_file(defaults_file).with_content(/CONSUL="127.0.0.2:8501"/) }
-    it { should contain_file(defaults_file).with_content(/CONSUL_TOKEN="123456"/) }
-    it { should contain_file(defaults_file).with_content(/RETRY="1s"/) }
-    it { should contain_file(defaults_file).with_content(/WAIT="5s"/) }
-    it { should contain_file(defaults_file).with_content(/MAX_STALE="30s"/) }
-    it { should contain_file(defaults_file).with_content(/LOG_LEVEL="info"/) }
+    it { should contain_file(defaults_file).with_content(/-token 123456/) }
+    it { should contain_file(defaults_file).with_content(/-retry 1s/) }
+    it { should contain_file(defaults_file).with_content(/-wait 5s/) }
+    it { should contain_file(defaults_file).with_content(/-max-stale 30s/) }
+    it { should contain_file(defaults_file).with_content(/-log-level info/) }
   end
 end

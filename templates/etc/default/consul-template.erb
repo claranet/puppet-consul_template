@@ -2,24 +2,24 @@
 # with port.
 CONSUL="<%= @consul_host %>:<%= @consul_port %>"
 
-# The Consul API token. There is no default value.
-CONSUL_TOKEN="<%= @token %>"
+OPTIONS=""
 
-# The amount of time to wait if Consul returns an error when communicating with
-# the API. The default value is 5 seconds.
-RETRY="<%= @retry %>"
+<%- if @token -%>
+OPTIONS="${OPTIONS} -token <%= @token %>"
+<%- end -%>
 
-# The minimum(:maximum) to wait before rendering a new template to disk and
-# triggering a command, separated by a colon (:). If the optional maximum value
-# is omitted, it is assumed to be 4x the required minimum value. There is no
-# default value.
-WAIT="<%= @wait %>"
+<%- if @retry -%>
+OPTIONS="${OPTIONS} -retry <%= @retry %>"
+<%- end -%>
 
-# The maximum staleness of a query. If specified, Consul will distribute work
-# among all servers instead of just the leader. The default value is 1 second.
-MAX_STALE="<%= @max_stale %>"
+<%- if @wait -%>
+OPTIONS="${OPTIONS} -wait <%= @wait %>"
+<%- end -%>
 
-# The log level for output. This applies to the stdout/stderr logging as well as
-# syslog logging (if enabled). Valid values are "debug", "info", "warn", and
-# "err". The default value is "warn".
-LOG_LEVEL="<%= @log_level %>"
+<%- if @max_stale -%>
+OPTIONS="${OPTIONS} -max-stale <%= @max_stale %>"
+<%- end -%>
+
+<%- if @log_level -%>
+OPTIONS="${OPTIONS} -log-level <%= @log_level %>"
+<%- end -%>

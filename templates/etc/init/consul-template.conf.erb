@@ -16,13 +16,6 @@ script
     # read settings like GOMAXPROCS from "/etc/default/consul-template", if available.
     [ -e /etc/default/consul-template ] && . /etc/default/consul-template
 
-    OPTIONS=""
-
-    [ -n "${RETRY}" ] && OPTIONS="$OPTIONS -retry $RETRY"
-    [ -n "${WAIT}" ] && OPTIONS="$OPTIONS -wait $WAIT"
-    [ -n "${MAX_STALE}" ] && OPTIONS="$OPTIONS -max-stale $MAX_STALE"
-    [ -n "${LOG_LEVEL}" ] && OPTIONS="$OPTIONS -log-level $LOG_LEVEL"
-
     exec $CMD -consul $CONSUL -config $CONFIG $OPTIONS
 end script
 
