@@ -54,20 +54,20 @@ class consul_template::config (
     group  => $user,
   }
 
-  file { "/etc/default/consul-template":
+  file { "${config_dir}/consul-template.hcl":
     ensure  => $ensure,
     mode    => '0644',
     owner   => 'root',
     group   => $user,
-    content => template('consul_template/etc/default/consul-template.erb'),
+    content => template('consul_template/etc/consul-template/config.d/consul-template.hcl.erb'),
   }
 
   if $ensure == 'present' {
     Group[$user]
       -> User[$user]
-      -> File["/etc/default/consul-template"]
+      -> File["${config_dir}/consul-template.hcl"]
   } else {
-    File["/etc/default/consul-template"]
+    File["${config_dir}/consul-template.hcl"]
       -> User[$user]
       -> Group[$user]
   }
