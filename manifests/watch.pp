@@ -3,19 +3,22 @@
 # This is a single instance of a configuration file to watch
 # for changes in Consul and update the local file
 
-# consul_template::watch { '/etc/init.d/elasticsearch.d/cluster.yml':
-#   source => '/etc/consul-template.d/cluster.yml.ctmpl',
+# consul_template::watch { '/etc/elasticsearch/elasticsearch.yml':
+#   source => '/etc/consul-template/template.d/elasticsearch.yml.ctmpl',
 # }
 
 # consul_template::watch { 'es_dynamic':
-#   source => '/etc/consul-template.d/dynamic.yml.ctmpl',
-#   destination => '/etc/init.d/elasticsearch.d/dynamic.yml',
+#   source => 'dynamic.yml.ctmpl',
+#   destination => '/etc/init.d/elasticsearch/dynamic.yml',
 #   command => 'update_dynamic_vars'
 # }
 
-# consul_template::watch { '/etc/init.d/elasticsearch.d/cluster.yml':
-#   content => template('elasticsearch/cluster.yml.ctmpl'),
+# consul_template::watch { '/etc/init.d/elasticsearch/elasticsearch.yml':
+#   content => template('elasticsearch/elasticsearch.yml.ctmpl'),
 # }
+#
+# TODO add a consul_template::template definition so the template dir
+# is not exposed
 define consul_template::watch (
   $ensure      = present,
   $id          = $title,
