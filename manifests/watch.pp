@@ -17,12 +17,12 @@
 #   content => template('elasticsearch/cluster.yml.ctmpl'),
 # }
 define consul_template::watch (
-  $ensure  = present,
-  $id      = $title,
-  $source  = undef,
-  $content = undef,
-  $destination,
-  $command = undef
+  $ensure      = present,
+  $id          = $title,
+  $source      = undef,
+  $content     = undef,
+  $destination = undef,
+  $command     = undef
 ) {
   include consul_template
 
@@ -34,6 +34,10 @@ define consul_template::watch (
     }
   } elsif $source == undef {
     fail("Must pass either source or content to consul_template::watch")
+  }
+
+  if $destination == undef {
+    $destination = $title
   }
 
   file { "${consul_template::source_dir}/${id}.hcl":
