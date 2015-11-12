@@ -52,5 +52,72 @@ describe 'consul_template::watch', :type => :define do
       end
     end
   end
+  context 'with a watch' do
+    let(:title) { "my_watch" }
+
+    let(:params) {
+      {
+        :source => "/tmp/template.ctmpl",
+        :destination => "/tmp/template",
+        :command => "update_vars",
+        :perms => "0666"
+      }
+    }
+
+    let(:config_file) { '/etc/consul-template/config.d/my_watch.hcl' }
+
+    it { should contain_file(config_file).with_content(%r{source = "/tmp/template.ctmpl"}) }
+    it { should contain_file(config_file).with_content(%r{destination = "/tmp/template"}) }
+    it { should contain_file(config_file).with_content(%r{command = "update_vars"}) }
+    it { should contain_file(config_file).with_content(%r{perms = 0666}) }
+
+    describe "with no args" do
+      let(:params) {{}}
+
+      it {
+        expect { should raise_error(Puppet::Error) }
+      }
+    end
+
+    describe "with relative destination" do
+      let(:params) {
+        {
+          :destination => "tmp"
+        }
+      }
+
+      it {
+        expect { should raise_error(Puppet::Error) }
+      }
+    end
+
+    describe "with implicit destination" do
+      let(:title) { "/tmp/template" }
+      let(:params) {
+        {
+          :source => "/tmp/template.ctmpl",
+        }
+      }
+      let(:config_file) { '/etc/consul-template/config.d/_tmp_template.hcl' }
+
+      it { should contain_file(config_file).with_content(%r{source = "/tmp/template.ctmpl"}) }
+      it { should contain_file(config_file).with_content(%r{destination = "/tmp/template"}) }
+    end
+
+    describe 'with content' do
+      let(:title) { "my_watch" }
+      let(:params) {
+        {
+          :content => "hello",
+          :destination => "/tmp/template",
+        }
+      }
+      let(:config_file) { '/etc/consul-template/config.d/my_watch.hcl' }
+      let(:template_file) { '/etc/consul-template/template.d/my_watch.ctmpl' }
+
+      it { should contain_file(template_file).with_content("hello") }
+      it { should contain_file(config_file).with_content(%r{source = "#{template_file}")} }
+    end
+  end
 
 end

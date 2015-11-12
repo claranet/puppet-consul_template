@@ -1,7 +1,10 @@
 template {
-  source = <%= @source %>
-  destination = <%= @destination %>
+  source = "<%= @source %>"
+  destination = "<%= @destination %>"
   <%- if @command -%>
-  command = <%= @command %>
+  command = "<%= @command %>"
+  <%- end -%>
+  <%- if @perms -%>
+  perms = <%= @perms %>
   <%- end -%>
 }

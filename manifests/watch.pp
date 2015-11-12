@@ -24,29 +24,34 @@ define consul_template::watch (
   $id          = $title,
   $source      = undef,
   $content     = undef,
-  $destination = undef,
-  $command     = undef
+  $destination = $title,
+  $command     = undef,
+  $perms       = undef,
 ) {
-  include consul_template
+  require consul_template
+
+  $sanitized_id = regsubst(id, '/', '_')
 
   if $content != undef {
-    $source = "${consul_template::template_dir}/${id}.ctmpl"
-    file { $source:
+    $generated_source = "${consul_template::config::template_dir}/${sanitized_id}.ctmpl"
+    file { $generated_source:
       ensure  => $ensure,
       content => $content,
     }
   } elsif $source == undef {
-    fail("Must pass either source or content to consul_template::watch")
+    fail("consul_template::watch: Must pass either source or content")
   }
 
-  if $destination == undef {
-    $destination = $title
+  # Fail if destination isn't an absolute path
+  if $destination !~ /^\// {
+    fail("consul_template::watch: Destination must be an absolute path (was \"${destination}\")")
   }
 
-  file { "${consul_template::source_dir}/${id}.hcl":
-    mode => '0644',
-    owner => 'root',
-    group => 'root',
+  file { "${consul_template::config::config_dir}/${sanitized_id}.hcl":
+    ensure  => $ensure,
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
     content => template('consul_template/etc/consul-template/config.d/watch.hcl.erb'),
     notify  => Service['consul_template'],
   }
