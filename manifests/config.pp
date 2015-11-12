@@ -47,12 +47,19 @@ class consul_template::config (
     group  => $user,
   }
 
+  file { $template_dir:
+    ensure => $dir_ensure,
+    mode   => '0755',
+    owner  => 'root',
+    group  => $user,
+  }
+
   file { "/etc/default/consul-template":
     ensure  => $ensure,
-    mode    => '0750',
+    mode    => '0644',
     owner   => 'root',
     group   => $user,
-    content => template('consul_template/etc/default/consul-template'),
+    content => template('consul_template/etc/default/consul-template.erb'),
   }
 
   if $ensure == 'present' {
