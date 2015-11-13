@@ -40,6 +40,13 @@ class consul_template::config (
     group => $user,
   }
 
+  file { '/etc/consul-template':
+    ensure => $dir_ensure,
+    mode   => '0755',
+    owner  => 'root',
+    group  => $user,
+  }
+
   file { $config_dir:
     ensure => $dir_ensure,
     mode   => '0755',
