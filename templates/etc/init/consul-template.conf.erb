@@ -16,7 +16,7 @@ script
     # read settings like GOMAXPROCS from "/etc/default/consul-template", if available.
     [ -e /etc/default/consul-template ] && . /etc/default/consul-template
 
-    exec $CMD -config $CONFIG
+    exec $CMD -config $CONFIG $OPTIONS
 end script
 
 respawn
