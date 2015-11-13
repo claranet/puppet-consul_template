@@ -51,18 +51,18 @@ class consul_template::service(
     content => template('consul_template/etc/init/consul-template.conf.erb'),
   }
 
-  service { 'consul_template':
+  service { 'consul-template':
     ensure   => $service_ensure,
     enable   => $service_enable,
     provider => 'upstart',
   }
 
-  Class['consul_template::package'] ~> Service['consul_template']
-  Class['consul_template::config']  ~> Service['consul_template']
+  Class['consul_template::package'] ~> Service['consul-template']
+  Class['consul_template::config']  ~> Service['consul-template']
 
   if $ensure == 'present' {
-    File['/etc/init/consul-template.conf'] ~> Service['consul_template']
+    File['/etc/init/consul-template.conf'] ~> Service['consul-template']
   } else {
-    Service['consul_template'] -> File['/etc/init/consul-template.conf']
+    Service['consul-template'] -> File['/etc/init/consul-template.conf']
   }
 }

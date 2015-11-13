@@ -53,6 +53,6 @@ define consul_template::watch (
     owner   => 'root',
     group   => 'root',
     content => template('consul_template/etc/consul-template/config.d/watch.hcl.erb'),
-    notify  => Service['consul_template'],
+    notify  => Service['consul-template'],
   }
 }
