@@ -30,7 +30,7 @@ define consul_template::watch (
 ) {
   require consul_template
 
-  $sanitized_id = regsubst(id, '/', '_')
+  $sanitized_id = regsubst($id, '/', '_')
 
   if $content != undef {
     $generated_source = "${consul_template::config::template_dir}/${sanitized_id}.ctmpl"
