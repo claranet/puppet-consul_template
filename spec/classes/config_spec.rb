@@ -47,9 +47,10 @@ describe 'consul_template::config' do
   it { should contain_file(config_file).with_content(/consul = "127.0.0.1:8500"/) }
   it { should contain_file(config_file).with_content(/token = ""/) }
   it { should contain_file(config_file).with_content(/retry = "5s"/) }
-  it { should contain_file(config_file).with_content(/wait = ""/) }
   it { should contain_file(config_file).with_content(/max_stale = "1s"/) }
   it { should contain_file(config_file).with_content(/log_level = "warn"/) }
+
+  it { should_not contain_file(config_file).with_content(/wait/) }
 
   context "non-default user" do
     let(:params) {{

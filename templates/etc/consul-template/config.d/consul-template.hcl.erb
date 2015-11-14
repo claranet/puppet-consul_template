@@ -1,6 +1,8 @@
 consul = "<%= @consul_host %>:<%= @consul_port %>"
 token = "<%= @token %>"
 retry = "<%= @retry %>"
+<%- if @wait -%>
 wait = "<%= @wait %>"
+<%- end -%>
 max_stale = "<%= @max_stale %>"
 log_level = "<%= @log_level %>"
