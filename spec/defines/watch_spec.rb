@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 
-describe 'consul_template::watch', :type => :define do
+describe 'consul_template::watch' do
   context 'supported operating systems' do
     ['Debian', 'RedHat'].each do |osfamily|
       describe "consul_template::watch define on OS family #{osfamily}" do
@@ -66,6 +66,15 @@ describe 'consul_template::watch', :type => :define do
 
     let(:config_file) { '/etc/consul-template/config.d/my_watch.hcl' }
 
+    it do
+      should contain_file(config_file).with({
+        :ensure => 'present',
+        :mode   => '0644',
+        :owner  => 'root',
+        :group  => 'consul-template'
+      })
+    end
+
     it { should contain_file(config_file).with_content(%r{source = "/tmp/template.ctmpl"}) }
     it { should contain_file(config_file).with_content(%r{destination = "/tmp/template"}) }
     it { should contain_file(config_file).with_content(%r{command = "update_vars"}) }
@@ -115,8 +124,17 @@ describe 'consul_template::watch', :type => :define do
       let(:config_file) { '/etc/consul-template/config.d/my_watch.hcl' }
       let(:template_file) { '/etc/consul-template/template.d/my_watch.ctmpl' }
 
-      it { should contain_file(template_file).with_content("hello") }
-      it { should contain_file(config_file).with_content(%r{source = "#{template_file}")} }
+      it do
+        should contain_file(template_file).with({
+          :ensure  => 'present',
+          :mode    => '0644',
+          :owner   => 'root',
+          :group   => 'consul-template',
+          :content => 'hello'
+        })
+      end
+  
+      it { should contain_file(config_file).with_content(%r{source = "#{template_file}"}) }
     end
   end
 
