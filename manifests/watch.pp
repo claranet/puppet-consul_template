@@ -33,7 +33,7 @@ define consul_template::watch (
   $sanitized_id = regsubst($id, '/', '_', 'G')
 
   if $content != undef {
-    $generated_source = "${consul_template::config::template_dir}/${sanitized_id}.ctmpl"
+    $template_source = "${consul_template::config::template_dir}/${sanitized_id}.ctmpl"
     file { $generated_source:
       ensure  => $ensure,
       mode    => '0644',
@@ -43,6 +43,8 @@ define consul_template::watch (
     }
   } elsif $source == undef {
     fail("consul_template::watch: Must pass either source or content")
+  } else {
+    $template_source = $source
   }
 
   # Fail if destination isn't an absolute path
