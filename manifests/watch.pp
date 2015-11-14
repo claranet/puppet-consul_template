@@ -36,6 +36,9 @@ define consul_template::watch (
     $generated_source = "${consul_template::config::template_dir}/${sanitized_id}.ctmpl"
     file { $generated_source:
       ensure  => $ensure,
+      mode    => '0644',
+      owner   => 'root',
+      group   => $consul_template::config::user,
       content => $content,
     }
   } elsif $source == undef {
@@ -51,7 +54,7 @@ define consul_template::watch (
     ensure  => $ensure,
     mode    => '0644',
     owner   => 'root',
-    group   => 'root',
+    group   => $consul_template::config::user,
     content => template('consul_template/etc/consul-template/config.d/watch.hcl.erb'),
     notify  => Service['consul-template'],
   }
