@@ -34,7 +34,7 @@ describe 'consul_template::service' do
   it { should contain_file(upstart_file).with_content(%r(GOMAXPROCS=2)) }
 
   it do
-    should contain_service("consul_template").with({
+    should contain_service("consul-template").with({
       :ensure   => 'running',
       :enable   => true,
       :provider => 'upstart',
@@ -49,7 +49,7 @@ describe 'consul_template::service' do
     }
 
     it do
-      should contain_service("consul_template").with({
+      should contain_service("consul-template").with({
         :ensure => 'stopped',
         :enable => false
       })
@@ -65,7 +65,7 @@ describe 'consul_template::service' do
     }
 
     it do
-      should contain_service("consul_template").with({
+      should contain_service("consul-template").with({
         :ensure => 'running',
         :enable => false
       })
@@ -82,7 +82,7 @@ describe 'consul_template::service' do
     }
 
     it do
-      should contain_service("consul_template").with({
+      should contain_service("consul-template").with({
         :ensure => nil,
         :enable => false
       })
@@ -98,7 +98,7 @@ describe 'consul_template::service' do
     }
 
     it do
-      expect { should contain_service("consul_template") }.to raise_error Puppet::Error,
+      expect { should contain_service("consul-template") }.to raise_error Puppet::Error,
         /consul_template::service: status was an unexpected value: whatever/
     end
   end
