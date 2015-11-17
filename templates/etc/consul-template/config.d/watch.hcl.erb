@@ -1,0 +1,10 @@
+template {
+  source = "<%= @template_source %>"
+  destination = "<%= @destination %>"
+  <%- if @command -%>
+  command = "<%= @command %>"
+  <%- end -%>
+  <%- if @perms -%>
+  perms = <%= @perms %>
+  <%- end -%>
+}

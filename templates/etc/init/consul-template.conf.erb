@@ -1,0 +1,24 @@
+# Consul Agent (Upstart unit)
+description "Consul Agent"
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on runlevel [06]
+
+env CMD=/usr/bin/consul-template
+env CONFIG=<%= scope.lookupvar("consul_template::config::config_dir") %>
+
+setuid <%= scope.lookupvar("consul_template::config::user") %>
+setgid <%= scope.lookupvar("consul_template::config::user") %>
+
+script
+    # Make sure to use all our CPUs
+    export GOMAXPROCS=<%= scope.lookupvar('::processorcount') %>
+
+    # read settings like GOMAXPROCS from "/etc/default/consul-template", if available.
+    [ -e /etc/default/consul-template ] && . /etc/default/consul-template
+
+    exec $CMD -config $CONFIG $OPTIONS
+end script
+
+respawn
+respawn limit 10 10
+kill timeout 10
