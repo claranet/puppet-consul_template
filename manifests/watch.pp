@@ -34,7 +34,7 @@ define consul_template::watch (
 
   if $content != undef {
     $template_source = "${consul_template::config::template_dir}/${sanitized_id}.ctmpl"
-    file { $generated_source:
+    file { $template_source:
       ensure  => $ensure,
       mode    => '0644',
       owner   => 'root',
