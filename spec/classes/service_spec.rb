@@ -84,7 +84,7 @@ describe 'consul_template::service' do
     it do
       should contain_service("consul-template").with({
         :ensure => nil,
-        :enable => false
+        :enable => nil
       })
     end
   end
