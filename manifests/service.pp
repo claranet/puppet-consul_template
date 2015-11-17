@@ -29,7 +29,7 @@ class consul_template::service(
 
       'unmanaged': {
         $service_ensure = undef
-        $service_enable = false
+        $service_enable = undef
       }
 
       default: {
