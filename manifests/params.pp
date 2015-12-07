@@ -12,6 +12,11 @@ class consul_template::params {
   $version            = '0.11.0'
   $download_url_base  = 'https://github.com/hashicorp/consul-template/releases/download/'
   $download_extension = 'zip'
+  $user               = 'consul-template'
+  $group              = 'consul-template'
+  $manage_user        = false
+  $manage_group       = false
+  $config_mode        = '0660'
 
   case $::architecture {
     'x86_64', 'amd64': { $arch = 'amd64' }

@@ -13,6 +13,7 @@
 ##Parameters
 
 - `purge_config_dir` **Default**: true. If enabled, removes config files no longer managed by Puppet.
+- `config_mode` **Default**: 0660. Mode set on config files and directories.
 - `bin_dir` **Default**: /usr/local/bin. Path to the consul-template binaries
 - `arch` **Default**: Read from facter. System architecture to use (amd64, x86_64, i386)
 - `version` **Default**: 0.11.0. Version of consul-template to install
@@ -28,6 +29,10 @@ set to 'package', its installed using the system package manager.
 - `extra_options` Default: ''. Extra options to be bassed to the consul-template agent. See https://github.com/hashicorp/consul-template#options
 - `service_enable` Default: true.
 - `service_ensure` Default: running.
+- `user` Default: consul-template.
+- `group` Default: consul-template.
+- `manage_user` Default: false. Module handles creating the user.
+- `manage_group` Default: false. Module handles creating the group.
 - `consul_host` Default: localhost. Hostanme of consul agent to query
 - `consul_port` Default: 8500. Port number the API is running on
 - `consul_token` Default: ''. ACL token to use when querying consul

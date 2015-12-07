@@ -70,9 +70,15 @@ class consul_template::config (
     ensure  => 'directory',
     purge   => $purge,
     recurse => $purge,
+    owner   => $consul_template::user,
+    group   => $consul_template::group,
+    mode    => '0755',
   } ->
   concat { 'consul-template/config.json':
     path   => "${consul_template::config_dir}/config/config.json",
+    owner  => $consul_template::user,
+    group  => $consul_template::group,
+    mode   => $consul_template::config_mode,
     notify => Service['consul-template'],
   }
 

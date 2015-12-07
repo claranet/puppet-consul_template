@@ -5,8 +5,8 @@ class consul_template::install {
   if ! empty($consul_template::data_dir) {
     file { $consul_template::data_dir:
       ensure => 'directory',
-      owner  => $consul_template::manage_user,
-      group  => $consul_template::manage_group,
+      owner  => $consul_template::user,
+      group  => $consul_template::group,
       mode   => '0755',
     }
   }
@@ -104,14 +104,16 @@ class consul_template::install {
     }
   }
 
-  if ! empty($consul_template::manage_user) {
-    user { $consul_template::manage_user:
+  if $consul_template::manage_user {
+    user { $consul_template::user:
       ensure => 'present',
+      system => true,
     }
   }
-  if ! empty($consul_template::manage_group) {
-    group { $consul_template::manage_group:
+  if $consul_template::manage_group {
+    group { $consul_template::group:
       ensure => 'present',
+      system => true,
     }
   }
 }

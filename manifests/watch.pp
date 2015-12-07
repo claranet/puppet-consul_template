@@ -14,6 +14,9 @@ define consul_template::watch (
   if $template != undef {
     file { "${consul_template::config_dir}/${name}.ctmpl":
       ensure  => present,
+      owner   => $consul_template::user,
+      group   => $consul_template::group,
+      mode    => $consul_template::config_mode,
       content => template($template),
       before  => Concat::Fragment["${name}.ctmpl"],
       notify  => Service['consul-template'],
