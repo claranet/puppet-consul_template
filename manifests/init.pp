@@ -109,15 +109,7 @@ class consul_template (
   validate_bool($manage_user)
   validate_bool($manage_group)
 
-  if versioncmp($version, '0.11.0') >= 0 {
-    $download_filename  = 'consul_template'
-    $real_download_extension = $download_extension
-  } else {
-    $download_filename  = 'consul-template'
-    $real_download_extension = 'tar.gz'
-  }
-
-  $real_download_url = pick($download_url, "${download_url_base}v${version}/${download_filename}_${version}_${os}_${arch}.${real_download_extension}")
+  $real_download_url = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
 
   class { '::consul_template::install': } ->
   class { '::consul_template::config':

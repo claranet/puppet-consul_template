@@ -10,7 +10,7 @@ class consul_template::params {
   $package_name       = 'consul-template'
   $package_ensure     = 'latest'
   $version            = '0.11.0'
-  $download_url_base  = 'https://github.com/hashicorp/consul-template/releases/download/'
+  $download_url_base  = 'https://releases.hashicorp.com/consul-template/'
   $download_extension = 'zip'
   $user               = 'consul-template'
   $group              = 'consul-template'
