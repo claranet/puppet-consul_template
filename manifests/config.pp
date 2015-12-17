@@ -32,11 +32,11 @@ class consul_template::config (
     }
   }
 
-  # Set max-stale param if specified
+  # Set max_stale param if specified
   if $::consul_template::consul_max_stale {
     concat::fragment { 'consul_max_stale':
       target  => 'consul-template/config.json',
-      content => inline_template("max-stale = \"${::consul_template::consul_max_stale}\"\n\n"),
+      content => inline_template("max_stale = \"${::consul_template::consul_max_stale}\"\n\n"),
       order   => '03',
     }
   }
