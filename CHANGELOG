@@ -1,3 +1,13 @@
+2015-10-22 Release 0.2.3
+- Bugfix: downloading older versions of Consul Template works again #39
+
+2015-10-19 Release 0.2.2
+- Support upgrades of Consul Template on the same machine #37
+
+2015-10-19 Release 0.2.1
+- Support for Consul Template 0.11.0 #34 #36
+- Add more parameters #23 #25 #33
+
 2015-07-03 Release 0.2.0
 - Better init / startup scripts #3 #4 #8 #13
 - Restart consul-template on changes to its main config #16
