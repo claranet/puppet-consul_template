@@ -11,6 +11,9 @@ script
     exec $CONSUL -config $CONFIG/config <%= scope.lookupvar('consul_template::extra_options') %>
 end script
 
+setuid <%= scope.lookupvar('consul_template::user') %>
+setgid <%= scope.lookupvar('consul_template::group') %>
+
 respawn
 respawn limit 10 10
 kill timeout 10
