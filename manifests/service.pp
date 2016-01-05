@@ -5,11 +5,20 @@
 #
 class consul_template::service {
 
-  service { 'consul-template':
-    ensure => $consul_template::service_ensure,
-    enable => $consul_template::service_enable,
-    name   => 'consul-template',
+  if $consul_template::init_style == 'upstart' {
+    service { 'consul-template':
+      ensure => $consul_template::service_ensure,
+      enable => $consul_template::service_enable,
+      name   => 'consul-template',
+      provider => 'upstart',
+    }
   }
-
+  else {
+    service { 'consul-template':
+      ensure => $consul_template::service_ensure,
+      enable => $consul_template::service_enable,
+      name   => 'consul-template',
+    }
+  }
 
 }
