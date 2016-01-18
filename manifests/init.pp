@@ -63,6 +63,9 @@
 #
 # [*manage_group*]
 #   Group is managed by this module. Defaults to `false`.
+#
+# [*watches*]
+#   A hash of watches - allows greater Hiera integration. Defaults to `{}`.
 
 class consul_template (
   $purge_config_dir   = true,
@@ -101,6 +104,7 @@ class consul_template (
   $group              = $consul_template::params::group,
   $manage_user        = $consul_template::params::manage_user,
   $manage_group       = $consul_template::params::manage_group,
+  $watches            = {},
 ) inherits ::consul_template::params {
 
   validate_bool($purge_config_dir)
@@ -108,8 +112,13 @@ class consul_template (
   validate_string($group)
   validate_bool($manage_user)
   validate_bool($manage_group)
+  validate_hash($watches)
 
   $real_download_url = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
+
+  if $watches {
+    create_resources(consul_template::watch, $watches)
+  }
 
   class { '::consul_template::install': } ->
   class { '::consul_template::config':
