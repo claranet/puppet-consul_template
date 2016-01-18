@@ -12,6 +12,14 @@ define consul_template::watch (
 ) {
   include consul_template
 
+  if $template == undef and $template == undef {
+    error ('Specify either template or source parameter for consul_template::watch')
+  }
+
+  if $template != undef and $template != undef {
+    error ('Specify either template or source parameter for consul_template::watch - but not both')
+  }
+
   if $template != undef {
     file { "${consul_template::config_dir}/${name}.ctmpl":
       ensure  => present,
@@ -22,16 +30,16 @@ define consul_template::watch (
       before  => Concat::Fragment["${name}.ctmpl"],
       notify  => Service['consul-template'],
     }
-    $frag_name   = "${name}.ctmpl"
-    $source_name = "${consul_template::config_dir}/${name}.ctmpl"
   }
-  if $source == undef {
-    $frag_name   = $name
-    $source_name = $name
-  } else {  
-    $frag_name   = $source
+
+  if $source != undef {
     $source_name = $source
+    $frag_name   = $source
+  } else {  
+    $source_name = "${consul_template::config_dir}/${name}.ctmpl"
+    $frag_name   = "${name}.ctmpl"
   }
+
   concat::fragment { "${frag_name}":
     target  => 'consul-template/config.json',
     content => "template {\n  source = \"${source_name}\"\n  destination = \"${destination}\"\n  command = \"${command}\"\n}\n\n",
