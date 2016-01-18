@@ -25,7 +25,7 @@ define consul_template::watch (
     $frag_name   = "${name}.ctmpl"
     $source_name = "${consul_template::config_dir}/${name}.ctmpl"
   }
-  if $source -= undef {
+  if $source == undef {
     $frag_name   = $name
     $source_name = $name
   } else {  
