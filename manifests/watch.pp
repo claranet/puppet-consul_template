@@ -12,12 +12,12 @@ define consul_template::watch (
 ) {
   include consul_template
 
-  if $template == undef and $template == undef {
-    error ('Specify either template or source parameter for consul_template::watch')
+  if $template == undef and $source == undef {
+    err ('Specify either template or source parameter for consul_template::watch')
   }
 
-  if $template != undef and $template != undef {
-    error ('Specify either template or source parameter for consul_template::watch - but not both')
+  if $template != undef and $source != undef {
+    err ('Specify either template or source parameter for consul_template::watch - but not both')
   }
 
   if $template != undef {
