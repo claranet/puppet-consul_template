@@ -1,0 +1,12 @@
+/var/log/consul-template.log{
+    <%= @logrotate_period%>
+    minsize 1M
+    missingok
+    dateext
+    rotate <%= @logrotate_files%>
+    <%= @logrotate_compress %>
+    create 644 root root
+    postrotate
+        <%= @postrotate_command %> 2> /dev/null || true
+    endscript
+}
