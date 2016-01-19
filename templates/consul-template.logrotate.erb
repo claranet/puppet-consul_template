@@ -7,6 +7,6 @@
     <%= @logrotate_compress %>
     create 644 root root
     postrotate
-        /sbin/service consul-template restart 2> /dev/null || true
+        <%= @postrotate_command %> 2> /dev/null || true
     endscript
 }
