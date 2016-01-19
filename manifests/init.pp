@@ -92,6 +92,10 @@ class consul_template (
   $consul_max_stale   = undef,
   $init_style         = $consul_template::params::init_style,
   $log_level          = $consul_template::params::log_level,
+  $logrotate_compress = 'nocompress',
+  $logrotate_files    = 4,
+  $logrotate_on       = false,
+  $logrotate_period   = 'daily',
   $vault_enabled      = false,
   $vault_address      = '',
   $vault_token        = '',
@@ -130,4 +134,11 @@ class consul_template (
   } ~>
   class { '::consul_template::service': } ->
   Class['::consul_template']
+  
+  class { '::consul_template::logrotate':
+    logrotate_compress => $logrotate_compress,
+    logrotate_files    => $logrotate_files,
+    logrotate_on       => $logrotate_on,
+    logrotate_period   => $logrotate_period,
+  }
 }
