@@ -124,6 +124,7 @@ class consul_template (
     create_resources(consul_template::watch, $watches)
   }
 
+  anchor { '::consul_template::begin': } ->
   class { '::consul_template::install': } ->
   class { '::consul_template::config':
     consul_host  => $consul_host,
@@ -133,12 +134,13 @@ class consul_template (
     purge        => $purge_config_dir,
   } ~>
   class { '::consul_template::service': } ->
-  Class['::consul_template']
-  
+  anchor { '::consul_template::end': }
+
   class { '::consul_template::logrotate':
     logrotate_compress => $logrotate_compress,
     logrotate_files    => $logrotate_files,
     logrotate_on       => $logrotate_on,
     logrotate_period   => $logrotate_period,
+    before             => Anchor['::consul_template::end'],
   }
 }
