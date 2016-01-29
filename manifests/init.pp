@@ -141,6 +141,7 @@ class consul_template (
     logrotate_files    => $logrotate_files,
     logrotate_on       => $logrotate_on,
     logrotate_period   => $logrotate_period,
+    require            => Anchor['::consul_template::begin'],
     before             => Anchor['::consul_template::end'],
   }
 }
