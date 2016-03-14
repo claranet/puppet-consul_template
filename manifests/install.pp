@@ -26,7 +26,6 @@ class consul_template::install {
     staging::extract { "consul-template_${consul_template::version}.${consul_template::download_extension}":
       target  => "${::staging::path}/consul-template-${consul_template::version}",
       creates => "${::staging::path}/consul-template-${consul_template::version}/consul-template",
-      strip   => 1,
     } ->
     file {
       "${::staging::path}/consul-template-${consul_template::version}/consul-template":
