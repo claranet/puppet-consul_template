@@ -1,5 +1,13 @@
-2016-xx-xx Release 0.2.5
+2016-xx-xx Release 0.2.6
 - 
+
+2016-03-31 Release 0.2.5
+- Feature: Support logrotate through `logrotate_on` #50
+- Feature: Support watches definition in Hiera #59
+- Bugfix: Don't use root if we launch through Upstart or Systemd #51 #60
+- Bugfix: Allow both or neither of `template` and `source` to be set #52
+- Bugfix: Anchors to improve dependency resolution #62 #63
+- Bugfix: All `consul_template` releases are now zipfiles - remove `strip` arg #65
 
 2015-12-17 Release 0.2.4
 - Feature: Use releases.hashicorp.com download URL #42
