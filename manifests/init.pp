@@ -90,6 +90,8 @@ class consul_template (
   $consul_retry       = '10s',
   $consul_wait        = undef,
   $consul_max_stale   = undef,
+  $deduplicate        = false,
+  $deduplicate_prefix = undef,
   $init_style         = $consul_template::params::init_style,
   $log_level          = $consul_template::params::log_level,
   $logrotate_compress = 'nocompress',
