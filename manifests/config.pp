@@ -44,7 +44,7 @@ class consul_template::config (
   if $::consul_template::deduplicate {
     concat::fragment { 'dedup-base':
       target  => 'consul-template/config.json',
-      content => inline_template("deduplicate {\n  enabled = \"true\"\n"),
+      content => inline_template("deduplicate {\n  enabled = true\n"),
       order   => '04',
     }
 
