@@ -53,10 +53,10 @@
 #   Path to a directory to create to hold some data. Defaults to ''
 #
 # [*user*]
-#   Name of a user to use for dir and file perms. Defaults to consul-template.
+#   Name of a user to use for dir and file perms. Defaults to root.
 #
 # [*group*]
-#   Name of a group to use for dir and file perms. Defaults to consul-template.
+#   Name of a group to use for dir and file perms. Defaults to root.
 #
 # [*manage_user*]
 #   User is managed by this module. Defaults to `false`.

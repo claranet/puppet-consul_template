@@ -12,10 +12,10 @@ class consul_template::params {
   $version            = '0.11.0'
   $download_url_base  = 'https://releases.hashicorp.com/consul-template/'
   $download_extension = 'zip'
-  $user               = 'consul-template'
-  $group              = 'consul-template'
-  $manage_user        = true
-  $manage_group       = true
+  $user               = 'root'
+  $group              = 'root'
+  $manage_user        = false
+  $manage_group       = false
   $config_mode        = '0660'
 
   case $::architecture {

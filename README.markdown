@@ -29,8 +29,8 @@ set to 'package', its installed using the system package manager.
 - `extra_options` Default: ''. Extra options to be bassed to the consul-template agent. See https://github.com/hashicorp/consul-template#options
 - `service_enable` Default: true.
 - `service_ensure` Default: running.
-- `user` Default: consul-template.
-- `group` Default: consul-template.
+- `user` Default: root. This used to be a default of `consul-template` and this caused much out-of-box pain for people.
+- `group` Default: root.
 - `manage_user` Default: false. Module handles creating the user.
 - `manage_group` Default: false. Module handles creating the group.
 - `consul_host` Default: localhost. Hostanme of consul agent to query

@@ -1,3 +1,9 @@
+2016-05-11 Release 0.2.8
+- Bugfix: Revert: Do not create the user + group by default. Run consul-template as root/root instead
+
+2016-05-11 Release 0.2.7
+- Pulled
+
 2016-05-11 Release 0.2.6
 - Bugfix: Create the user + group by default, else we can't chown the install directory #70
 
