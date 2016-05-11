@@ -14,8 +14,8 @@ class consul_template::params {
   $download_extension = 'zip'
   $user               = 'consul-template'
   $group              = 'consul-template'
-  $manage_user        = false
-  $manage_group       = false
+  $manage_user        = true
+  $manage_group       = true
   $config_mode        = '0660'
 
   case $::architecture {

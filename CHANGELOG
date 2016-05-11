@@ -1,5 +1,5 @@
-2016-xx-xx Release 0.2.6
-- 
+2016-05-11 Release 0.2.6
+- Bugfix: Create the user + group by default, else we can't chown the install directory #70
 
 2016-03-31 Release 0.2.5
 - Feature: Support logrotate through `logrotate_on` #50
