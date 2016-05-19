@@ -7,6 +7,7 @@ define consul_template::watch (
   $template = undef,
   $template_vars = {},
   $source = undef,
+  $perms = '0644',
   $destination,
   $command,
 ) {
@@ -35,14 +36,14 @@ define consul_template::watch (
   if $source != undef {
     $source_name = $source
     $frag_name   = $source
-  } else {  
+  } else {
     $source_name = "${consul_template::config_dir}/${name}.ctmpl"
     $frag_name   = "${name}.ctmpl"
   }
 
   concat::fragment { "${frag_name}":
     target  => 'consul-template/config.json',
-    content => "template {\n  source = \"${source_name}\"\n  destination = \"${destination}\"\n  command = \"${command}\"\n}\n\n",
+    content => "template {\n  source = \"${source_name}\"\n  destination = \"${destination}\"\n  command = \"${command}\"\n  perms = ${perms}\n}\n\n",
     order   => '10',
     notify  => Service['consul-template']
   }
