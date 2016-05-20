@@ -4,11 +4,11 @@
 # This is a single instance of a configuration file to watch
 # for changes in Consul and update the local file
 define consul_template::watch (
+  $command,
+  $destination,
   $template = undef,
   $template_vars = {},
   $source = undef,
-  $destination,
-  $command,
 ) {
   include consul_template
 
@@ -35,12 +35,12 @@ define consul_template::watch (
   if $source != undef {
     $source_name = $source
     $frag_name   = $source
-  } else {  
+  } else {
     $source_name = "${consul_template::config_dir}/${name}.ctmpl"
     $frag_name   = "${name}.ctmpl"
   }
 
-  concat::fragment { "${frag_name}":
+  concat::fragment { $frag_name:
     target  => 'consul-template/config.json',
     content => "template {\n  source = \"${source_name}\"\n  destination = \"${destination}\"\n  command = \"${command}\"\n}\n\n",
     order   => '10',
