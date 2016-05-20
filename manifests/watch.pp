@@ -6,9 +6,9 @@
 define consul_template::watch (
   $command,
   $destination,
-  $template = undef,
+  $source        = undef,
+  $template      = undef,
   $template_vars = {},
-  $source = undef,
 ) {
   include consul_template
 
