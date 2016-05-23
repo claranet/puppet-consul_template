@@ -45,7 +45,7 @@ class consul_template::logrotate(
       content => template("${module_name}/consul-template.logrotate.erb"),
       owner   => 'root',
       group   => 'root',
-      mode    => 0644,
+      mode    => '0644',
     }
   }
 
