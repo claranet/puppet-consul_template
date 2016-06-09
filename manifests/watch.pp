@@ -4,19 +4,47 @@
 # This is a single instance of a configuration file to watch
 # for changes in Consul and update the local file
 define consul_template::watch (
-  $command,
-  $destination,
+  $config_hash   = {},
+
+  # Deprecated params
+  $command       = undef,
+  $destination   = undef,
   $source        = undef,
+
   $template      = undef,
   $template_vars = {},
 ) {
   include consul_template
 
-  if $template == undef and $source == undef {
+  if $command != undef {
+    $config_command = { command => $command }
+  } else {
+    $config_command = {}
+  }
+
+  if $destination != undef {
+    $config_destination = { destination => $destination }
+  } else {
+    $config_destination = {}
+  }
+
+  if $source != undef {
+    $config_source = { source => $source }
+    $frag_name   = $config_hash_real['source']
+  } else {
+    $config_source = { source => "${consul_template::config_dir}/${name}.ctmpl" }
+    $frag_name   = "${name}.ctmpl"
+  }
+
+  validate_hash($config_hash)
+  $config_hash_real = deep_merge($config_hash, $config_command, $config_destination, $config_source)
+  validate_hash($config_hash_real)
+
+  if $config_hash_real['template'] == undef and $config_hash_real['source'] == undef {
     err ('Specify either template or source parameter for consul_template::watch')
   }
 
-  if $template != undef and $source != undef {
+  if $config_hash_real['template'] != undef and $config_hash_real['source'] != undef {
     err ('Specify either template or source parameter for consul_template::watch - but not both')
   }
 
@@ -32,17 +60,9 @@ define consul_template::watch (
     }
   }
 
-  if $source != undef {
-    $source_name = $source
-    $frag_name   = $source
-  } else {
-    $source_name = "${consul_template::config_dir}/${name}.ctmpl"
-    $frag_name   = "${name}.ctmpl"
-  }
-
   concat::fragment { $frag_name:
     target  => 'consul-template/config.json',
-    content => "template {\n  source = \"${source_name}\"\n  destination = \"${destination}\"\n  command = \"${command}\"\n}\n\n",
+    content => consul_sorted_json({ template => $config_hash_real }, $consul::pretty_config, $consul::pretty_config_indent),
     order   => '10',
     notify  => Service['consul-template']
   }
