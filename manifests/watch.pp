@@ -60,9 +60,10 @@ define consul_template::watch (
     }
   }
 
+  $content = consul_sorted_json($config_hash_real, $consul::pretty_config, $consul::pretty_config_indent)
   concat::fragment { $frag_name:
     target  => 'consul-template/config.json',
-    content => consul_sorted_json({ template => $config_hash_real }, $consul::pretty_config, $consul::pretty_config_indent),
+    content => "template ${content}",
     order   => '10',
     notify  => Service['consul-template']
   }
