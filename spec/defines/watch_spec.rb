@@ -7,8 +7,10 @@ describe 'consul_template::watch', :type => :define do
       describe "consul_template::watch define on OS family #{osfamily}" do
         let(:title) { 'test_watcher' }
         let(:params) {{
-          :destination => '/var/tmp/consul_template',
-          :command => '/bin/test',
+          :config_hash => {
+            'destination' => '/var/tmp/consul_template',
+            'command'     => '/bin/test',
+          }
         }}
         let(:facts) {{
           :osfamily       => osfamily,
@@ -30,10 +32,12 @@ describe 'consul_template::watch', :type => :define do
       describe "consul_template::watch define on OS family #{osfamily}" do
         let(:title) { 'test_watcher' }
         let(:params) {{
-          :template => 'consul_template_spec/test_template',
+          :template      => 'consul_template_spec/test_template',
           :template_vars => { 'foo' => 'bar' },
-          :destination => '/var/tmp/consul_template',
-          :command => '/bin/test',
+          :config_hash   => {
+            'destination' => '/var/tmp/consul_template',
+            'command'     => '/bin/test',
+          }
         }}
         let(:facts) {{
           :osfamily       => osfamily,
