@@ -4,9 +4,8 @@
 
 This fork is not backwards compatible with its upstream. The configuration
 mechanism has been modified to be driven by config_hash/config_defaults instead
-of individual parameters to provide access to the full set of configuration
-options and avoid the need to make changes here as consul-template options
-evolve.
+of individual parameters to provide access to the full set of options and avoid
+the need to make changes here as consul-template options evolve.
 
 ##Installation
 
@@ -42,7 +41,7 @@ set to 'package', its installed using the system package manager.
 - `manage_user` Default: false. Module handles creating the user.
 - `manage_group` Default: false. Module handles creating the group.
 - `init_style` Init style to use for consul-template service.
-- `config_hash` Default: {}. Consul-template configuration options
+- `config_hash` Default: {}. Consul-template configuration options. See https://github.com/hashicorp/consul-template#options
 - `config_defaults` Default: {}. Consul-template configuration option defaults.
 
 
@@ -54,7 +53,19 @@ The simplest way to use this module is:
 include consul_template
 ```
 
-Or to specify parameters:
+consul-template options can be passed via hiera:
+
+```
+consul_template::config_defaults:
+  deduplicate:
+    enabled: true
+  log_level: info
+  retry: 10s
+  syslog: true
+  token: <consul token>
+```
+
+Or to specify class parameters:
 ```puppet
 class { 'consul_template':
     service_enable   => false

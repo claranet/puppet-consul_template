@@ -47,7 +47,7 @@ define consul_template::watch (
   @concat::fragment { $frag_name:
     target  => 'consul-template/config.json',
     # NOTE: this will result in all watches having , after them in the JSON
-    # array. That won't pass strict JSON parsing, but luckily HCL is fine with it,
+    # array. That won't pass strict JSON parsing, but luckily HCL is fine with it.
     content => "$content,\n",
     order   => '50',
     notify  => Service['consul-template'],

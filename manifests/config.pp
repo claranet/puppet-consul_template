@@ -16,6 +16,8 @@ class consul_template::config (
     order   => '1',
   }
 
+  # Realizes concat::fragments from consul_template::watches that make up 1 or
+  # more template configs.
   Concat::Fragment <| target == 'consul-template/config.json' |>
 
   concat::fragment { 'consul-service-post':
