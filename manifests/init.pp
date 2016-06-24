@@ -84,27 +84,13 @@ class consul_template (
   $extra_options      = '',
   $service_enable     = true,
   $service_ensure     = 'running',
-  $consul_host        = 'localhost',
-  $consul_port        = '8500',
-  $consul_token       = '',
-  $consul_retry       = '10s',
-  $consul_wait        = undef,
-  $consul_max_stale   = undef,
-  $deduplicate        = false,
-  $deduplicate_prefix = undef,
+  $config_hash        = {},
+  $config_defaults    = {},
   $init_style         = $consul_template::params::init_style,
-  $log_level          = $consul_template::params::log_level,
   $logrotate_compress = 'nocompress',
   $logrotate_files    = 4,
   $logrotate_on       = false,
   $logrotate_period   = 'daily',
-  $vault_enabled      = false,
-  $vault_address      = '',
-  $vault_token        = '',
-  $vault_ssl          = true,
-  $vault_ssl_verify   = true,
-  $vault_ssl_cert     = '',
-  $vault_ssl_ca_cert  = '',
   $data_dir           = '',
   $user               = $consul_template::params::user,
   $group              = $consul_template::params::group,
@@ -119,6 +105,8 @@ class consul_template (
   validate_bool($manage_user)
   validate_bool($manage_group)
   validate_hash($watches)
+  validate_hash($config_hash)
+  validate_hash($config_defaults)
 
   $real_download_url = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
 
@@ -126,13 +114,15 @@ class consul_template (
     create_resources(consul_template::watch, $watches)
   }
 
+  $config_base = {
+    consul    => 'localhost:8500',
+  }
+  $config_hash_real = deep_merge($config_base, $config_defaults, $config_hash)
+
   anchor { '::consul_template::begin': } ->
   class { '::consul_template::install': } ->
   class { '::consul_template::config':
-    consul_host  => $consul_host,
-    consul_port  => $consul_port,
-    consul_token => $consul_token,
-    consul_retry => $consul_retry,
+    config_hash  => $config_hash_real,
     purge        => $purge_config_dir,
   } ~>
   class { '::consul_template::service': } ->
