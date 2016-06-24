@@ -3,5 +3,6 @@ fixtures:
     stdlib: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
     staging: "https://github.com/nanliu/puppet-staging.git"
     concat: "https://github.com/puppetlabs/puppet-concat.git"
+    consul: "https://github.com/solarkennedy/puppet-consul"
   symlinks:
     consul_template: "#{source_dir}"
