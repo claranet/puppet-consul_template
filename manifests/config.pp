@@ -7,11 +7,14 @@ class consul_template::config (
   $purge       = true,
 ) {
   # Using our parent module's pretty_config & pretty_config_indent just because
-  $content = consul_sorted_json($config_hash, $consul::pretty_config, $consul::pretty_config_indent)[0,-1]
+  $content_full = consul_sorted_json($config_hash, $consul::pretty_config, $consul::pretty_config_indent)
+  # remove the closing } and it's surrounding newlines
+  $content = regsubst($content_full, "\n}\n$", '')
 
   $config_file = "${consul_template::config_dir}/config/config.json"
   concat::fragment { 'consul-service-pre':
     target  => $config_file,
+    # add the opening template array so that we can insert watch fragments
     content => "${content},\n    \"template\": [\n",
     order   => '1',
   }
@@ -22,6 +25,7 @@ class consul_template::config (
 
   concat::fragment { 'consul-service-post':
     target  => $config_file,
+    # close off the template array and the whole object
     content => "    ],\n}",
     order   => '99',
   }
