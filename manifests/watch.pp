@@ -24,6 +24,7 @@ define consul_template::watch (
     # source is specified in config_hash
     $config_source = {}
     $frag_name = $config_hash_real['source']
+    $fragment_requires = undef
   } else {
     # source is specified as a template
     $source = "${consul_template::config_dir}/${name}.ctmpl"
@@ -36,10 +37,10 @@ define consul_template::watch (
       group   => $consul_template::group,
       mode    => $consul_template::config_mode,
       content => template($template),
-      before  => Concat::Fragment["${name}.ctmpl"],
       notify  => Service['consul-template'],
     }
     $frag_name = $source
+    $fragment_requires = File[$source]
   }
 
   $config_hash_all = deep_merge($config_hash_real, $config_source)
@@ -52,5 +53,6 @@ define consul_template::watch (
     content => "    $content,\n",
     order   => '50',
     notify  => Service['consul-template'],
+    require => $fragment_requires,
   }
 }
