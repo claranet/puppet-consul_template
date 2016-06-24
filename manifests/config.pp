@@ -11,9 +11,9 @@ class consul_template::config (
   # remove the closing } and it's surrounding newlines
   $content = regsubst($content_full, "\n}\n$", '')
 
-  $config_file = "${consul_template::config_dir}/config/config.json"
+  $concat_name = 'consul-template/config.json'
   concat::fragment { 'consul-service-pre':
-    target  => $config_file,
+    target  => $concat_name,
     # add the opening template array so that we can insert watch fragments
     content => "${content},\n    \"template\": [\n",
     order   => '1',
@@ -21,10 +21,10 @@ class consul_template::config (
 
   # Realizes concat::fragments from consul_template::watches that make up 1 or
   # more template configs.
-  Concat::Fragment <| target == 'consul-template/config.json' |>
+  Concat::Fragment <| target == $concat_name |>
 
   concat::fragment { 'consul-service-post':
-    target  => $config_file,
+    target  => $concat_name,
     # close off the template array and the whole object
     content => "    ],\n}",
     order   => '99',
@@ -38,8 +38,8 @@ class consul_template::config (
     group   => $consul_template::group,
     mode    => '0755',
   } ->
-  concat { 'consul-template/config.json':
-    path   => $config_file,
+  concat { $concat_name:
+    path   => "${consul_template::config_dir}/config/config.json",
     owner  => $consul_template::user,
     group  => $consul_template::group,
     mode   => $consul_template::config_mode,
