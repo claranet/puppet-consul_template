@@ -2,17 +2,10 @@
 #
 # This class is called from consul_template for service config.
 #
-class consul_template::config (
-  $consul_host,
-  $consul_port,
-  $consul_retry,
-  $consul_token,
-  $purge = true,
-) {
-
+class consul_template::config {
   concat::fragment { 'header':
     target  => 'consul-template/config.json',
-    content => inline_template("consul = \"<%= @consul_host %>:<%= @consul_port %>\"\ntoken = \"<%= @consul_token %>\"\nretry = \"<%= @consul_retry %>\"\n\n"),
+    content => inline_template("consul = \"${::consul_template::consul_host}:${::consul_template::consul_port}\"\ntoken = \"${::consul_template::consul_token}\"\nretry = \"${::consul_template::consul_retry}\"\n\n"),
     order   => '00',
   }
 
@@ -88,20 +81,19 @@ class consul_template::config (
     }
   }
 
-  file { [$consul_template::config_dir, "${consul_template::config_dir}/config"]:
+  file { [$::consul_template::config_dir, "${::consul_template::config_dir}/config"]:
     ensure  => 'directory',
-    purge   => $purge,
-    recurse => $purge,
-    owner   => $consul_template::user,
-    group   => $consul_template::group,
+    purge   => $::consul_template::purge_config_dir,
+    recurse => $::consul_template::purge_config_dir,
+    owner   => $::consul_template::user,
+    group   => $::consul_template::group,
     mode    => '0755',
   } ->
   concat { 'consul-template/config.json':
-    path   => "${consul_template::config_dir}/config/config.json",
-    owner  => $consul_template::user,
-    group  => $consul_template::group,
-    mode   => $consul_template::config_mode,
+    path   => "${::consul_template::config_dir}/config/config.json",
+    owner  => $::consul_template::user,
+    group  => $::consul_template::group,
+    mode   => $::consul_template::config_mode,
     notify => Service['consul-template'],
   }
-
 }

@@ -21,11 +21,11 @@ define consul_template::watch (
   }
 
   if $template != undef {
-    file { "${consul_template::config_dir}/${name}.ctmpl":
-      ensure  => present,
-      owner   => $consul_template::user,
-      group   => $consul_template::group,
-      mode    => $consul_template::config_mode,
+    file { "${::consul_template::config_dir}/${name}.ctmpl":
+      ensure  => file,
+      owner   => $::consul_template::user,
+      group   => $::consul_template::group,
+      mode    => $::consul_template::config_mode,
       content => template($template),
       before  => Concat::Fragment["${name}.ctmpl"],
       notify  => Service['consul-template'],
@@ -36,7 +36,7 @@ define consul_template::watch (
     $source_name = $source
     $frag_name   = $source
   } else {
-    $source_name = "${consul_template::config_dir}/${name}.ctmpl"
+    $source_name = "${::consul_template::config_dir}/${name}.ctmpl"
     $frag_name   = "${name}.ctmpl"
   }
 
