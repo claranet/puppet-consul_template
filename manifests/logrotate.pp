@@ -5,8 +5,8 @@ class consul_template::logrotate(
   $logrotate_files,
   $logrotate_on,
   $logrotate_period,
-  $restart_sysv = '/sbin/service consul-template restart',
   $restart_systemd = '/bin/systemctl restart consul-template.service',
+  $restart_sysv    = '/sbin/service consul-template restart',
 ) {
   validate_string($logrotate_compress)
   validate_integer($logrotate_files)

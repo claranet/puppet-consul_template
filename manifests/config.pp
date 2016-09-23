@@ -5,8 +5,8 @@
 class consul_template::config (
   $consul_host,
   $consul_port,
-  $consul_token,
   $consul_retry,
+  $consul_token,
   $purge = true,
 ) {
 
