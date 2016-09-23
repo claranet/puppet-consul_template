@@ -74,4 +74,9 @@ class consul_template::params {
     },
     default => 'sysv'
   }
+
+  $logrotate_postrotate_command = $init_style ? {
+    'systemd' => '/bin/systemctl restart consul-template.service',
+    default   => '/sbin/service consul-template restart'
+  }
 }
