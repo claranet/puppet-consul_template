@@ -1,0 +1,18 @@
+<%
+options = {
+  'ca_cert' => scope.lookupvar('::consul_template::vault_ssl_ca_cert'),
+  'cert'    => scope.lookupvar('::consul_template::vault_ssl_cert'),
+  'key'     => scope.lookupvar('::consul_template::vault_ssl_key'),
+  'verify'  => scope.lookupvar('::consul_template::vault_ssl_verify'),
+}.delete_if { |k,v| v.nil? || v == :undef }
+
+width = options.keys.map { |k| k.size }.max
+%>
+  ssl {
+    enabled = true
+
+<% options.sort.each do |opt, val| -%>
+    <%- val = "\"#{val}\"" if val.is_a?(String) -%>
+    <%= opt.ljust(width) %> = <%= val %>
+<% end -%>
+  }

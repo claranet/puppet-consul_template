@@ -6,6 +6,19 @@
 #
 # [*arch*]
 #   Sets the architecture of consul-template binary to download.
+#   Default depends on operating system.
+#
+# [*auth_enabled*]
+#   Whether to enable http basic auth when sending requests to consul.
+#   Defaults to `false`
+#
+# [*auth_username*]
+#   Sets the username to use with http basic auth.
+#   Defaults to `undef`
+#
+# [*auth_password*]
+#   Sets the password to use with http basic auth.
+#   Defaults to `undef`
 #
 # [*bin_dir*]
 #   Sets the directory  to create the symlink to the consul-teomplate binary in.
@@ -37,7 +50,7 @@
 #
 # [*consul_token*]
 #   Sets the the ACL token to use when connecting to consul.
-#   Defaults to `10s`
+#   Defaults to `undef`
 #
 # [*consul_wait*]
 #   Sets the the minimum and maximum amount of time to wait for the cluster to
@@ -46,7 +59,7 @@
 #
 # [*data_dir*]
 #   Path to a directory to create to hold some data.
-#   Defaults to ''
+#   Defaults to `undef`
 #
 # [*deduplicate*]
 #   Whether to enable consul-template's deduplication mode.
@@ -72,6 +85,33 @@
 #   binary.
 #   Defaults to `https://releases.hashicorp.com/consul-template/`
 #
+# [*dump_signal*]
+#   Sets the signal to listen for to trigger a core dump event.
+#   Defaults to `undef`
+#
+# [*exec_command*]
+#   Sets the command to exec as a child process.
+#   Defaults to `undef`
+#
+# [*exec_kill_signal*]
+#   Sets the signal sent to the child process when Consul Template is
+#   gracefully shutting down.
+#   Defaults to `undef`
+#
+# [*exec_kill_timeout*]
+#   Sets the amount of time to wait for the child process to gracefully
+#   terminate when Consul Template exits.
+#   Defaults to `undef`
+#
+# [*exec_reload_signal*]
+#   Sets the signal that will be sent to the child process when a change occurs
+#   in a watched template.
+#   Defaults to `undef`
+#
+# [*exec_splay*]
+#   Sets the random splay to wait before killing the command.
+#   Defaults to `undef`
+#
 # [*extra_options*]
 #   Extra arguments to be passed to the consul-template agent
 #   Defaults to ''
@@ -88,6 +128,10 @@
 #   Valid strings: `package` - install via system package
 #                  `url`     - download and extract from a url.
 #   Defaults to `url`
+#
+# [*kill_signal*]
+#   Sets the signal to listen for to trigger a graceful stop.
+#   Defaults to `undef`
 #
 # [*log_level*]
 #   Sets the log level of consul-template.
@@ -136,6 +180,10 @@
 #   directory.
 #   Defaults to `true`
 #
+# [*reload_signal*]
+#   Sets the signal to listen for to trigger a reload event.
+#   Defaults to `undef`
+#
 # [*service_enable*]
 #   Whether to enable the consul-template service to start at boot.
 #   Defaults to `true`
@@ -143,6 +191,31 @@
 # [*service_ensure*]
 #   Whether the consul-template service should be running or not.
 #   Defaults to `running`.
+#
+# [*ssl_enabled*]
+#   Whether to enabled ssl for connections to consul.
+#   Defaults to `true`
+#
+# [*ssl_ca_cert*]
+#   Sets the path to the ssl ca certificate to use when connecting to consul.
+#
+# [*ssl_cert*]
+#   Sets the path to the ssl certificate to use when connecting to consul.
+#
+# [*ssl_key*]
+#   Sets the path to the ssl key to use when connecting to consul.
+#
+# [*ssl_verify*]
+#   Whether to enable ssl peer verification when connecting to consul.
+#   Defaults to `true`
+#
+# [*syslog_enabled*]
+#   Whether to enable sysloging.
+#   Defaults to `false`.
+#
+# [*syslog_facility*]
+#   Sets the name of the syslog facility to log to.
+#   Defaults to `undef`.
 #
 # [*user*]
 #   Name of a user to use for dir and file perms. Defaults to root.
@@ -154,6 +227,10 @@
 #   Whether to enable vault.
 #   Defaults to `false`
 #
+# [*vault_renew_token*]
+#   Whether to automatically renew the vault token.
+#   Defaults to `undef`
+#
 # [*vault_ssl*]
 #   Whether to use ssl for connections to vault.
 #   Defaults to `true`
@@ -164,13 +241,20 @@
 # [*vault_ssl_cert*]
 #   Sets the path to the ssl certificate to use when connecting to vault.
 #
+# [*vault_ssl_key*]
+#   Sets the path to the ssl certificate to use when connecting to vault.
+#
 # [*vault_ssl_verify*]
 #   Whether to enable ssl peer verification when connecting to vault.
 #   Defaults to `true`
 #
 # [*vault_token*]
 #   Sets the token to use when communicating with the vault server.
-#   Defaults to ''
+#   Defaults to `undef`
+#
+# [*vault_unwrap_token*]
+#   Whether to unwrap vault token before use.
+#   Defaults to `undef`
 #
 # [*version*]
 #   Specifies version of consul-template binary to download.
@@ -193,6 +277,9 @@
 #
 class consul_template (
   $arch                         = $::consul_template::params::arch,
+  $auth_enabled                 = $::consul_template::params::auth_enabled,
+  $auth_password                = $::consul_template::params::auth_password,
+  $auth_username                = $::consul_template::params::auth_username,
   $bin_dir                      = $::consul_template::params::bin_dir,
   $config_dir                   = $::consul_template::params::config_dir,
   $config_mode                  = $::consul_template::params::config_mode,
@@ -208,10 +295,17 @@ class consul_template (
   $download_extension           = $::consul_template::params::download_extension,
   $download_url                 = $::consul_template::params::download_url,
   $download_url_base            = $::consul_template::params::download_url_base,
+  $dump_signal                  = $::consul_template::params::dump_signal,
+  $exec_command                 = $::consul_template::params::exec_command,
+  $exec_kill_signal             = $::consul_template::params::exec_kill_signal,
+  $exec_kill_timeout            = $::consul_template::params::exec_kill_timeout,
+  $exec_reload_signal           = $::consul_template::params::exec_reload_signal,
+  $exec_splay                   = $::consul_template::params::exec_splay,
   $extra_options                = $::consul_template::params::extra_options,
   $group                        = $::consul_template::params::group,
   $init_style                   = $::consul_template::params::init_style,
   $install_method               = $::consul_template::params::install_method,
+  $kill_signal                  = $::consul_template::params::kill_signal,
   $log_level                    = $::consul_template::params::log_level,
   $logrotate_compress           = $::consul_template::params::logrotate_compress,
   $logrotate_files              = $::consul_template::params::logrotate_files,
@@ -224,27 +318,54 @@ class consul_template (
   $os                           = $::consul_template::params::os,
   $package_ensure               = $::consul_template::params::package_ensure,
   $package_name                 = $::consul_template::params::package_name,
+  $pid_file                     = $::consul_template::params::pid_file,
   $purge_config_dir             = $::consul_template::params::purge_config_dir,
+  $reload_signal                = $::consul_template::params::reload_signal,
   $service_enable               = $::consul_template::params::service_enable,
   $service_ensure               = $::consul_template::params::service_ensure,
+  $ssl_ca_cert                  = $::consul_template::params::ssl_ca_cert,
+  $ssl_cert                     = $::consul_template::params::ssl_cert,
+  $ssl_enabled                  = $::consul_template::params::ssl_enabled,
+  $ssl_key                      = $::consul_template::params::ssl_key,
+  $ssl_verify                   = $::consul_template::params::ssl_verify,
+  $syslog_enabled               = $::consul_template::params::syslog_enabled,
+  $syslog_facility              = $::consul_template::params::syslog_facility,
   $user                         = $::consul_template::params::user,
   $vault_address                = $::consul_template::params::vault_address,
   $vault_enabled                = $::consul_template::params::vault_enabled,
+  $vault_renew_token            = $::consul_template::params::vault_renew_token,
   $vault_ssl                    = $::consul_template::params::vault_ssl,
   $vault_ssl_ca_cert            = $::consul_template::params::vault_ssl_ca_cert,
   $vault_ssl_cert               = $::consul_template::params::vault_ssl_cert,
+  $vault_ssl_key                = $::consul_template::params::vault_ssl_key,
   $vault_ssl_verify             = $::consul_template::params::vault_ssl_verify,
   $vault_token                  = $::consul_template::params::vault_token,
+  $vault_unwrap_token           = $::consul_template::params::vault_unwrap_token,
   $version                      = $::consul_template::params::version,
   $watches                      = $::consul_template::params::watches,
 ) inherits ::consul_template::params {
 
+  validate_bool($auth_enabled)
+  validate_bool($deduplicate)
+  validate_bool($manage_group)
+  validate_bool($manage_user)
   validate_bool($purge_config_dir)
+  validate_bool($ssl_enabled)
+  validate_bool($syslog_enabled)
+  validate_bool($vault_ssl_verify)
+  validate_hash($watches)
   validate_string($user)
   validate_string($group)
-  validate_bool($manage_user)
-  validate_bool($manage_group)
-  validate_hash($watches)
+
+  if $ssl_verify {
+    validate_bool($ssl_verify)
+  }
+  if $vault_renew_token {
+    validate_bool($vault_renew_token)
+  }
+  if $vault_unwrap_token {
+    validate_bool($vault_unwrap_token)
+  }
 
   $real_download_url = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
 

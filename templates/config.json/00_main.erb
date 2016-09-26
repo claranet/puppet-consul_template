@@ -1,0 +1,20 @@
+<%
+options = {
+  'consul'        => "#{scope.lookupvar('::consul_template::consul_host')}:#{scope.lookupvar('::consul_template::consul_port')}",
+  'dump_signal'   => scope.lookupvar('::consul_template::dump_signal'),
+  'kill_signal'   => scope.lookupvar('::consul_template::kill_signal'),
+  'log_level'     => scope.lookupvar('::consul_template::log_level'),
+  'max_stale'     => scope.lookupvar('::consul_template::consul_max_stale'),
+  'pid_file'      => scope.lookupvar('::consul_template::pid_file'),
+  'reload_signal' => scope.lookupvar('::consul_template::reload_signal'),
+  'retry'         => scope.lookupvar('::consul_template::consul_retry'),
+  'token'         => scope.lookupvar('::consul_template::consul_token'),
+  'wait'          => scope.lookupvar('::consul_template::consul_wait'),
+}.delete_if { |k,v| v.nil? || v == :undef }
+
+width = options.keys.map { |k| k.size }.max
+-%>
+<% options.sort.each do |opt, val| -%>
+<% val = "\"#{val}\"" if val.is_a?(String) -%>
+<%= opt.ljust(width) %> = <%= val %>
+<% end -%>

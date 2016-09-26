@@ -2,11 +2,11 @@
 #
 class consul_template::install {
 
-  if ! empty($consul_template::data_dir) {
-    file { $consul_template::data_dir:
+  if $::consul_template::data_dir {
+    file { $::consul_template::data_dir:
       ensure => 'directory',
-      owner  => $consul_template::user,
-      group  => $consul_template::group,
+      owner  => $::consul_template::user,
+      group  => $::consul_template::group,
       mode   => '0755',
     }
   }
