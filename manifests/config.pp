@@ -34,7 +34,7 @@ class consul_template::config {
     }
   }
 
-  if $::consul_template::deduplicate {
+  if $::consul_template::real_deduplicate_enabled {
     concat::fragment { 'consul-template/config.json+20-deduplicate':
       target  => 'consul-template/config.json',
       order   => '20',

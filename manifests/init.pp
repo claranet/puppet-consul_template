@@ -10,7 +10,7 @@
 #
 # [*auth_enabled*]
 #   Whether to enable http basic auth when sending requests to consul.
-#   Defaults to `false`
+#   Defaults to `undef`
 #
 # [*auth_username*]
 #   Sets the username to use with http basic auth.
@@ -46,7 +46,7 @@
 #
 # [*consul_retry*]
 #   Sets the amount of time to wait before retrying a connection to consul.
-#   Defaults to `10s`
+#   Defaults to `undef`
 #
 # [*consul_token*]
 #   Sets the the ACL token to use when connecting to consul.
@@ -62,8 +62,11 @@
 #   Defaults to `undef`
 #
 # [*deduplicate*]
+#   DEPRECATED: Use `deduplicate_enabled` instead.
+#
+# [*deduplicate_enabled*]
 #   Whether to enable consul-template's deduplication mode.
-#   Defaults to `false`
+#   Defaults to `undef`
 #
 # [*deduplicate_prefix*]
 #   Sets the prefix to the path in consul's KV store where de-duplication
@@ -135,7 +138,7 @@
 #
 # [*log_level*]
 #   Sets the log level of consul-template.
-#   Defaults to `info`
+#   Defaults to `undef`
 #
 # [*logrotate_compress*]
 #   Sets the logrotate compress parameter for consul-template's log files.
@@ -232,8 +235,11 @@
 #   Defaults to `undef`
 #
 # [*vault_ssl*]
+#   DEPRECATED: Use `vault_ssl_enabled` instead.
+#
+# [*vault_ssl_enabled*]
 #   Whether to use ssl for connections to vault.
-#   Defaults to `true`
+#   Defaults to `undef`
 #
 # [*vault_ssl_ca_cert*]
 #   Sets the path to the ssl ca certificate to use when connecting to vault.
@@ -290,7 +296,8 @@ class consul_template (
   $consul_token                 = $::consul_template::params::consul_token,
   $consul_wait                  = $::consul_template::params::consul_wait,
   $data_dir                     = $::consul_template::params::data_dir,
-  $deduplicate                  = $::consul_template::params::deduplicate,
+  $deduplicate                  = undef,  # deprecated
+  $deduplicate_enabled          = $::consul_template::params::deduplicate_enabled,
   $deduplicate_prefix           = $::consul_template::params::deduplicate_prefix,
   $download_extension           = $::consul_template::params::download_extension,
   $download_url                 = $::consul_template::params::download_url,
@@ -334,7 +341,8 @@ class consul_template (
   $vault_address                = $::consul_template::params::vault_address,
   $vault_enabled                = $::consul_template::params::vault_enabled,
   $vault_renew_token            = $::consul_template::params::vault_renew_token,
-  $vault_ssl                    = $::consul_template::params::vault_ssl,
+  $vault_ssl                    = undef,  # deprecated
+  $vault_ssl_enabled            = $::consul_template::params::vault_ssl_enabled,
   $vault_ssl_ca_cert            = $::consul_template::params::vault_ssl_ca_cert,
   $vault_ssl_cert               = $::consul_template::params::vault_ssl_cert,
   $vault_ssl_key                = $::consul_template::params::vault_ssl_key,
@@ -344,28 +352,10 @@ class consul_template (
   $version                      = $::consul_template::params::version,
   $watches                      = $::consul_template::params::watches,
 ) inherits ::consul_template::params {
+  class { '::consul_template::validate_params': }
 
-  validate_bool($auth_enabled)
-  validate_bool($deduplicate)
-  validate_bool($manage_group)
-  validate_bool($manage_user)
-  validate_bool($purge_config_dir)
-  validate_bool($ssl_enabled)
-  validate_bool($syslog_enabled)
-  validate_bool($vault_ssl_verify)
-  validate_hash($watches)
-  validate_string($user)
-  validate_string($group)
-
-  if $ssl_verify {
-    validate_bool($ssl_verify)
-  }
-  if $vault_renew_token {
-    validate_bool($vault_renew_token)
-  }
-  if $vault_unwrap_token {
-    validate_bool($vault_unwrap_token)
-  }
+  $real_deduplicate_enabled = $deduplicate_enabled or $deduplicate
+  $real_vault_ssl_enabled = $vault_ssl_enabled or $vault_ssl
 
   $real_download_url = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
 

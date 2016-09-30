@@ -13,7 +13,7 @@ vault {
   <%- val = "\"#{val}\"" if val.is_a?(String) -%>
   <%= opt.ljust(width) %> = <%= val %>
 <% end -%>
-<% if scope.lookupvar('::consul_template::vault_ssl') -%>
+<% if scope.lookupvar('::consul_template::real_vault_ssl_enabled') -%>
 <%= scope.function_template(['consul_template/config.json/60_vault/ssl.erb']) -%>
 <% end -%>
 }

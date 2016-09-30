@@ -5,7 +5,7 @@
 #
 class consul_template::params {
 
-  $auth_enabled         = false
+  $auth_enabled         = undef
   $auth_username        = undef
   $auth_password        = undef
   $bin_dir              = '/usr/local/bin'
@@ -14,11 +14,11 @@ class consul_template::params {
   $consul_host          = 'localhost'
   $consul_max_stale     = undef
   $consul_port          = '8500'
-  $consul_retry         = '10s'
+  $consul_retry         = undef
   $consul_token         = undef
   $consul_wait          = undef
   $data_dir             = undef
-  $deduplicate          = false
+  $deduplicate_enabled  = undef
   $deduplicate_prefix   = undef
   $download_extension   = 'zip'
   $download_url         = undef
@@ -32,8 +32,8 @@ class consul_template::params {
   $extra_options        = ''
   $group                = 'root'
   $install_method       = 'url'
-  $kill_signal           = undef
-  $log_level            = 'info'
+  $kill_signal          = undef
+  $log_level            = undef
   $logrotate_compress   = 'nocompress'
   $logrotate_files      = 4
   $logrotate_on         = false
@@ -49,20 +49,20 @@ class consul_template::params {
   $service_ensure       = 'running'
   $ssl_ca_cert          = undef
   $ssl_cert             = undef
-  $ssl_enabled          = false
+  $ssl_enabled          = undef
   $ssl_key              = undef
   $ssl_verify           = undef
-  $syslog_enabled       = false
+  $syslog_enabled       = undef
   $syslog_facility      = undef
   $user                 = 'root'
   $vault_address        = undef
-  $vault_enabled        = false
+  $vault_enabled        = undef
   $vault_renew_token    = undef
-  $vault_ssl            = true
+  $vault_ssl_enabled    = undef
   $vault_ssl_ca_cert    = undef
   $vault_ssl_cert       = undef
   $vault_ssl_key        = undef
-  $vault_ssl_verify     = true
+  $vault_ssl_verify     = undef
   $vault_token          = undef
   $vault_unwrap_token   = undef
   $version              = '0.11.0'
