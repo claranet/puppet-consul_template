@@ -86,15 +86,20 @@ describe 'consul_template', :type => :class do
     let(:params) {{
       :watches => {
         'test_watch1' => {
+           'destination' => '/foo/destination1.txt',
+           'source'      => '/bar/source1.ctmpl',
            'command'     => '/bin/true',
-           'destination' => '/tmp/foo',
+        },
+        'test_watch2' => {
+           'destination' => '/foo/destination2.txt',
+           'source'      => '/bar/source2.ctmpl',
+           'command'     => '/bin/true',
         }
       }
     }}
-    it { is_expected.to contain_consul_template__watch('test_watch1').with_command('/bin/true') }
-    it { is_expected.to contain_consul_template__watch('test_watch1').with_destination('/tmp/foo') }
-    it { is_expected.to have_consul_template__watch_resource_count(1) }
-    it { is_expected.to contain_concat__fragment('test_watch1.ctmpl').with_content(/source = "\/etc\/consul-template\/test_watch1.ctmpl"/).that_notifies(['Service[consul-template]'])  }
+    it { is_expected.to contain_consul_template__watch('test_watch1') }
+    it { is_expected.to contain_consul_template__watch('test_watch2') }
+    it { is_expected.to have_consul_template__watch_resource_count(2) }
   end
 
   context "When auth is enabled" do
