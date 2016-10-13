@@ -252,6 +252,15 @@ describe 'consul_template', :type => :class do
     end
   end
 
+  context "When init_style is 'unmanaged'" do
+    let(:params) {{
+      :init_style => 'unmanaged',
+    }}
+    it { is_expected.to_not contain_file('/etc/init/consul-template.conf') }
+    it { is_expected.to_not contain_file('/etc/init.d/consul-template') }
+    it { is_expected.to_not contain_file('/lib/systemd/system/consul-template.service') }
+  end
+
   context 'supported operating systems' do
     ['Debian', 'RedHat'].each do |osfamily|
       describe "consul_template class with no parameters on OS family #{osfamily}" do

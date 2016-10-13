@@ -124,7 +124,8 @@
 #   Defaults to `root`
 #
 # [*init_style*]
-#   What style of init system your system uses.
+#   What style of init system your system uses. Set to 'unmanaged' to disable
+#   managing init system files for the consul-template service entirely.
 #   Default depends on operating system.
 #
 # [*install_method*]
