@@ -108,13 +108,13 @@ class consul_template::install {
     }
   }
 
-  if $consul_template::manage_user {
+  if $consul_template::manage_user == 'true' {
     user { $consul_template::user:
       ensure => 'present',
       system => true,
     }
   }
-  if $consul_template::manage_group {
+  if $consul_template::manage_group == 'true' {
     group { $consul_template::group:
       ensure => 'present',
       system => true,
