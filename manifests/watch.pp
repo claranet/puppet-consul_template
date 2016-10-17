@@ -6,9 +6,10 @@
 define consul_template::watch (
   $command,
   $destination,
-  $source        = undef,
-  $template      = undef,
-  $template_vars = {},
+  $source          = undef,
+  $template        = undef,
+  $template_vars   = {},
+  $command_timeout = undef,
 ) {
   include consul_template
 
@@ -42,7 +43,7 @@ define consul_template::watch (
 
   concat::fragment { $frag_name:
     target  => 'consul-template/config.json',
-    content => "template {\n  source = \"${source_name}\"\n  destination = \"${destination}\"\n  command = \"${command}\"\n}\n\n",
+    content => template("${module_name}/consul-watch-fragment.erb"),
     order   => '10',
     notify  => Service['consul-template']
   }
