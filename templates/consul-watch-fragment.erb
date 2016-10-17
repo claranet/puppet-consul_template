@@ -1,9 +1,9 @@
 template {
-  source = <%= @source_name %>
-  destination = <%= @destination %>
-  command = <%= @command %>
+  source = "<%= @source_name %>"
+  destination = "<%= @destination %>"
+  command = "<%= @command %>"
 <% if !@command_timeout.nil? -%>
-  command_timeout = <%= @command_timeout %>
+  command_timeout = "<%= @command_timeout %>"
 <% end -%>
 }
 
