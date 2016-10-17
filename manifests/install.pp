@@ -42,6 +42,7 @@ class consul_template::install {
     package { $consul_template::package_name:
       ensure => $consul_template::package_ensure,
     }
+    $requires = Package[$consul_template::package_name]
 
   } else {
     fail("The provided install method ${consul_template::install_method} is invalid")
@@ -71,6 +72,7 @@ class consul_template::install {
           owner   => 'root',
           group   => 'root',
           content => template('consul_template/consul-template.systemd.erb'),
+          require => $requires
         }
       }
       'sysv' : {
@@ -78,7 +80,8 @@ class consul_template::install {
           mode    => '0555',
           owner   => 'root',
           group   => 'root',
-          content => template('consul_template/consul-template.sysv.erb')
+          content => template('consul_template/consul-template.sysv.erb'),
+          require => $requires
         }
       }
       'debian' : {
@@ -86,7 +89,8 @@ class consul_template::install {
           mode    => '0555',
           owner   => 'root',
           group   => 'root',
-          content => template('consul_template/consul-template.debian.erb')
+          content => template('consul_template/consul-template.debian.erb'),
+          require => $requires
         }
       }
       'sles' : {
@@ -94,7 +98,8 @@ class consul_template::install {
           mode    => '0555',
           owner   => 'root',
           group   => 'root',
-          content => template('consul_template/consul-template.sles.erb')
+          content => template('consul_template/consul-template.sles.erb'),
+          require => $requires
         }
       }
       default : {
