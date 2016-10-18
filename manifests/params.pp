@@ -32,7 +32,7 @@ class consul_template::params {
       '15.04' => 'systemd',
       default => 'upstart'
     },
-    /CentOS|RedHat/      => $::operatingsystemmajrelease ? {
+    /CentOS|RedHat|OracleLinux/      => $::operatingsystemmajrelease ? {
       /(4|5|6)/ => 'sysv',
       default   => 'systemd',
     },

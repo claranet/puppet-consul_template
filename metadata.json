@@ -17,6 +17,10 @@
     "operatingsystemrelease":[ "5.0", "6.0", "7.0" ]
     },
     {
+    "operatingsystem":"OracleLinux",
+    "operatingsystemrelease":[ "5.0", "6.0", "7.0" ]
+    },
+    {
     "operatingsystem":"Debian",
     "operatingsystemrelease":[ "6.0", "7.0" ]
     },
