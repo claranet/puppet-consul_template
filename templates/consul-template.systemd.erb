@@ -10,8 +10,8 @@ ExecStart=<%= scope.lookupvar('consul_template::bin_dir') %>/consul-template \
   -config <%= scope.lookupvar('consul_template::config_dir') %>/config <%= scope.lookupvar('consul_template::extra_options') %>
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
-Restart=on-failure
-RestartSec=10s
+Restart=always
+RestartSec=42s
 LimitNOFILE=4096
 
 [Install]
