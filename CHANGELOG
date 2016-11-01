@@ -1,3 +1,5 @@
+2016-11-01 Release 0.2.9
+- Feature Enhancement: Change consul-tempalte systemd restart option
 2016-05-11 Release 0.2.8
 - Bugfix: Revert: Do not create the user + group by default. Run consul-template as root/root instead
 
