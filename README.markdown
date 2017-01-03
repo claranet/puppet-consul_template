@@ -1,5 +1,12 @@
 #consul_template for Puppet
 
+### NOTICE:
+
+This fork is not backwards compatible with its upstream. The configuration
+mechanism has been modified to be driven by config_hash/config_defaults instead
+of individual parameters to provide access to the full set of options and avoid
+the need to make changes here as consul-template options evolve.
+
 ##Installation
 
 ###What This Module Affects
@@ -33,14 +40,9 @@ set to 'package', its installed using the system package manager.
 - `group` Default: root.
 - `manage_user` Default: false. Module handles creating the user.
 - `manage_group` Default: false. Module handles creating the group.
-- `consul_host` Default: localhost. Hostanme of consul agent to query
-- `consul_port` Default: 8500. Port number the API is running on
-- `consul_token` Default: ''. ACL token to use when querying consul
-- `consul_retry` Default: 10s. Time in seconds to wait before retrying consul requests
-- `consul_wait` Default: undef. Min:Max time to wait before consul-template renders a new template to disk and triggers refresh. Specified in the format min:max according to [Go time duration format](http://golang.org/pkg/time/#ParseDuration)
-- `consul_max_stale` Default: undef. The maximum staleness of a query. If specified, Consul will distribute work among all servers instead of just the leader.
 - `init_style` Init style to use for consul-template service.
-- `log_level` Default: info. Logging level to use for consul-template service. Can be 'debug', 'warn', 'err', 'info'
+- `config_hash` Default: {}. Consul-template configuration options. See https://github.com/hashicorp/consul-template#options
+- `config_defaults` Default: {}. Consul-template configuration option defaults.
 
 
 
@@ -51,17 +53,30 @@ The simplest way to use this module is:
 include consul_template
 ```
 
-Or to specify parameters:
+consul-template options can be passed via hiera:
+
+```
+consul_template::config_defaults:
+  deduplicate:
+    enabled: true
+  log_level: info
+  retry: 10s
+  syslog: true
+  token: <consul token>
+```
+
+Or to specify class parameters:
 ```puppet
 class { 'consul_template':
     service_enable   => false
-    log_level        => 'debug',
     init_style       => 'upstart',
-    consul_wait      => '5s:30s',
-    consul_max_stale => '1s'
+    config_hash      => {
+      log_level => 'debug',
+      wait      => '5s:30s',
+      max_stale => '1s'
+    }
 }
 ```
-
 
 ## Watch files
 
@@ -76,8 +91,10 @@ consul_template::watch { 'common':
         'var1' => 'foo',
         'var2' => 'bar',
     },
-    destination   => '/tmp/common.json',
-    command       => 'true',
+    config_hash   => {
+      destination => '/tmp/common.json',
+      command     => 'true',
+    },
 }
 ```
 

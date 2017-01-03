@@ -6,10 +6,11 @@
 class consul_template::service {
 
   service { 'consul-template':
-    ensure => $consul_template::service_ensure,
-    enable => $consul_template::service_enable,
-    name   => 'consul-template',
+    ensure   => $consul_template::service_ensure,
+    enable   => $consul_template::service_enable,
+    provider => $consul_template::init_style,
+    name     => 'consul-template',
+    require  => Package['consul-template'],
   }
-
 
 }

@@ -6,7 +6,6 @@
 class consul_template::params {
 
   $install_method     = 'url'
-  $log_level          = 'info'
   $package_name       = 'consul-template'
   $package_ensure     = 'latest'
   $version            = '0.11.0'
