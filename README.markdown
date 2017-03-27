@@ -1,8 +1,8 @@
-#consul_template for Puppet
+# consul_template for Puppet
 
-##Installation
+## Installation
 
-###What This Module Affects
+### What This Module Affects
 
 * Installs the consul-template binary (via url or package)
 * Optionally installs a user to run it under
@@ -10,7 +10,7 @@
 * Manages the consul-template service via upstart, sysv, or systemd
 
 
-##Parameters
+## Parameters
 
 - `purge_config_dir` **Default**: true. If enabled, removes config files no longer managed by Puppet.
 - `config_mode` **Default**: 0660. Mode set on config files and directories.
@@ -44,7 +44,7 @@ set to 'package', its installed using the system package manager.
 
 
 
-##Usage
+## Usage
 
 The simplest way to use this module is:
 ```puppet
@@ -81,11 +81,12 @@ consul_template::watch { 'common':
 }
 ```
 
-##Limitations
+## Limitations
 
 Depends on the JSON gem, or a modern ruby.
 
-##Development
+## Development
+
 See the [contributing guide](CONTRIBUTING.md)
 
 Open an [issue](https://github.com/gdhbashton/puppet-consul_template/issues) or
