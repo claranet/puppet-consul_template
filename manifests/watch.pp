@@ -9,6 +9,7 @@ define consul_template::watch (
   $source        = undef,
   $template      = undef,
   $template_vars = {},
+  $perms = '0644',
 ) {
   include consul_template
 
@@ -42,7 +43,7 @@ define consul_template::watch (
 
   concat::fragment { $frag_name:
     target  => 'consul-template/config.json',
-    content => "template {\n  source = \"${source_name}\"\n  destination = \"${destination}\"\n  command = \"${command}\"\n}\n\n",
+    content => "template {\n  source = \"${source_name}\"\n  destination = \"${destination}\"\n  command = \"${command}\"\n  perms = ${perms}\n}\n\n",
     order   => '10',
     notify  => Service['consul-template']
   }

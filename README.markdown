@@ -78,6 +78,7 @@ consul_template::watch { 'common':
     },
     destination   => '/tmp/common.json',
     command       => 'true',
+    perms         => '0644',
 }
 ```
 
