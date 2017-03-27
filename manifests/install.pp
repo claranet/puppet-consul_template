@@ -2,11 +2,11 @@
 #
 class consul_template::install {
 
-  if ! empty($consul_template::data_dir) {
-    file { $consul_template::data_dir:
+  if $::consul_template::data_dir {
+    file { $::consul_template::data_dir:
       ensure => 'directory',
-      owner  => $consul_template::user,
-      group  => $consul_template::group,
+      owner  => $::consul_template::user,
+      group  => $::consul_template::group,
       mode   => '0755',
     }
   }
@@ -47,7 +47,7 @@ class consul_template::install {
     fail("The provided install method ${consul_template::install_method} is invalid")
   }
 
-  if $consul_template::init_style {
+  if $consul_template::init_style != 'unmanaged' {
 
     case $consul_template::init_style {
       'upstart' : {

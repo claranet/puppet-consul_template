@@ -10,6 +10,4 @@ class consul_template::service {
     enable => $consul_template::service_enable,
     name   => 'consul-template',
   }
-
-
 }

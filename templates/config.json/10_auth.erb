@@ -1,0 +1,16 @@
+<%
+options = {
+ 'password' => scope.lookupvar('::consul_template::auth_password'),
+ 'username' => scope.lookupvar('::consul_template::auth_username'),
+}.delete_if { |k,v| v.nil? || v == :undef }
+
+width = options.keys.map { |k| k.size }.max
+%>
+auth {
+  enabled = true
+
+<% options.sort.each do |opt, val| -%>
+  <%- val = "\"#{val}\"" if val.is_a?(String) -%>
+  <%= opt.ljust(width) %> = <%= val %>
+<% end -%>
+}

@@ -1,0 +1,19 @@
+<%
+options = {
+  'address'      => scope.lookupvar('::consul_template::vault_address'),
+  'renew_token'  => scope.lookupvar('::consul_template::vault_renew_token'),
+  'token'        => scope.lookupvar('::consul_template::vault_token'),
+  'unwrap_token' => scope.lookupvar('::consul_template::vault_unwrap_token'),
+}.delete_if { |k,v| v.nil? || v == :undef }
+
+width = options.keys.map { |k| k.size }.max
+%>
+vault {
+<% options.sort.each do |opt, val| -%>
+  <%- val = "\"#{val}\"" if val.is_a?(String) -%>
+  <%= opt.ljust(width) %> = <%= val %>
+<% end -%>
+<% if scope.lookupvar('::consul_template::real_vault_ssl_enabled') -%>
+<%= scope.function_template(['consul_template/config.json/60_vault/ssl.erb']) -%>
+<% end -%>
+}

@@ -2,106 +2,75 @@
 #
 # This class is called from consul_template for service config.
 #
-class consul_template::config (
-  $consul_host,
-  $consul_port,
-  $consul_token,
-  $consul_retry,
-  $purge = true,
-) {
+class consul_template::config {
+  file { [$::consul_template::config_dir, "${::consul_template::config_dir}/config"]:
+    ensure  => 'directory',
+    purge   => $::consul_template::purge_config_dir,
+    recurse => $::consul_template::purge_config_dir,
+    owner   => $::consul_template::user,
+    group   => $::consul_template::group,
+    mode    => '0755',
+  }
 
-  concat::fragment { 'header':
+  concat { 'consul-template/config.json':
+    path   => "${::consul_template::config_dir}/config/config.json",
+    owner  => $::consul_template::user,
+    group  => $::consul_template::group,
+    mode   => $::consul_template::config_mode,
+    notify => Service['consul-template'],
+  }
+
+  concat::fragment { 'consul-template/config.json+00-main':
     target  => 'consul-template/config.json',
-    content => inline_template("consul = \"<%= @consul_host %>:<%= @consul_port %>\"\ntoken = \"<%= @consul_token %>\"\nretry = \"<%= @consul_retry %>\"\n\n"),
     order   => '00',
+    content => template('consul_template/config.json/00_main.erb'),
   }
 
-  # Set the log level
-  concat::fragment { 'log_level':
-    target  => 'consul-template/config.json',
-    content => inline_template("log_level = \"${::consul_template::log_level}\"\n"),
-    order   => '01'
-  }
-
-  # Set wait param if specified
-  if $::consul_template::consul_wait {
-    concat::fragment { 'consul_wait':
+  if $::consul_template::auth_enabled {
+    concat::fragment { 'consul-template/config.json+10-auth':
       target  => 'consul-template/config.json',
-      content => inline_template("wait = \"${::consul_template::consul_wait}\"\n\n"),
-      order   => '02',
+      order   => '10',
+      content => template('consul_template/config.json/10_auth.erb'),
     }
   }
 
-  # Set max_stale param if specified
-  if $::consul_template::consul_max_stale {
-    concat::fragment { 'consul_max_stale':
+  if $::consul_template::real_deduplicate_enabled {
+    concat::fragment { 'consul-template/config.json+20-deduplicate':
       target  => 'consul-template/config.json',
-      content => inline_template("max_stale = \"${::consul_template::consul_max_stale}\"\n\n"),
-      order   => '03',
+      order   => '20',
+      content => template('consul_template/config.json/20_deduplicate.erb'),
     }
   }
 
-  if $::consul_template::deduplicate {
-    concat::fragment { 'dedup-base':
+  if $::consul_template::exec_command {
+    concat::fragment { 'consul-template/config.json+30-exec':
       target  => 'consul-template/config.json',
-      content => inline_template("deduplicate {\n  enabled = true\n"),
-      order   => '04',
+      order   => '30',
+      content => template('consul_template/config.json/30_exec.erb'),
     }
+  }
 
-    if $::consul_template::deduplicate_prefix {
-      concat::fragment { 'dedup-prefix':
-        target  => 'consul-template/config.json',
-        content => inline_template("  prefix = \"${::consul_template::deduplicate_prefix}\"\n"),
-        order   => '05',
-      }
-    }
-
-    concat::fragment { 'dedup-close':
+  if $::consul_template::ssl_enabled {
+    concat::fragment { 'consul-template/config.json+40-ssl':
       target  => 'consul-template/config.json',
-      content => inline_template("}\n"),
-      order   => '06',
+      order   => '40',
+      content => template('consul_template/config.json/40_ssl.erb'),
+    }
+  }
+
+  if $::consul_template::syslog_enabled {
+    concat::fragment { 'consul-template/config.json+50-syslog':
+      target  => 'consul-template/config.json',
+      order   => '50',
+      content => template('consul_template/config.json/50_syslog.erb'),
     }
   }
 
   if $::consul_template::vault_enabled {
-    concat::fragment { 'vault-base':
+    concat::fragment { 'consul-template/config.json+60-vault':
       target  => 'consul-template/config.json',
-      content => inline_template("vault {\n  address = \"${::consul_template::vault_address}\"\n  token = \"${::consul_template::vault_token}\"\n"),
-      order   => '07',
-    }
-    if $::consul_template::vault_ssl {
-      concat::fragment { 'vault-ssl1':
-        target  => 'consul-template/config.json',
-        content => inline_template("  ssl {\n    enabled = true\n    verify = ${::consul_template::vault_ssl_verify}\n"),
-        order   => '08',
-      }
-      concat::fragment { 'vault-ssl2':
-        target  => 'consul-template/config.json',
-        content => inline_template("    cert = \"${::consul_template::vault_ssl_cert}\"\n    ca_cert = \"${::consul_template::vault_ssl_ca_cert}\"\n  }\n"),
-        order   => '09',
-      }
-    }
-    concat::fragment { 'vault-baseclose':
-      target  => 'consul-template/config.json',
-      content => "}\n\n",
-      order   => '10',
+      order   => '60',
+      content => template('consul_template/config.json/60_vault/main.erb'),
     }
   }
-
-  file { [$consul_template::config_dir, "${consul_template::config_dir}/config"]:
-    ensure  => 'directory',
-    purge   => $purge,
-    recurse => $purge,
-    owner   => $consul_template::user,
-    group   => $consul_template::group,
-    mode    => '0755',
-  } ->
-  concat { 'consul-template/config.json':
-    path   => "${consul_template::config_dir}/config/config.json",
-    owner  => $consul_template::user,
-    group  => $consul_template::group,
-    mode   => $consul_template::config_mode,
-    notify => Service['consul-template'],
-  }
-
 }

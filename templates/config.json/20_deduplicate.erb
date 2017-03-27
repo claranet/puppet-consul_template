@@ -1,0 +1,15 @@
+<%
+options = {
+  'prefix' =>  scope.lookupvar('::consul_template::deduplicate_prefix'),
+}.delete_if { |k,v| v.nil? || v == :undef }
+
+width = options.keys.map { |k| k.size }.max
+%>
+deduplicate {
+  enabled = true
+
+<% options.sort.each do |opt, val| -%>
+  <%- val = "\"#{val}\"" if val.is_a?(String) -%>
+  <%= opt.ljust(width) %> = <%= val %>
+<% end -%>
+}

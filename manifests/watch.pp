@@ -4,46 +4,52 @@
 # This is a single instance of a configuration file to watch
 # for changes in Consul and update the local file
 define consul_template::watch (
-  $command,
   $destination,
-  $source        = undef,
-  $template      = undef,
-  $template_vars = {},
+  $backup          = undef,
+  $contents        = undef,
+  $command         = undef,
+  $command_timeout = undef,
+  $left_delimiter  = undef,
+  $right_delimiter = undef,
+  $perms           = undef,
+  $source          = undef,
+  $template        = undef,
+  $template_vars   = {},
+  $wait            = undef,
 ) {
-  include consul_template
-
-  if $template == undef and $source == undef {
-    err ('Specify either template or source parameter for consul_template::watch')
+  if !defined(Class['consul_template']) {
+    fail("To use 'consul_template::watch', you must declare class 'consul_template' first")
   }
 
-  if $template != undef and $source != undef {
-    err ('Specify either template or source parameter for consul_template::watch - but not both')
+  if $backup != undef { validate_bool($backup) }
+  validate_hash($template_vars)
+
+  if !$template and !$source {
+    fail('Specify either template or source parameter for consul_template::watch')
   }
 
-  if $template != undef {
-    file { "${consul_template::config_dir}/${name}.ctmpl":
-      ensure  => present,
-      owner   => $consul_template::user,
-      group   => $consul_template::group,
-      mode    => $consul_template::config_mode,
+  if $template and $source {
+    fail('Specify either template or source parameter for consul_template::watch - but not both')
+  }
+
+  if $source {
+    $real_source = $source
+  } else {
+    $real_source = "${::consul_template::config_dir}/${name}.ctmpl"
+    file { $real_source:
+      ensure  => file,
+      owner   => $::consul_template::user,
+      group   => $::consul_template::group,
+      mode    => $::consul_template::config_mode,
       content => template($template),
-      before  => Concat::Fragment["${name}.ctmpl"],
       notify  => Service['consul-template'],
     }
   }
 
-  if $source != undef {
-    $source_name = $source
-    $frag_name   = $source
-  } else {
-    $source_name = "${consul_template::config_dir}/${name}.ctmpl"
-    $frag_name   = "${name}.ctmpl"
-  }
-
-  concat::fragment { $frag_name:
+  concat::fragment { "consul-template/config.json+90-template-${name}":
     target  => 'consul-template/config.json',
-    content => "template {\n  source = \"${source_name}\"\n  destination = \"${destination}\"\n  command = \"${command}\"\n}\n\n",
-    order   => '10',
+    order   => '90',
+    content => template('consul_template/watch.erb'),
     notify  => Service['consul-template']
   }
 }

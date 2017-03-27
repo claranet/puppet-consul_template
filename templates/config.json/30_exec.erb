@@ -1,0 +1,17 @@
+<%
+options = {
+  'command'       => scope.lookupvar('::consul_template::exec_command'),
+  'kill_signal'   => scope.lookupvar('::consul_template::exec_kill_signal'),
+  'kill_timeout'  => scope.lookupvar('::consul_template::exec_kill_timeout'),
+  'reload_signal' => scope.lookupvar('::consul_template::exec_reload_signal'),
+  'splay'         => scope.lookupvar('::consul_template::exec_splay'),
+}.delete_if { |k,v| v.nil? || v == :undef }
+
+width = options.keys.map { |k| k.size }.max
+%>
+exec {
+<% options.sort.each do |opt, val| -%>
+  <%- val = "\"#{val}\"" if val.is_a?(String) -%>
+  <%= opt.ljust(width) %> = <%= val %>
+<% end -%>
+}

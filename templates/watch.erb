@@ -1,0 +1,29 @@
+
+template {
+  source = "<%= @real_source %>"
+  destination = "<%= @destination %>"
+<% if @contents -%>
+  contents = "<%= @contents %>"
+<% end -%>
+<% if @command -%>
+  command = "<%= @command %>"
+  <%- if @command_timeout -%>
+  command_timeout = "<%= @command_timeout %>"
+  <%- end -%>
+<% end -%>
+<% if @perms -%>
+  perms = <%= @perms %>
+<% end -%>
+<% if @backup -%>
+  backup = <%= @backup %>
+<% end -%>
+<% if @left_delimiter -%>
+  left_delimiter = "<%= @left_delimiter %>
+<% end -%>
+<% if @right_delimiter -%>
+  right_delimiter = "<%= @right_delimiter %>"
+<% end -%>
+<% if @wait -%>
+  wait = "<%= @wait %>"
+<% end -%>
+}
