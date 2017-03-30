@@ -33,7 +33,7 @@ describe 'consul_template', :type => :class do
         }}
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_staging__extract('consul-template_0.9.0.tar.gz') }
+        it { is_expected.to contain_staging__extract('consul-template_0.9.0.zip') }
 
       end
     end
