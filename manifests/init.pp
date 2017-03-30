@@ -105,6 +105,7 @@ class consul_template (
   $vault_ssl_verify   = true,
   $vault_ssl_cert     = '',
   $vault_ssl_ca_cert  = '',
+  $vault_renew_token  = $consul_template::vault_renew_token,
   $data_dir           = '',
   $user               = $consul_template::params::user,
   $group              = $consul_template::params::group,

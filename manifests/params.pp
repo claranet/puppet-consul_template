@@ -17,6 +17,7 @@ class consul_template::params {
   $manage_user        = false
   $manage_group       = false
   $config_mode        = '0660'
+  $vault_renew_token  = true
 
   case $::architecture {
     'x86_64', 'amd64': { $arch = 'amd64' }
@@ -33,7 +34,7 @@ class consul_template::params {
       '16.04' => 'systemd',
       default => 'upstart'
     },
-    /CentOS|RedHat/      => $::operatingsystemmajrelease ? {
+    /CentOS|RedHat|OracleLinux/      => $::operatingsystemmajrelease ? {
       /(4|5|6)/ => 'sysv',
       default   => 'systemd',
     },
