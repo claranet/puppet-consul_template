@@ -211,6 +211,9 @@ GEM
     notiffany (0.0.3)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    parallel (1.11.1)
+    parallel_tests (2.14.0)
+      parallel
     pry (0.9.12.6)
       coderay (~> 1.0)
       method_source (~> 0.8)
@@ -294,6 +297,7 @@ GEM
     unf_ext (0.0.6)
     vagrant-wrapper (2.0.2)
     websocket (1.2.1)
+    xmlrpc (0.2.1)
 
 PLATFORMS
   ruby
@@ -301,9 +305,13 @@ PLATFORMS
 DEPENDENCIES
   beaker
   guard-rake
+  json (< 2.0.0)
   metadata-json-lint
+  parallel_tests
   puppet (~> 3.8.7)
   puppet-blacksmith
+  puppet-lint
+  puppet-syntax
   puppetlabs_spec_helper
   rake
   rspec-puppet!
@@ -311,6 +319,7 @@ DEPENDENCIES
   travis
   travis-lint
   vagrant-wrapper
+  xmlrpc
 
 BUNDLED WITH
    1.14.6
