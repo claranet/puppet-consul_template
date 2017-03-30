@@ -7,11 +7,10 @@ group :test do
   gem 'puppet-lint'
   gem 'rspec-puppet', :git => 'https://github.com/rodjek/rspec-puppet.git'
   gem 'puppet-syntax'
-  gem 'puppetlabs_spec_helper'
+  gem 'puppetlabs_spec_helper', '< 2.0.0'
   gem 'metadata-json-lint'
   gem 'json', '< 2.0.0'
   gem 'xmlrpc', :require => false if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.4.0')
-  gem 'parallel_tests', :require => false if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.0.0')
 end
 
 group :development do
