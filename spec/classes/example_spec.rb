@@ -9,7 +9,8 @@ describe 'consul_template', :type => :class do
           :osfamily       => osfamily,
           :concat_basedir => '/foo',
           :path           => '/bin:/sbin:/usr/bin:/usr/sbin',
-          :architecture   => 'x86_64'
+          :architecture   => 'x86_64',
+          :kernel         => 'Linux'
         }}
 
         it { is_expected.to compile.with_all_deps }
@@ -29,7 +30,8 @@ describe 'consul_template', :type => :class do
           :osfamily       => osfamily,
           :concat_basedir => '/foo',
           :path           => '/bin:/sbin:/usr/bin:/usr/sbin',
-          :architecture   => 'x86_64'
+          :architecture   => 'x86_64',
+          :kernel         => 'Linux'
         }}
 
         it { is_expected.to compile.with_all_deps }
