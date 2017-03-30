@@ -6,6 +6,7 @@ group :test do
   gem 'safe_yaml', '~> 1.0.4'
   gem 'puppet-lint'
   gem 'rspec-puppet', :git => 'https://github.com/rodjek/rspec-puppet.git'
+  gem 'rspec-puppet-facts'
   gem 'puppet-syntax'
   gem 'puppetlabs_spec_helper', '< 2.0.0'
   gem 'metadata-json-lint'
