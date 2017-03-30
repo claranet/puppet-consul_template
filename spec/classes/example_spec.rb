@@ -3,9 +3,13 @@ require 'spec_helper'
 describe 'consul_template', :type => :class do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
+
       context "on #{os}" do
         let(:facts) do
-          facts
+          facts.merge({
+            :kernel => 'Linux',
+            :staging_http_get => 'curl'
+          })
         end
 
         describe "consul_template class with no parameters" do
