@@ -1,5 +1,7 @@
 # consul_template for Puppet
 
+[![Build Status](https://travis-ci.org/BashtonLtd/puppet-consul_template.svg?branch=master)](https://travis-ci.org/BashtonLtd/puppet-consul_template)
+
 ## Installation
 
 ### What This Module Affects
