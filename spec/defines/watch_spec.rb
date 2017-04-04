@@ -41,6 +41,23 @@ describe 'consul_template::watch', :type => :define do
           )}
           it { is_expected.to contain_concat__fragment('test_watcher.ctmpl') }
         end
+
+        describe "consul_template::watch define with content" do
+          let(:title) { 'test_watcher' }
+          let(:params) {{
+            :content => 'foobar',
+            :destination => '/var/tmp/consul_template',
+            :command => '/bin/test',
+          }}
+
+          it { is_expected.to compile.with_all_deps }
+
+          it { is_expected.to contain_file('/etc/consul-template/test_watcher.ctmpl').with(
+            :content => /^foobar$/,
+          )}
+          it { is_expected.to contain_concat__fragment('test_watcher.ctmpl') }
+        end
+
       end
     end
   end

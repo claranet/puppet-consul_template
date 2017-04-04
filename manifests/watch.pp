@@ -6,6 +6,7 @@
 define consul_template::watch (
   $command,
   $destination,
+  $content       = undef,
   $source        = undef,
   $template      = undef,
   $template_vars = {},
@@ -13,24 +14,12 @@ define consul_template::watch (
 ) {
   include consul_template
 
-  if $template == undef and $source == undef {
-    err ('Specify either template or source parameter for consul_template::watch')
+  if $content == undef and $source == undef and $template == undef {
+    err('Specify either content, source or template parameter for consul_template::watch')
   }
 
-  if $template != undef and $source != undef {
-    err ('Specify either template or source parameter for consul_template::watch - but not both')
-  }
-
-  if $template != undef {
-    file { "${consul_template::config_dir}/${name}.ctmpl":
-      ensure  => present,
-      owner   => $consul_template::user,
-      group   => $consul_template::group,
-      mode    => $consul_template::config_mode,
-      content => template($template),
-      before  => Concat::Fragment["${name}.ctmpl"],
-      notify  => Service['consul-template'],
-    }
+  if count([$content, $source, $template]) > 1 {
+    err('Specify either content, source or template parameter for consul_template::watch, but only a single parameter should be specified')
   }
 
   if $source != undef {
@@ -39,6 +28,24 @@ define consul_template::watch (
   } else {
     $source_name = "${consul_template::config_dir}/${name}.ctmpl"
     $frag_name   = "${name}.ctmpl"
+  }
+
+  if $content != undef or $template != undef {
+    if ($template != undef) {
+      $config_content = template($template)
+    } else {
+      $config_content = $content
+    }
+
+    file { $source_name:
+      ensure  => 'file',
+      owner   => $consul_template::user,
+      group   => $consul_template::group,
+      mode    => $consul_template::config_mode,
+      content => $config_content,
+      before  => Concat::Fragment["${name}.ctmpl"],
+      notify  => Service['consul-template'],
+    }
   }
 
   concat::fragment { $frag_name:
