@@ -30,6 +30,7 @@ class consul_template::params {
     'Ubuntu'  => $::lsbdistrelease ? {
       '8.04'  => 'debian',
       '15.04' => 'systemd',
+      '16.04' => 'systemd',
       default => 'upstart'
     },
     /CentOS|RedHat/      => $::operatingsystemmajrelease ? {
