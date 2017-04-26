@@ -10,10 +10,22 @@ class consul_template::config (
   $purge = true,
 ) {
 
-  concat::fragment { 'header':
-    target  => 'consul-template/config.json',
-    content => inline_template("consul = \"<%= @consul_host %>:<%= @consul_port %>\"\ntoken = \"<%= @consul_token %>\"\nretry = \"<%= @consul_retry %>\"\n\n"),
-    order   => '00',
+  if versioncmp( "$::consul_template::version" '0.17') > 0 {
+
+    concat::fragment { 'header':
+      target  => 'consul-template/config.json',
+      content => inline_template("consul \{\n    address = \"<%= @consul_host %>:<%= @consul_port %>\"\n    token = \"<%= @consul_token %>\"\n   retry = \"<%= @consul_retry %>\"\n\}"),
+      order   => '00',
+    }
+
+  }
+
+  else {
+    concat::fragment { 'header':
+      target  => 'consul-template/config.json',
+      content => inline_template("consul = \"<%= @consul_host %>:<%= @consul_port %>\"\ntoken = \"<%= @consul_token %>\"\nretry = \"<%= @consul_retry %>\"\n\n"),
+      order   => '00',
+    }
   }
 
   # Set the log level
