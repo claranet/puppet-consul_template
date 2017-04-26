@@ -14,7 +14,7 @@ class consul_template::config (
 
     concat::fragment { 'header':
       target  => 'consul-template/config.json',
-      content => inline_template("consul {\n  address = \"<%= @consul_host %>:<%= @consul_port %>\"\n  token = \"<%= @consul_token %>\"\n  retry = \"<%= @consul_retry %>\"\n}\n\n"),
+      content => inline_template("consul {\n  address = \"<%= @consul_host %>:<%= @consul_port %>\"\n  token = \"<%= @consul_token %>\"\n  retry {\n   attempts = <%= @consul_retry_attempts %>\n   backoff = \"<%= @consul_retry_backoff %>\"\n  }\n}\n\n"),
       order   => '00',
     }
 
