@@ -10,7 +10,7 @@ class consul_template::config (
   $purge = true,
 ) {
 
-  if versioncmp( "$::consul_template::version" '0.17') > 0 {
+  if versioncmp( "$::consul_template::version", '0.17') > 0 {
 
     concat::fragment { 'header':
       target  => 'consul-template/config.json',
