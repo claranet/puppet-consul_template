@@ -49,6 +49,12 @@
 # [*vault_ssl_ca_cert*]
 #   What is the path to the ca cert.pem
 #
+# [*consul_retry_attempts*]
+#   Only for consul-template >= 0.18 - This specifies the number of attempts to make before giving up
+#
+# [*consul_retry_backoff*]
+#   Only for consul-template >= 0.18 - This is the base amount of time to sleep between retry attempts
+#
 # [*data_dir*]
 #   Path to a directory to create to hold some data. Defaults to ''
 #

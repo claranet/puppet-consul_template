@@ -8,6 +8,8 @@ class consul_template::config (
   $consul_token,
   $consul_retry,
   $purge = true,
+  $consul_retry_attempts = $::consul_template::consul_retry_attempts,
+  $consul_retry_backoff  = $::consul_template::consul_retry_backoff,
 ) {
 
   if versioncmp( "$::consul_template::version", '0.17') > 0 {
