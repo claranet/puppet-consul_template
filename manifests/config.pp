@@ -7,12 +7,14 @@ class consul_template::config (
   $consul_port,
   $consul_token,
   $consul_retry,
-  $purge = true,
+  $purge                 = true,
   $consul_retry_attempts = $::consul_template::consul_retry_attempts,
   $consul_retry_backoff  = $::consul_template::consul_retry_backoff,
+  $consul_kill_signal    = $::consul_template::consul_kill_signal,
+  $consul_reload_signal  = $::consul_template::consul_reload_signal,
 ) {
 
-  if versioncmp( "$::consul_template::version", '0.17') > 0 {
+  if versioncmp( "$::consul_template::version", '0.18.0') >= 0 {
 
     concat::fragment { 'header':
       target  => 'consul-template/config.json',

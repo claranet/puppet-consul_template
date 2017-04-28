@@ -118,6 +118,8 @@ class consul_template (
   $group                 = $consul_template::params::group,
   $manage_user           = $consul_template::params::manage_user,
   $manage_group          = $consul_template::params::manage_group,
+  $consul_reload_signal  = $consul_template::params::reload_signal,
+  $consul_kill_signal    = $consul_template::params::kill_signal,
   $watches               = {},
 ) inherits ::consul_template::params {
 
