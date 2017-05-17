@@ -82,7 +82,7 @@ class consul_template::config (
       }
       concat::fragment { 'vault-ssl2':
         target  => 'consul-template/config.json',
-        content => inline_template("    cert = \"${::consul_template::vault_ssl_cert}\"\n    ca_cert = \"${::consul_template::vault_ssl_ca_cert}\"\n  }\n"),
+        content => inline_template("    cert = \"${::consul_template::vault_ssl_cert}\"\n    key = \"${::consul_template::vault_ssl_key}\"\n    ca_cert = \"${::consul_template::vault_ssl_ca_cert}\"\n  }\n"),
         order   => '09',
       }
     }

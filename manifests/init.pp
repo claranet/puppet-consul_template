@@ -46,6 +46,9 @@
 # [*vault_ssl_cert*]
 #   What is the path to the cert.pem
 #
+# [*vault_ssl_key*]
+#   What is the path to the key.pem
+#
 # [*vault_ssl_ca_cert*]
 #   What is the path to the ca cert.pem
 #
@@ -104,6 +107,7 @@ class consul_template (
   $vault_ssl          = true,
   $vault_ssl_verify   = true,
   $vault_ssl_cert     = '',
+  $vault_ssl_key      = '',
   $vault_ssl_ca_cert  = '',
   $data_dir           = '',
   $user               = $consul_template::params::user,
