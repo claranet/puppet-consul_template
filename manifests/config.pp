@@ -64,9 +64,14 @@ class consul_template::config (
   }
 
   if $::consul_template::vault_enabled {
+    $token = ($::consul_template::vault_token != undef) ? {
+      true  => "  token = \"${::consul_template::vault_token}\"\n",
+      false => '',
+    }
+
     concat::fragment { 'vault-base':
       target  => 'consul-template/config.json',
-      content => inline_template("vault {\n  address = \"${::consul_template::vault_address}\"\n  token = \"${::consul_template::vault_token}\"\n"),
+      content => inline_template("vault {\n  address = \"${::consul_template::vault_address}\"\n${token}}"),
       order   => '07',
     }
     if $::consul_template::vault_ssl {

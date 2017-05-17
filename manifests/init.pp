@@ -100,7 +100,7 @@ class consul_template (
   $logrotate_period   = 'daily',
   $vault_enabled      = false,
   $vault_address      = '',
-  $vault_token        = '',
+  $vault_token        = undef,
   $vault_ssl          = true,
   $vault_ssl_verify   = true,
   $vault_ssl_cert     = '',
