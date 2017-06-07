@@ -98,6 +98,8 @@ class consul_template (
   $logrotate_files    = 4,
   $logrotate_on       = false,
   $logrotate_period   = 'daily',
+  $syslog_enabled     = false,
+  $syslog_facility    = 'DAEMON',
   $vault_enabled      = false,
   $vault_address      = '',
   $vault_token        = '',
