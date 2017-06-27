@@ -12,15 +12,22 @@ class consul_template::config (
 
   concat::fragment { 'header':
     target  => 'consul-template/config.json',
-    content => inline_template("consul = \"<%= @consul_host %>:<%= @consul_port %>\"\ntoken = \"<%= @consul_token %>\"\nretry = \"<%= @consul_retry %>\"\n\n"),
+    content => inline_template("consul = \"<%= @consul_host %>:<%= @consul_port %>\"\nretry = \"<%= @consul_retry %>\"\n\n"),
     order   => '00',
   }
-
+  # Set wait param if specified
+  if $::consul_token {
+    concat::fragment { 'consul_wait':
+      target  => 'consul-template/config.json',
+      content => inline_template("token = \"<%= @consul_token %>\"\n\n"),
+      order   => '01',
+    }
+  }
   # Set the log level
   concat::fragment { 'log_level':
     target  => 'consul-template/config.json',
     content => inline_template("log_level = \"${::consul_template::log_level}\"\n"),
-    order   => '01'
+    order   => '02'
   }
 
   # Set wait param if specified
@@ -28,7 +35,7 @@ class consul_template::config (
     concat::fragment { 'consul_wait':
       target  => 'consul-template/config.json',
       content => inline_template("wait = \"${::consul_template::consul_wait}\"\n\n"),
-      order   => '02',
+      order   => '03',
     }
   }
 
@@ -37,7 +44,7 @@ class consul_template::config (
     concat::fragment { 'consul_max_stale':
       target  => 'consul-template/config.json',
       content => inline_template("max_stale = \"${::consul_template::consul_max_stale}\"\n\n"),
-      order   => '03',
+      order   => '04',
     }
   }
 
@@ -45,46 +52,53 @@ class consul_template::config (
     concat::fragment { 'dedup-base':
       target  => 'consul-template/config.json',
       content => inline_template("deduplicate {\n  enabled = true\n"),
-      order   => '04',
+      order   => '05',
     }
 
     if $::consul_template::deduplicate_prefix {
       concat::fragment { 'dedup-prefix':
         target  => 'consul-template/config.json',
         content => inline_template("  prefix = \"${::consul_template::deduplicate_prefix}\"\n"),
-        order   => '05',
+        order   => '06',
       }
     }
 
     concat::fragment { 'dedup-close':
       target  => 'consul-template/config.json',
       content => inline_template("}\n"),
-      order   => '06',
+      order   => '07',
     }
   }
 
   if $::consul_template::vault_enabled {
     concat::fragment { 'vault-base':
       target  => 'consul-template/config.json',
-      content => inline_template("vault {\n  address = \"${::consul_template::vault_address}\"\n  token = \"${::consul_template::vault_token}\"\n"),
-      order   => '07',
+      content => inline_template("vault {\n  address = \"${::consul_template::vault_address}\"\n"),
+      order   => '08',
+    }
+    if $::consul_template::vault_token {
+      concat::fragment { 'vault-token':
+        target  => 'consul-template/config.json',
+        content => inline_template("  token = \"${::consul_template::vault_token}\"\n"),
+        order   => '09',
+      }
     }
     if $::consul_template::vault_ssl {
       concat::fragment { 'vault-ssl1':
         target  => 'consul-template/config.json',
         content => inline_template("  ssl {\n    enabled = true\n    verify = ${::consul_template::vault_ssl_verify}\n"),
-        order   => '08',
+        order   => '10',
       }
       concat::fragment { 'vault-ssl2':
         target  => 'consul-template/config.json',
         content => inline_template("    cert = \"${::consul_template::vault_ssl_cert}\"\n    ca_cert = \"${::consul_template::vault_ssl_ca_cert}\"\n  }\n"),
-        order   => '09',
+        order   => '11',
       }
     }
     concat::fragment { 'vault-baseclose':
       target  => 'consul-template/config.json',
       content => "}\n\n",
-      order   => '10',
+      order   => '12',
     }
   }
 
