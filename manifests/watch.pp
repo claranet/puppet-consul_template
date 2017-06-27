@@ -10,6 +10,9 @@ define consul_template::watch (
   $template      = undef,
   $template_vars = {},
   $perms = '0644',
+  $command_timeout = '30s',
+  $backup = false,
+  $wait = undef
 ) {
   include consul_template
 
@@ -41,10 +44,16 @@ define consul_template::watch (
     $frag_name   = "${name}.ctmpl"
   }
 
+  if $wait != undef {
+    $fragment_wait = "  wait = \"${wait}\"\n"
+  } else {
+    $fragment_wait = ''
+  }
+
   concat::fragment { $frag_name:
     target  => 'consul-template/config.json',
-    content => "template {\n  source = \"${source_name}\"\n  destination = \"${destination}\"\n  command = \"${command}\"\n  perms = ${perms}\n}\n\n",
-    order   => '10',
+    content => "template {\n  source = \"${source_name}\"\n  destination = \"${destination}\"\n  command = \"${command}\"\n  perms = ${perms}\n  backup = ${backup}\n  command_timeout = \"${command_timeout}\"\n${fragment_wait}}\n\n",
+    order   => '20',
     notify  => Service['consul-template']
   }
 }

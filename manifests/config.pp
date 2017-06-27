@@ -12,7 +12,7 @@ class consul_template::config (
 
   concat::fragment { 'header':
     target  => 'consul-template/config.json',
-    content => inline_template("consul = \"<%= @consul_host %>:<%= @consul_port %>\"\ntoken = \"<%= @consul_token %>\"\nretry = \"<%= @consul_retry %>\"\n\n"),
+    content => inline_template("consul {\n  address = \"<%= @consul_host %>:<%= @consul_port %>\"\n  token = \"<%= @consul_token %>\"\n  retry = {\n    enabled = true\n    attempts = 5\n    backoff = \"<%= @consul_retry %>\"\n  }\n}\n\n"),
     order   => '00',
   }
 
@@ -85,6 +85,15 @@ class consul_template::config (
       target  => 'consul-template/config.json',
       content => "}\n\n",
       order   => '10',
+    }
+  }
+
+  # Set syslog param if specified
+  if $::consul_template::syslog_enabled {
+    concat::fragment { 'syslog':
+      target  => 'consul-template/config.json',
+      content => inline_template("syslog {\n  enabled = true\n  facility = \"${::consul_template::syslog_facility}\"\n}\n\n"),
+      order   => '11',
     }
   }
 
