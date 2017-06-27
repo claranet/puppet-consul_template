@@ -9,7 +9,7 @@ group :test do
   gem 'rspec-puppet-facts'
   gem 'puppet-syntax'
   gem 'puppetlabs_spec_helper', '< 2.0.0'
-  gem 'metadata-json-lint'
+  gem 'metadata-json-lint', '1.1.0'
   gem 'json', '< 2.0.0'
   gem 'xmlrpc', :require => false if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.4.0')
 end
