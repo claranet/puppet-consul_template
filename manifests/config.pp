@@ -12,7 +12,7 @@ class consul_template::config (
 
   concat::fragment { 'header':
     target  => 'consul-template/config.json',
-    content => inline_template("consul = \"<%= @consul_host %>:<%= @consul_port %>\"\ntoken = \"<%= @consul_token %>\"\nretry = \"<%= @consul_retry %>\"\n\n"),
+    content => inline_template("consul {\n  address = \"<%= @consul_host %>:<%= @consul_port %>\"\n  token = \"<%= @consul_token %>\"\n  retry = {\n    enabled = true\n    attempts = 5\n    backoff = \"<%= @consul_retry %>\"\n  }\n}\n\n"),
     order   => '00',
   }
 
@@ -64,9 +64,14 @@ class consul_template::config (
   }
 
   if $::consul_template::vault_enabled {
+    $token = ($::consul_template::vault_token != undef) ? {
+      true  => "  token = \"${::consul_template::vault_token}\"\n",
+      false => '',
+    }
+
     concat::fragment { 'vault-base':
       target  => 'consul-template/config.json',
-      content => inline_template("vault {\n  address = \"${::consul_template::vault_address}\"\n  token = \"${::consul_template::vault_token}\"\n"),
+      content => inline_template("vault {\n  address = \"${::consul_template::vault_address}\"\n${token}}"),
       order   => '07',
     }
     if $::consul_template::vault_ssl {
@@ -77,7 +82,7 @@ class consul_template::config (
       }
       concat::fragment { 'vault-ssl2':
         target  => 'consul-template/config.json',
-        content => inline_template("    cert = \"${::consul_template::vault_ssl_cert}\"\n    ca_cert = \"${::consul_template::vault_ssl_ca_cert}\"\n  }\n"),
+        content => inline_template("    cert = \"${::consul_template::vault_ssl_cert}\"\n    key = \"${::consul_template::vault_ssl_key}\"\n    ca_cert = \"${::consul_template::vault_ssl_ca_cert}\"\n  }\n"),
         order   => '09',
       }
     }
