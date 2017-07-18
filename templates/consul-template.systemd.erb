@@ -8,7 +8,9 @@ User=<%= scope.lookupvar('consul_template::user') %>
 Group=<%= scope.lookupvar('consul_template::group') %>
 ExecStart=<%= scope.lookupvar('consul_template::bin_dir') %>/consul-template \
   -config <%= scope.lookupvar('consul_template::config_dir') %>/config <%= scope.lookupvar('consul_template::extra_options') %>
-ExecReload=/bin/kill -HUP $MAINPID
+SuccessExitStatus=12
+ExecReload=/bin/kill -SIGHUP $MAINPID
+ExecStop=/bin/kill -SIGINT $MAINPID
 KillMode=process
 Restart=always
 RestartSec=42s
