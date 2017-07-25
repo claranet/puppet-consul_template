@@ -2,39 +2,47 @@
 #
 class consul_template::install {
 
-  if ! empty($consul_template::data_dir) {
-    file { $consul_template::data_dir:
-      ensure => 'directory',
-      owner  => $consul_template::user,
-      group  => $consul_template::group,
-      mode   => '0755',
-    }
+  file { $consul_template::data_dir:
+    ensure => 'directory',
+    owner  => $consul_template::user,
+    group  => $consul_template::group,
+    mode   => '0755',
   }
 
   if $consul_template::install_method == 'url' {
 
-    include staging
     if $::operatingsystem != 'darwin' {
-      ensure_packages(['tar'])
+      ensure_packages(['unzip'])
     }
-    staging::file { "consul-template_${consul_template::version}.${consul_template::download_extension}":
-      source => $consul_template::real_download_url,
-    } ->
-    file { "${::staging::path}/consul-template-${consul_template::version}":
+
+    $install_prefix = pick($::consul_template::data_dir, '/opt/consul-template')
+    $install_path   = pick($::consul_template::archive_path, "${install_prefix}/archives")
+
+    include '::archive'
+    file { [
+      $install_path,
+      "${install_path}/consul-template-${consul_template::version}"]:
       ensure => directory,
-    } ->
-    staging::extract { "consul-template_${consul_template::version}.${consul_template::download_extension}":
-      target  => "${::staging::path}/consul-template-${consul_template::version}",
-      creates => "${::staging::path}/consul-template-${consul_template::version}/consul-template",
-    } ->
-    file {
-      "${::staging::path}/consul-template-${consul_template::version}/consul-template":
+      owner  => 'root',
+      group  => 0, # 0 instead of root because OS X uses "wheel".
+      mode   => '0555';
+    }
+    -> archive { "${install_path}/consul-template-${consul_template::version}.${consul_template::download_extension}":
+      ensure       => present,
+      source       => $consul_template::real_download_url,
+      extract      => true,
+      extract_path => "${install_path}/consul-template-${consul_template::version}",
+      creates      => "${install_path}/consul-template-${consul_template::version}/consul-template",
+    }
+    -> file {
+      "${install_path}/consul-template-${consul_template::version}/consul-template":
         owner => 'root',
         group => 0, # 0 instead of root because OS X uses "wheel".
         mode  => '0555';
       "${consul_template::bin_dir}/consul-template":
         ensure => link,
-        target => "${::staging::path}/consul-template-${consul_template::version}/consul-template";
+        notify => Class['consul_template::service'],
+        target => "${install_path}/consul-template-${consul_template::version}/consul-template";
     }
 
   } elsif $consul_template::install_method == 'package' {

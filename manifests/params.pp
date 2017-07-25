@@ -9,7 +9,7 @@ class consul_template::params {
   $log_level          = 'info'
   $package_name       = 'consul-template'
   $package_ensure     = 'latest'
-  $version            = '0.11.0'
+  $version            = '0.19.0'
   $download_url_base  = 'https://releases.hashicorp.com/consul-template/'
   $download_extension = 'zip'
   $user               = 'root'
@@ -17,6 +17,9 @@ class consul_template::params {
   $manage_user        = false
   $manage_group       = false
   $config_mode        = '0660'
+  $bin_dir            = '/usr/local/bin'
+  $archive_path       = ''
+  $data_dir           = '/opt/consul-template'
 
   case $::architecture {
     'x86_64', 'amd64': { $arch = 'amd64' }

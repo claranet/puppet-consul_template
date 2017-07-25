@@ -50,7 +50,7 @@
 #   What is the path to the ca cert.pem
 #
 # [*data_dir*]
-#   Path to a directory to create to hold some data. Defaults to ''
+#   Path to a directory to create to hold some data. Defaults to '/opt/consul-template'
 #
 # [*user*]
 #   Name of a user to use for dir and file perms. Defaults to root.
@@ -70,7 +70,6 @@
 class consul_template (
   $purge_config_dir   = true,
   $config_mode        = $consul_template::params::config_mode,
-  $bin_dir            = '/usr/local/bin',
   $arch               = $consul_template::params::arch,
   $version            = $consul_template::params::version,
   $install_method     = $consul_template::params::install_method,
@@ -105,7 +104,7 @@ class consul_template (
   $vault_ssl_verify   = true,
   $vault_ssl_cert     = '',
   $vault_ssl_ca_cert  = '',
-  $data_dir           = '',
+  $data_dir           = $consul_template::params::data_dir,
   $user               = $consul_template::params::user,
   $group              = $consul_template::params::group,
   $manage_user        = $consul_template::params::manage_user,
