@@ -9,7 +9,7 @@ class consul_template::params {
   $log_level          = 'info'
   $package_name       = 'consul-template'
   $package_ensure     = 'latest'
-  $version            = '0.11.0'
+  $version            = '0.19.0'
   $download_url_base  = 'https://releases.hashicorp.com/consul-template/'
   $download_extension = 'zip'
   $user               = 'root'
