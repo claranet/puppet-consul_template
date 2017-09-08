@@ -1,0 +1,5 @@
+---
+Rakefile:
+  default_disabled_lint_checks:
+    - 'disable_80chars'
+    - 'disable_empty_string_assignment'
