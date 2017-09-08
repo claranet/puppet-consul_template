@@ -15,14 +15,14 @@ class consul_template::logrotate(
   validate_string($restart_sysv)
   validate_string($restart_systemd)
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'RedHat': {
-      case $::operatingsystem {
+      case $facts['os']['name'] {
         'RedHat', 'CentOS', 'OracleLinux', 'Scientific': {
-          if(versioncmp($::operatingsystemrelease, '7') > 0) {
+          if(versioncmp($facts['os']['release']['major'], '7') > 0) {
             $postrotate_command = $restart_systemd
           }
-          elsif (versioncmp($::operatingsystemrelease, '7') < 0) {
+          elsif (versioncmp($facts['os']['release']['major'], '7') < 0) {
             $postrotate_command = $restart_sysv
           }
           else {
@@ -37,11 +37,14 @@ class consul_template::logrotate(
         }
       }
     }
+    default: {
+      $postrotate_command = $restart_sysv
+    }
   }
 
   if $logrotate_on {
     file { '/etc/logrotate.d/consul-template':
-      ensure  => present,
+      ensure  => file,
       content => template("${module_name}/consul-template.logrotate.erb"),
       owner   => 'root',
       group   => 'root',

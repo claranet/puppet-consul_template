@@ -11,3 +11,4 @@ fixtures:
       ref: "2.2.1"
   symlinks:
     consul_template: "#{source_dir}"
+    consul_template_spec: "#{source_dir}/spec/fixtures/consul_template_spec"
