@@ -20,31 +20,30 @@ class consul_template::params {
   $kill_signal        = 'SIGTERM'
   $reload_signal      = 'SIGHUP'
 
-#  case $facts['os']['architecture'] {
-#    'x86_64', 'amd64': { $arch = 'amd64' }
-#    'i386':            { $arch = '386'   }
-#    default:           { fail("Unsupported kernel architecture: ${facts[os][architecture]}") }
-#  }
+  case $::architecture {
+    'x86_64', 'amd64': { $arch = 'amd64' }
+    'i386':            { $arch = '386'   }
+    default:           { fail("Unsupported kernel architecture: ${::architecture}") }
+  }
 
-  $arch = 'amd64'
-  $os = downcase($facts['kernel'])
+  $os = downcase($::kernel)
 
-  $init_style = $facts['os']['name'] ? {
-    'Ubuntu'  => $facts['os']['release']['major'] ? {
+  $init_style = $::operatingsystem ? {
+    'Ubuntu'        => $::lsbdistrelease ? {
       '8.04'  => 'debian',
       '15.04' => 'systemd',
       '16.04' => 'systemd',
       default => 'upstart'
     },
-    /CentOS|RedHat/      => $facts['os']['release']['major'] ? {
+    /CentOS|RedHat/ => $::operatingsystemmajrelease ? {
       /(4|5|6)/ => 'sysv',
       default   => 'systemd',
     },
-    'Fedora'             => $facts['os']['release']['major'] ? {
+    'Fedora'        => $::operatingsystemmajrelease ? {
       /(12|13|14)/ => 'sysv',
       default      => 'systemd',
     },
-    'Debian'             =>  $facts['os']['release']['major'] ? {
+    'Debian'        =>  $::operatingsystemmajrelease ? {
       /(4|5|6|7)/ => 'debian',
       default     => 'systemd'
     },

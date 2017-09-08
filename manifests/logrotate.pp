@@ -15,14 +15,14 @@ class consul_template::logrotate(
   validate_string($restart_sysv)
   validate_string($restart_systemd)
 
-  case $facts['os']['family'] {
+  case $::osfamily {
     'RedHat': {
-      case $facts['os']['name'] {
+      case $::operatingsystem {
         'RedHat', 'CentOS', 'OracleLinux', 'Scientific': {
-          if(versioncmp($facts['os']['release']['major'], '7') > 0) {
+          if(versioncmp($::operatingsystemmajrelease, '7') > 0) {
             $postrotate_command = $restart_systemd
           }
-          elsif (versioncmp($facts['os']['release']['major'], '7') < 0) {
+          elsif (versioncmp($::operatingsystemmajrelease, '7') < 0) {
             $postrotate_command = $restart_sysv
           }
           else {
