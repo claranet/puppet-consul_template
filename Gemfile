@@ -19,6 +19,7 @@ group :test do
   gem 'safe_yaml', '~> 1.0.4',                                      :require => false
   gem 'rspec-puppet', '~> 2.5',                                     :require => false
   gem 'metadata-json-lint',                                         :require => false
+  gem 'xmlrpc',                                                     :require => false
   gem 'json', '< 2.0.0',                                            :require => false
 end
 group :development do
@@ -27,7 +28,6 @@ group :development do
   gem 'vagrant-wrapper',    :require => false
   gem 'puppet-blacksmith',  :require => false
   gem 'guard-rake',         :require => false
-  gem 'xmlrpc',             :require => false
 end
 group :system_tests do
   gem 'beaker',  :require => false
