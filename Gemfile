@@ -27,6 +27,7 @@ group :development do
   gem 'vagrant-wrapper',    :require => false
   gem 'puppet-blacksmith',  :require => false
   gem 'guard-rake',         :require => false
+  gem 'xmlrpc',             :require => false
 end
 group :system_tests do
   gem 'beaker',  :require => false
