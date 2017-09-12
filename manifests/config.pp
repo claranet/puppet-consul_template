@@ -117,8 +117,8 @@ class consul_template::config (
     owner   => $consul_template::user,
     group   => $consul_template::group,
     mode    => '0755',
-  } ->
-  concat { 'consul-template/config.json':
+  }
+  -> concat { 'consul-template/config.json':
     path   => "${consul_template::config_dir}/config/config.json",
     owner  => $consul_template::user,
     group  => $consul_template::group,

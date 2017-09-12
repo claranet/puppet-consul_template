@@ -12,7 +12,7 @@ define consul_template::watch (
   $template_vars = {},
   $perms = '0644',
 ) {
-  include consul_template
+  include ::consul_template
 
   if $content == undef and $source == undef and $template == undef {
     err('Specify either content, source or template parameter for consul_template::watch')

@@ -1,0 +1,4 @@
+---
+Rakefile:
+  extra_disabled_lint_checks:
+    - 'disable_empty_string_assignment'
