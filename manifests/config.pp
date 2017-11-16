@@ -16,7 +16,7 @@ class consul_template::config (
 
   if versioncmp( $::consul_template::version, '0.18.0') >= 0 {
 
-    concat::fragment { 'header':
+    concat::fragment { 'consul_template.config.header':
       target  => 'consul-template/config.json',
       content => inline_template("consul {\n  address = \"<%= @consul_host %>:<%= @consul_port %>\"\n  token = \"<%= @consul_token %>\"\n  retry {\n    attempts = <%= @consul_retry_attempts %>\n    backoff = \"<%= @consul_retry_backoff %>\"\n  }\n}\n\n"),
       order   => '00',
@@ -25,7 +25,7 @@ class consul_template::config (
   }
 
   else {
-    concat::fragment { 'header':
+    concat::fragment { 'consul_template.config.header':
       target  => 'consul-template/config.json',
       content => inline_template("consul = \"<%= @consul_host %>:<%= @consul_port %>\"\ntoken = \"<%= @consul_token %>\"\nretry = \"<%= @consul_retry %>\"\n\n"),
       order   => '00',
