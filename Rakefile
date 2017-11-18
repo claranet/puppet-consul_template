@@ -18,6 +18,7 @@ exclude_paths = %w(
 )
 
 PuppetSyntax.exclude_paths = exclude_paths
+PuppetSyntax.future_parser = true
 
 PuppetLint.configuration.relative = true
 PuppetLint.configuration.fail_on_warnings = true
