@@ -3,7 +3,6 @@ source ENV['GEM_SOURCE'] || "https://rubygems.org"
 group :test do
   gem 'rake',                                                       :require => false
   gem 'puppet-lint',                                                :require => false
-  gem 'puppet-lint-absolute_classname-check',                       :require => false
   gem 'puppet-lint-alias-check',                                    :require => false
   gem 'puppet-lint-package_ensure-check',                           :require => false
   gem 'puppet-lint-legacy_facts-check',                             :require => false

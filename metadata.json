@@ -7,6 +7,12 @@
   "source"                  : "https://github.com/claranet/puppet-consul_template",
   "project_page"            : "https://github.com/claranet/puppet-consul_template",
   "issues_url"              : "https://github.com/claranet/puppet-consul_template/issues",
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.7.1 < 6.0.0"
+    }
+  ],
   "operatingsystem_support" :  [
     { "operatingsystem": "RedHat", "operatingsystemrelease": [ "6.0", "7.0" ]},
     { "operatingsystem": "CentOS", "operatingsystemrelease": [ "6.0", "7.0" ]},
@@ -14,7 +20,7 @@
     { "operatingsystem": "Ubuntu", "operatingsystemrelease" : [ "14.04", "16.04" ]}
   ],
   "dependencies": [
-    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.0.0 < 6.0.0" },
+    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.13.1 < 6.0.0" },
     { "name": "puppetlabs/concat", "version_requirement": ">= 2.2.0 < 3.0.0" },
     { "name": "puppet/staging", "version_requirement": ">= 2.0.0 <= 3.0.0" },
     { "name": "KyleAnderson/consul", "version_requirement": ">= 3.2.3 < 4.0.0" }

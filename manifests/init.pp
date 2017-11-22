@@ -48,87 +48,54 @@
 #
 # [*watches*]
 #   A hash of watches - allows greater Hiera integration. Defaults to `{}`.
-
 class consul_template (
-  $arch                  = $::consul_template::params::arch,
-  $init_style            = $::consul_template::params::init_style,
-  $os                    = $::consul_template::params::os,
-  $bin_dir               = '/usr/local/bin',
-  $config_hash           = {},
-  $config_defaults       = {},
-  $config_dir            = '/etc/consul-template',
-  $config_mode           = '0660',
-  $data_dir              = '',
-  $download_url          = undef,
-  $download_url_base     = 'https://releases.hashicorp.com/consul-template',
-  $download_extension    = 'zip',
-  $extra_options         = '',
-  $group                 = 'root',
-  $install_method        = 'url',
-  $logrotate_compress    = 'nocompress',
-  $logrotate_files       = 4,
-  $logrotate_on          = false,
-  $logrotate_period      = 'daily',
-  $manage_user           = false,
-  $manage_group          = false,
-  $package_name          = 'consul-template',
-  $package_ensure        = 'latest',
-  $pretty_config         = false,
-  $pretty_config_indent  = 4,
-  $purge_config_dir      = true,
-  $service_enable        = true,
-  $service_ensure        = 'running',
-  $user                  = 'root',
-  $version               = '0.19.4',
-  $watches               = {},
+  String $arch                               = $consul_template::params::arch,
+  String $init_style                         = $consul_template::params::init_style,
+  String $os                                 = $consul_template::params::os,
+  String $bin_dir                            = '/usr/local/bin',
+  Hash $config_hash                          = {},
+  Hash $config_defaults                      = {},
+  String $config_dir                         = '/etc/consul-template',
+  String $config_mode                        = '0660',
+  String $data_dir                           = '',
+  Optional[Stdlib::HTTPSUrl] $download_url   = undef,
+  Stdlib::HTTPSUrl $download_url_base        = 'https://releases.hashicorp.com/consul-template',
+  String $download_extension                 = 'zip',
+  String $extra_options                      = '',
+  String $group                              = 'root',
+  Enum['url', 'package'] $install_method     = 'url',
+  String $logrotate_compress                 = 'nocompress',
+  Integer $logrotate_files                   = 4,
+  Boolean $logrotate_on                      = false,
+  String $logrotate_period                   = 'daily',
+  Boolean $manage_user                       = false,
+  Boolean $manage_group                      = false,
+  String $package_name                       = 'consul-template',
+  String $package_ensure                     = 'latest',
+  Boolean $pretty_config                     = false,
+  Integer $pretty_config_indent              = 4,
+  Boolean $purge_config_dir                  = true,
+  Boolean $service_enable                    = true,
+  Enum['stopped', 'running'] $service_ensure = 'running',
+  String $user                               = 'root',
+  String $version                            = '0.19.4',
+  Hash $watches                              = {},
 ) inherits consul_template::params {
 
-  validate_bool($purge_config_dir)
-  validate_string($user)
-  validate_string($group)
-  validate_bool($manage_user)
-  validate_bool($manage_group)
-  validate_hash($watches)
-  validate_hash($config_hash)
-  validate_hash($config_defaults)
-
-  $real_download_url = pick($download_url, "${download_url_base}/${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
+  $_download_url = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
 
   if $watches {
-    create_resources('::consul_template::watch', $watches)
+    create_resources('consul_template::watch', $watches)
   }
 
-  $config_base = {
-    consul => 'localhost:8500',
-  }
-  $config_hash_real = deep_merge($config_base, $config_defaults, $config_hash)
+  contain consul_template::install
+  contain consul_template::config
+  contain consul_template::service
+  contain consul_template::logrotate
 
-  anchor { '::consul_template::begin': }
+  Class['consul_template::install']
+  -> Class['consul_template::config']
+  ~> Class['consul_template::service']
+  -> Class['consul_template::logrotate']
 
-  class { '::consul_template::install':
-    require => Anchor['::consul_template::begin'],
-  }
-
-  class { '::consul_template::config':
-    config_hash => $config_hash_real,
-    purge       => $purge_config_dir,
-    require     => Class['::consul_template::install'],
-  }
-
-  class { '::consul_template::service':
-    subscribe => Class['::consul_template::config'],
-  }
-
-  anchor { '::consul_template::end':
-    require => Class['::consul_template::service'],
-  }
-
-  class { '::consul_template::logrotate':
-    logrotate_compress => $logrotate_compress,
-    logrotate_files    => $logrotate_files,
-    logrotate_on       => $logrotate_on,
-    logrotate_period   => $logrotate_period,
-    require            => Anchor['::consul_template::begin'],
-    before             => Anchor['::consul_template::end'],
-  }
 }
