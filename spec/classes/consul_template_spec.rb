@@ -38,7 +38,7 @@ describe 'consul_template', :type => :class do
 
           context 'with defaults' do
             it do
-              is_expected.to contain_concat__fragment('header').
+              is_expected.to contain_concat__fragment('consul_template.config.header').
                 with_content(%r{consul = "localhost:8500"}).
                 with_content(%r{token = "fe3b8d40-0ee0-8783-6cc2-ab1aa9bb16c1"})
             end
