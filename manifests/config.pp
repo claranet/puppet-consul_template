@@ -32,6 +32,14 @@ class consul_template::config (
     order   => '99',
   }
 
+  if $::consul_template::consul_ssl_enabled {
+    concat::fragment { 'consul-ssl-base':
+      target  => 'consul-template/config.json',
+      content => inline_template("ssl {\n  enabled = true\n  cert = \"${::consul_template::consul_ssl_cert}\"\n  ca_cert = \"${::consul_template::consul_ssl_ca_cert}\"\n  verify = ${::consul_template::consul_ssl_verify}\n}\n\n"),
+      order   => '08',
+    }
+  }
+
   file { [$consul_template::config_dir, "${consul_template::config_dir}/config"]:
     ensure  => 'directory',
     purge   => $purge,
