@@ -26,6 +26,10 @@ Breaking Changes!
   consul_template::vault_ssl_ca_cert
   consul_template::consul_reload_signal
   consul_template::consul_kill_signal
+  consul_template::consul_ssl_enabled
+  consul_template::consul_ssl_verify
+  consul_template::consul_ssl_cert
+  consul_template::consul_ssl_ca_cert
 
 2016-11-01 Release 0.2.9
 - Feature Enhancement: Change consul-tempalte systemd restart option
