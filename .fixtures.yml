@@ -9,6 +9,9 @@ fixtures:
     concat:
       repo: "git://github.com/puppetlabs/puppet-concat.git"
       ref: "2.2.1"
+    consul:
+      repo: "git://github.com/solarkennedy/puppet-consul"
+      ref: "v2.1.1"
   symlinks:
     consul_template: "#{source_dir}"
     consul_template_spec: "#{source_dir}/spec/fixtures/consul_template_spec"
