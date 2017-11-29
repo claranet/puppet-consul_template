@@ -7,7 +7,7 @@ describe 'consul_template', :type => :class do
       context "on #{os}" do
         let(:facts) do
           facts.merge({
-            'kernel'           => 'Linux',
+            #'kernel'           => 'Linux',
             'staging_http_get' => 'curl',
             'concat_basedir'   => '/var/lib/puppet/concat'
           })
@@ -34,17 +34,31 @@ describe 'consul_template', :type => :class do
         end
 
         describe 'consul_template::config' do
-          let(:params) {{ consul_token: 'fe3b8d40-0ee0-8783-6cc2-ab1aa9bb16c1' }}
-
           context 'with defaults' do
-            it do
-              is_expected.to contain_concat__fragment('consul_template.config.header').
-                with_content(%r{consul = "localhost:8500"}).
-                with_content(%r{token = "fe3b8d40-0ee0-8783-6cc2-ab1aa9bb16c1"})
-            end
-            it { is_expected.not_to contain_concat__fragment('consul-ssl-base') }
+            it { is_expected.to contain_concat('consul-template/config.json') }
+          end
+
+          context 'with config_hash' do
+            let(:params) {{ config_hash: { 'log_level': 'foo' } }}
+            it { is_expected.to contain_concat__fragment('consul-service-pre').with_content(/"log_level" *: *"foo"/) }
+          end
+
+          context 'with config_defaults' do
+            let(:params) {{ config_defaults: { 'log_level': 'foo' } }}
+            it { is_expected.to contain_concat__fragment('consul-service-pre').with_content(/"log_level" *: *"foo"/) }
+          end
+
+          context 'with config_defaults and config_hash' do
+            let(:params) {{
+              config_defaults: { 'log_level': 'foo' },
+              config_hash: { 'log_level': 'bar' }
+            }}
+
+            it { is_expected.to contain_concat__fragment('consul-service-pre').with_content(/"log_level" *: *"bar"/) }
           end
         end
+
+
       end
     end
   end

@@ -62,6 +62,8 @@ class consul_template (
   $download_extension    = $::consul_template::params::download_extension,
   $package_name          = $::consul_template::params::package_name,
   $package_ensure        = $::consul_template::params::package_ensure,
+  $pretty_config         = $::consul_template::params::pretty_config,
+  $pretty_config_indent  = $::consul_template::params::pretty_config_indent,
   $config_dir            = '/etc/consul-template',
   $extra_options         = '',
   $service_enable        = true,

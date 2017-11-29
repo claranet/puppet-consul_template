@@ -47,7 +47,7 @@ define consul_template::watch (
   }
 
   $config_hash_all = deep_merge($config_hash_real, $config_source)
-  $content_full = consul_sorted_json($config_hash_all, $consul::pretty_config, $consul::pretty_config_indent)
+  $content_full = consul_sorted_json($config_hash_all, $consul_template::pretty_config, $consul_template::pretty_config_indent)
   $content = regsubst(regsubst($content_full, "}\n$", '}'), "\n", "\n    ", 'G')
 
   @concat::fragment { $frag_name:

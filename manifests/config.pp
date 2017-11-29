@@ -8,7 +8,7 @@ class consul_template::config (
 ) {
 
   # Using our parent module's pretty_config & pretty_config_indent just because
-  $content_full = consul_sorted_json($config_hash, $consul::pretty_config, $consul::pretty_config_indent)
+  $content_full = consul_sorted_json($config_hash, $consul_template::pretty_config, $consul_template::pretty_config_indent)
   # remove the closing } and it's surrounding newlines
   $content = regsubst($content_full, "\n}\n$", '')
 
@@ -30,14 +30,6 @@ class consul_template::config (
     # close off the template array and the whole object
     content => "    ],\n}",
     order   => '99',
-  }
-
-  if $::consul_template::consul_ssl_enabled {
-    concat::fragment { 'consul-ssl-base':
-      target  => 'consul-template/config.json',
-      content => inline_template("ssl {\n  enabled = true\n  cert = \"${::consul_template::consul_ssl_cert}\"\n  ca_cert = \"${::consul_template::consul_ssl_ca_cert}\"\n  verify = ${::consul_template::consul_ssl_verify}\n}\n\n"),
-      order   => '08',
-    }
   }
 
   file { [$consul_template::config_dir, "${consul_template::config_dir}/config"]:
