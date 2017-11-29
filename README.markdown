@@ -39,6 +39,8 @@ set to 'package', its installed using the system package manager.
 - `log_level` Default: info. Logging level to use for consul-template service. Can be 'debug', 'warn', 'err', 'info'
 - `config_hash` Default: {}. Consul-template configuration options. See https://github.com/hashicorp/consul-template#options
 - `config_defaults` Default: {}. Consul-template configuration option defaults.
+- `pretty_config` Default: false. Generates a human readable JSON config file. Defaults to `false`.
+- `pretty_config_indent` Default: 4. Toggle indentation for human readable JSON file.
 
 
 
