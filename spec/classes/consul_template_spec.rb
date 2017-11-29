@@ -44,39 +44,6 @@ describe 'consul_template', :type => :class do
             end
             it { is_expected.not_to contain_concat__fragment('consul-ssl-base') }
           end
-
-          context 'with consul_ssl_enabled' do
-            let(:params) do
-              {
-                consul_ssl_enabled: true,
-                consul_ssl_cert: '/etc/consul/ssl/foobar.cert',
-                consul_ssl_ca_cert: '/etc/consul/ssl/cacert.cert'
-              }
-            end
-
-            it do
-              is_expected.to contain_concat__fragment('consul-ssl-base').
-                with_content(%r{cert = "/etc/consul/ssl/foobar.cert"}).
-                with_content(%r{ca_cert = "/etc/consul/ssl/cacert.cert"}).
-                with_content(%r{verify = true})
-            end
-          end
-
-          context 'with consul_ssl_enabled and consul_ssl_verify false' do
-            let(:params) do
-              {
-                consul_ssl_enabled: true,
-                consul_ssl_verify: false,
-                consul_ssl_cert: '/etc/consul/ssl/foobar.cert',
-                consul_ssl_ca_cert: '/etc/consul/ssl/cacert.cert'
-              }
-            end
-
-            it do
-              is_expected.to contain_concat__fragment('consul-ssl-base').
-                with_content(%r{verify = false})
-            end
-          end
         end
       end
     end

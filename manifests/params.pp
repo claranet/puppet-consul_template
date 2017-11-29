@@ -6,7 +6,6 @@
 class consul_template::params {
 
   $install_method     = 'url'
-  $log_level          = 'info'
   $package_name       = 'consul-template'
   $package_ensure     = 'latest'
   $version            = '0.11.0'
@@ -17,8 +16,6 @@ class consul_template::params {
   $manage_user        = false
   $manage_group       = false
   $config_mode        = '0660'
-  $kill_signal        = 'SIGTERM'
-  $reload_signal      = 'SIGHUP'
 
   case $::architecture {
     'x86_64', 'amd64': { $arch = 'amd64' }

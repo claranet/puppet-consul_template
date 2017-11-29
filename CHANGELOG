@@ -1,5 +1,39 @@
+2017-11-19 Release 1.0.0
+
+Breaking Changes!
+
+- Reorganize the module to the github.com style
+
+- Remove the following options, use consul_template::config_hash instead:
+
+  consul_template::consul_host
+  consul_template::consul_port
+  consul_template::consul_token
+  consul_template::consul_retry
+  consul_template::consul_retry_attempts
+  consul_template::consul_retry_backoff
+  consul_template::consul_wait
+  consul_template::consul_max_stale
+  consul_template::deduplicate
+  consul_template::deduplicate_prefix
+  consul_template::log_level
+  consul_template::vault_enabled
+  consul_template::vault_address
+  consul_template::vault_token
+  consul_template::vault_ssl
+  consul_template::vault_ssl_verify
+  consul_template::vault_ssl_cert
+  consul_template::vault_ssl_ca_cert
+  consul_template::consul_reload_signal
+  consul_template::consul_kill_signal
+  consul_template::consul_ssl_enabled
+  consul_template::consul_ssl_verify
+  consul_template::consul_ssl_cert
+  consul_template::consul_ssl_ca_cert
+
 2016-11-01 Release 0.2.9
 - Feature Enhancement: Change consul-tempalte systemd restart option
+
 2016-05-11 Release 0.2.8
 - Bugfix: Revert: Do not create the user + group by default. Run consul-template as root/root instead
 
