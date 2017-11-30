@@ -7,7 +7,6 @@ describe 'consul_template', :type => :class do
       context "on #{os}" do
         let(:facts) do
           facts.merge({
-            #'kernel'           => 'Linux',
             'staging_http_get' => 'curl',
             'concat_basedir'   => '/var/lib/puppet/concat'
           })

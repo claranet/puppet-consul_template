@@ -7,8 +7,6 @@ describe 'consul_template::watch', :type => :define do
       context "on #{os}" do
         let(:facts) do
           facts.merge({
-            :kernel => 'Linux',
-            :operatingsystem => os,
             :staging_http_get => 'curl',
           })
         end
@@ -23,15 +21,11 @@ describe 'consul_template::watch', :type => :define do
             }
           }}
 
-          let(:facts) {{
-            :kernel         => 'Linux',
-            :osfamily       => os,
-            :operatingsystem => os,
-            :concat_basedir => '/foo',
-            :path           => '/bin:/sbin:/usr/bin:/usr/sbin',
-            :architecture   => 'x86_64',
+          facts.merge({
+            :concat_basedir   => '/foo',
+            :path             => '/bin:/sbin:/usr/bin:/usr/sbin',
             :staging_http_get => 'curl',
-          }}
+          })
 
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_class('consul_template') }
