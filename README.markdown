@@ -95,8 +95,8 @@ consul_template::watch { 'common':
         'var1' => 'foo',
         'var2' => 'bar',
     },
-    perms         => '0644',
     config_hash   => {
+      perms       => '0644',
       destination => '/tmp/common.json',
       command     => 'true',
     },

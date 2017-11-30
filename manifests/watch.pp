@@ -8,7 +8,6 @@ define consul_template::watch (
   $config_defaults = {},
   $template        = undef,
   $template_vars   = {},
-  $perms = '0644',
 ) {
   include ::consul_template
 
