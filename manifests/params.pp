@@ -5,20 +5,19 @@
 #
 class consul_template::params {
 
-  $install_method     = 'url'
-  $log_level          = 'info'
-  $package_name       = 'consul-template'
-  $package_ensure     = 'latest'
-  $version            = '0.11.0'
-  $download_url_base  = 'https://releases.hashicorp.com/consul-template/'
-  $download_extension = 'zip'
-  $user               = 'root'
-  $group              = 'root'
-  $manage_user        = false
-  $manage_group       = false
-  $config_mode        = '0660'
-  $kill_signal        = 'SIGTERM'
-  $reload_signal      = 'SIGHUP'
+  $install_method       = 'url'
+  $package_name         = 'consul-template'
+  $package_ensure       = 'latest'
+  $version              = '0.11.0'
+  $download_url_base    = 'https://releases.hashicorp.com/consul-template/'
+  $download_extension   = 'zip'
+  $user                 = 'root'
+  $group                = 'root'
+  $manage_user          = false
+  $manage_group         = false
+  $config_mode          = '0660'
+  $pretty_config        = false
+  $pretty_config_indent = 4
 
   case $::architecture {
     'x86_64', 'amd64': { $arch = 'amd64' }

@@ -1,5 +1,52 @@
+2017-11-19 Release 1.0.0
+
+Breaking Changes!
+
+Generalize the configuration interface to this module, for better module
+maintainability, we render a hash of options to the consul configuration
+files.
+
+The following options are therefore removed, use consul_template::config_hash
+or consul_template::config_defaults instead:
+
+  consul_template::consul_host
+  consul_template::consul_port
+  consul_template::consul_token
+  consul_template::consul_retry
+  consul_template::consul_retry_attempts
+  consul_template::consul_retry_backoff
+  consul_template::consul_wait
+  consul_template::consul_max_stale
+  consul_template::deduplicate
+  consul_template::deduplicate_prefix
+  consul_template::log_level
+  consul_template::vault_enabled
+  consul_template::vault_address
+  consul_template::vault_token
+  consul_template::vault_ssl
+  consul_template::vault_ssl_verify
+  consul_template::vault_ssl_cert
+  consul_template::vault_ssl_ca_cert
+  consul_template::consul_reload_signal
+  consul_template::consul_kill_signal
+  consul_template::consul_ssl_enabled
+  consul_template::consul_ssl_verify
+  consul_template::consul_ssl_cert
+  consul_template::consul_ssl_ca_cert
+
+This module now depends on solarkennedy/puppet-consul for its
+consul_sorted_json function.
+
+New configuration options:
+
+  consul_template::consul_template::pretty_config
+  consul_template::consul_template::pretty_config_indent
+  consul_template::consul_template::config_hash
+  consul_template::consul_template::config_defaults
+
 2016-11-01 Release 0.2.9
 - Feature Enhancement: Change consul-tempalte systemd restart option
+
 2016-05-11 Release 0.2.8
 - Bugfix: Revert: Do not create the user + group by default. Run consul-template as root/root instead
 
