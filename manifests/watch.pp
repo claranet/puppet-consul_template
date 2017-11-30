@@ -21,7 +21,7 @@ define consul_template::watch (
     err ('Specify either template parameter or config_hash["source"] for consul_template::watch - but not both')
   }
 
-  if $template == undef {
+  unless $template {
     # source is specified in config_hash
     $config_source = {}
     $frag_name = $config_hash_real['source']
