@@ -1,6 +1,6 @@
 # consul_template for Puppet
 
-[![Build Status](https://travis-ci.org/BashtonLtd/puppet-consul_template.svg?branch=master)](https://travis-ci.org/BashtonLtd/puppet-consul_template)
+[![Build Status](https://travis-ci.org/claranet/puppet-consul_template.svg?branch=master)](https://travis-ci.org/claranet/puppet-consul_template)
 
 ## Installation
 
@@ -111,6 +111,6 @@ Depends on the JSON gem, or a modern ruby.
 
 See the [contributing guide](CONTRIBUTING.md)
 
-Open an [issue](https://github.com/gdhbashton/puppet-consul_template/issues) or
-[fork](https://github.com/gdhbashton/puppet-consul_template/fork) and open a
-[Pull Request](https://github.com/gdhbashton/puppet-consul_template/pulls)
+Open an [issue](https://github.com/claranet/puppet-consul_template/issues) or
+[fork](https://github.com/claranet/puppet-consul_template/fork) and open a
+[Pull Request](https://github.com/claranet/puppet-consul_template/pulls)
