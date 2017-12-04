@@ -60,7 +60,7 @@ class consul_template (
   $config_mode           = '0660',
   $data_dir              = '',
   $download_url          = undef,
-  $download_url_base     = 'https://releases.hashicorp.com/consul-template/',
+  $download_url_base     = 'https://releases.hashicorp.com/consul-template',
   $download_extension    = 'zip',
   $extra_options         = '',
   $group                 = 'root',
@@ -92,7 +92,7 @@ class consul_template (
   validate_hash($config_hash)
   validate_hash($config_defaults)
 
-  $real_download_url = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
+  $real_download_url = pick($download_url, "${download_url_base}/${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
 
   if $watches {
     create_resources('::consul_template::watch', $watches)
