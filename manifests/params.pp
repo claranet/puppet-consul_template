@@ -5,47 +5,45 @@
 #
 class consul_template::params {
 
-  $install_method       = 'url'
-  $package_name         = 'consul-template'
-  $package_ensure       = 'latest'
-  $version              = '0.11.0'
-  $download_url_base    = 'https://releases.hashicorp.com/consul-template/'
-  $download_extension   = 'zip'
-  $user                 = 'root'
-  $group                = 'root'
-  $manage_user          = false
-  $manage_group         = false
-  $config_mode          = '0660'
-  $pretty_config        = false
-  $pretty_config_indent = 4
-
-  case $::architecture {
-    'x86_64', 'amd64': { $arch = 'amd64' }
-    'i386':            { $arch = '386'   }
-    default:           { fail("Unsupported kernel architecture: ${::architecture}") }
-  }
-
   $os = downcase($::kernel)
 
+  case $::architecture {
+    'x86_64', 'amd64': {
+      $arch = 'amd64'
+    }
+
+    'i386': {
+      $arch = '386'
+    }
+
+    default: {
+      fail("Unsupported kernel architecture: ${::architecture}")
+    }
+  }
+
   $init_style = $::operatingsystem ? {
-    'Ubuntu'        => $::lsbdistrelease ? {
+    'Ubuntu' => $::lsbdistrelease ? {
       '8.04'  => 'debian',
       '15.04' => 'systemd',
       '16.04' => 'systemd',
       default => 'upstart'
     },
+
     /CentOS|RedHat/ => $::operatingsystemmajrelease ? {
       /(4|5|6)/ => 'sysv',
       default   => 'systemd',
     },
+
     'Fedora'        => $::operatingsystemmajrelease ? {
       /(12|13|14)/ => 'sysv',
       default      => 'systemd',
     },
+
     'Debian'        =>  $::operatingsystemmajrelease ? {
       /(4|5|6|7)/ => 'debian',
       default     => 'systemd'
     },
+
     default => 'sysv'
   }
 }
