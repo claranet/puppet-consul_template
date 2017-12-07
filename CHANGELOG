@@ -1,60 +1,56 @@
-2017-11-19 Release 1.0.0
+2017-12-07 Release 1.0.0
 
-Breaking Changes!
+ Breaking or backwards-incompatible changes:
 
-Generalize the configuration interface to this module, for better module
-maintainability, we render a hash of options to the consul configuration
-files.
-
-The following options are therefore removed, use consul_template::config_hash
-or consul_template::config_defaults instead:
-
-  consul_template::consul_host
-  consul_template::consul_port
-  consul_template::consul_token
-  consul_template::consul_retry
-  consul_template::consul_retry_attempts
-  consul_template::consul_retry_backoff
-  consul_template::consul_wait
-  consul_template::consul_max_stale
-  consul_template::deduplicate
-  consul_template::deduplicate_prefix
-  consul_template::log_level
-  consul_template::vault_enabled
-  consul_template::vault_address
-  consul_template::vault_token
-  consul_template::vault_ssl
-  consul_template::vault_ssl_verify
-  consul_template::vault_ssl_cert
-  consul_template::vault_ssl_ca_cert
-  consul_template::consul_reload_signal
-  consul_template::consul_kill_signal
-  consul_template::consul_ssl_enabled
-  consul_template::consul_ssl_verify
-  consul_template::consul_ssl_cert
-  consul_template::consul_ssl_ca_cert
-
-This module now depends on solarkennedy/puppet-consul for its
-consul_sorted_json function.
-
-New configuration options:
-
-  consul_template::consul_template::pretty_config
-  consul_template::consul_template::pretty_config_indent
-  consul_template::consul_template::config_hash
-  consul_template::consul_template::config_defaults
+ - Use `config_hash` for most config options deprecating many parameters, based
+   on changes made in github/consul_template fork (#100 / #111). Thanks to ross
+   and GitHub for allowing this to be adopted back upstream..
+ - Drop support for Puppet < 4.7.1
+ - Require stdlib >= 4.13
+ - Drop support for very old OSes like RHEL / CentOS 5, etc.
+ - Now depends on solarkennedy/puppet-consul for `consul_sorted_json` function.
+ - Deprecated the following parameters:
+   `consul_host`
+   `consul_port`
+   `consul_token`
+   `consul_retry`
+   `consul_retry_attempts`
+   `consul_retry_backoff`
+   `consul_wait`
+   `consul_max_stale`
+   `deduplicate`
+   `deduplicate_prefix`
+   `log_level`
+   `vault_enabled`
+   `vault_address`
+   `vault_token`
+   `vault_ssl`
+   `vault_ssl_verify`
+   `vault_ssl_cert`
+   `vault_ssl_ca_cert`
+   `consul_reload_signal`
+   `consul_kill_signal`
+   `consul_ssl_enabled`
+   `consul_ssl_verify`
+   `consul_ssl_cert`
+   `consul_ssl_ca_cert`
+ - Added parameters:
+   `pretty_config`
+   `pretty_config_indent`
+   `config_hash`
+   `config_defaults`
 
 2016-11-01 Release 0.2.9
 - Feature Enhancement: Change consul-tempalte systemd restart option
 
 2016-05-11 Release 0.2.8
-- Bugfix: Revert: Do not create the user + group by default. Run consul-template as root/root instead
+- Bugfix: Revert: Do not create the user  group by default. Run consul-template as root/root instead
 
 2016-05-11 Release 0.2.7
 - Pulled
 
 2016-05-11 Release 0.2.6
-- Bugfix: Create the user + group by default, else we can't chown the install directory #70
+- Bugfix: Create the user  group by default, else we can't chown the install directory #70
 
 2016-03-31 Release 0.2.5
 - Feature: Support logrotate through `logrotate_on` #50
