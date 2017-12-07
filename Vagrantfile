@@ -5,6 +5,7 @@ Vagrant.require_version ">= 1.6.5"
 # ===========================
 
 SSH_BASE_PORT  = 2600
+WEB_BASE_PORT  = 8500
 PUPPET_VERSION = "4.10.9"
 DEFAULT_TEST   = "init"
 
@@ -21,8 +22,10 @@ MODULES = [
   # Module dependencies
   { name: "puppetlabs-concat", version: "2.2.1" },
   { name: "puppetlabs-stdlib" },
-  { name: "puppet-staging", version: "2.2.0" },
-  { name: "KyleAnderson-consul", version: "3.2.0" }
+  { name: "puppet-staging", version: "3.0.0" },
+  { name: "KyleAnderson-consul", version: "3.2.4" },
+  # Test depdendencies
+  { name: "puppet-nginx", git: "https://github.com/voxpupuli/puppet-nginx.git" }
 ]
 
 # ==============
@@ -34,8 +37,6 @@ unless Vagrant.has_plugin?("vagrant-puppet-install")
 end
 
 Vagrant.configure("2") do |config|
-
-  local_username ||= `whoami`.strip
 
   # = Actually do some work
   BOXES.each_with_index do |definition,idx|
@@ -49,7 +50,7 @@ Vagrant.configure("2") do |config|
       # == Basic box setup
       c.vm.box         = definition[:box]
       c.vm.box_version = definition[:version] unless definition[:version].nil?
-      c.vm.hostname    = "#{local_username}-consul-template-vagrant-#{name}"
+      c.vm.hostname    = "vagrant-consul-template-#{name}"
       c.vm.network :private_network, ip: "10.0.255.#{ip}"
 
       # == Shared folder
@@ -67,9 +68,13 @@ Vagrant.configure("2") do |config|
       c.ssh.port = new_ssh_port
       c.vm.network :forwarded_port, guest: 22, host: new_ssh_port
 
+      # == Add port forwarding for Consul Web UI
+      web_port = WEB_BASE_PORT + idx
+      c.vm.network :forwarded_port, guest: 8500, host: web_port
+
       # == Set resources if configured
       c.vm.provider "virtualbox" do |v|
-        v.name = "puppet_consul-template_#{name}"
+        v.name = "puppet_consul-template-#{name}"
         v.memory = definition[:memory] unless definition[:memory].nil?
         v.cpus = definition[:cpus] unless definition[:cpus].nil?
       end
@@ -102,6 +107,8 @@ Vagrant.configure("2") do |config|
 
       # == Finally, run Puppet!
       c.vm.provision :shell, :inline => "STDLIB_LOG_DEPRECATIONS=false /opt/puppetlabs/puppet/bin/puppet apply --verbose --show_diff /vagrant/examples/#{test_file}.pp"
+
+      c.vm.provision :shell, :inline => "echo 'Consul Web UI: http://localhost:#{web_port}'"
     end
   end
 end

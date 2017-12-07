@@ -1,34 +1,22 @@
 {
-  "name": "claranet-consul_template",
-  "version": "1.0.0-rc",
-  "author": "Claranet",
-  "summary": "Install and manage Consul Template and its jobs",
-  "license": "Apache-2.0",
-  "source": "https://github.com/claranet/puppet-consul_template",
-  "project_page": "https://github.com/claranet/puppet-consul_template",
-  "issues_url": "https://github.com/claranet/puppet-consul_template/issues",
-  "operatingsystem_support": [
-    {
-      "operatingsystem":"RedHat",
-      "operatingsystemrelease":[ "6.0", "7.0" ]
-    },
-    {
-      "operatingsystem":"CentOS",
-      "operatingsystemrelease":[ "6.0", "7.0" ]
-    },
-    {
-      "operatingsystem":"Debian",
-      "operatingsystemrelease":[ "7.0", "8.0" ]
-    },
-    {
-      "operatingsystem":"Ubuntu",
-      "operatingsystemrelease":[ "14.04", "16.04" ]
-    }
-   ],
+  "name"                    : "claranet-consul_template",
+  "version"                 : "1.0.0-rc",
+  "author"                  : "Claranet",
+  "summary"                 : "Install and manage Consul Template and its jobs",
+  "license"                 : "Apache-2.0",
+  "source"                  : "https://github.com/claranet/puppet-consul_template",
+  "project_page"            : "https://github.com/claranet/puppet-consul_template",
+  "issues_url"              : "https://github.com/claranet/puppet-consul_template/issues",
+  "operatingsystem_support" :  [
+    { "operatingsystem": "RedHat", "operatingsystemrelease": [ "6.0", "7.0" ]},
+    { "operatingsystem": "CentOS", "operatingsystemrelease": [ "6.0", "7.0" ]},
+    { "operatingsystem": "Debian", "operatingsystemrelease": [ "7.0", "8.0" ]},
+    { "operatingsystem": "Ubuntu", "operatingsystemrelease" : [ "14.04", "16.04" ]}
+  ],
   "dependencies": [
-    { "name": "puppetlabs/stdlib", "version_requirement": ">=1.0.0 < 5.0.0" },
-    { "name": "puppetlabs/concat", "version_requirement": ">= 2.0.0 < 3.0.0" },
-    { "name": "puppet/staging", "version_requirement": ">= 0.4.0 <= 2.2.0" },
-    { "name": "KyleAnderson/consul", "version_requirement": ">= 2.1.1" }
+    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.0.0 < 6.0.0" },
+    { "name": "puppetlabs/concat", "version_requirement": ">= 2.2.0 < 3.0.0" },
+    { "name": "puppet/staging", "version_requirement": ">= 2.0.0 <= 3.0.0" },
+    { "name": "KyleAnderson/consul", "version_requirement": ">= 3.2.3 < 4.0.0" }
   ]
 }
