@@ -99,7 +99,9 @@ class consul_template (
   }
 
   $config_base = {
-    consul => 'localhost:8500',
+    'consul' => {
+      'address' => 'localhost:8500',
+    }
   }
   $config_hash_real = deep_merge($config_base, $config_defaults, $config_hash)
 
