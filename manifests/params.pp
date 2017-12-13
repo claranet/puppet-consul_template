@@ -5,9 +5,9 @@
 #
 class consul_template::params {
 
-  $os = downcase($::kernel)
+  $os = downcase($facts['kernel'])
 
-  case $::architecture {
+  case $facts['architecture'] {
     'x86_64', 'amd64': {
       $arch = 'amd64'
     }
@@ -16,31 +16,28 @@ class consul_template::params {
       $arch = '386'
     }
 
-    default: {
-      fail("Unsupported kernel architecture: ${::architecture}")
+    default:           {
+      fail("Unsupported kernel architecture: ${facts['architecture']}")
     }
   }
 
-  $init_style = $::operatingsystem ? {
-    'Ubuntu' => $::lsbdistrelease ? {
-      '8.04'  => 'debian',
+  $init_style = $facts['os']['name'] ? {
+    'Ubuntu' => $facts['os']['release']['major'] ? {
       '15.04' => 'systemd',
       '16.04' => 'systemd',
       default => 'upstart'
     },
 
-    /CentOS|RedHat/ => $::operatingsystemmajrelease ? {
-      /(4|5|6)/ => 'sysv',
+    /CentOS|RedHat/ => $facts['os']['release']['major'] ? {
+      '6' => 'sysv',
       default   => 'systemd',
     },
-
-    'Fedora'        => $::operatingsystemmajrelease ? {
+    'Fedora'        => $facts['os']['release']['major'] ? {
       /(12|13|14)/ => 'sysv',
       default      => 'systemd',
     },
-
-    'Debian'        =>  $::operatingsystemmajrelease ? {
-      /(4|5|6|7)/ => 'debian',
+    'Debian'        =>  $facts['os']['release']['major'] ? {
+      '7' => 'debian',
       default     => 'systemd'
     },
 

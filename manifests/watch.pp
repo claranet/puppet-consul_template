@@ -9,21 +9,21 @@ define consul_template::watch (
   $template        = undef,
   $template_vars   = {},
 ) {
-  include ::consul_template
+  include consul_template
 
-  $config_hash_real = deep_merge($config_defaults, $config_hash)
-  if $template == undef and $config_hash_real['source'] == undef {
+  $_config_hash = deep_merge($config_defaults, $config_hash)
+  if $template == undef and $_config_hash['source'] == undef {
     err ('Specify either template parameter or config_hash["source"] for consul_template::watch')
   }
 
-  if $template != undef and $config_hash_real['source'] != undef {
+  if $template != undef and $_config_hash['source'] != undef {
     err ('Specify either template parameter or config_hash["source"] for consul_template::watch - but not both')
   }
 
   unless $template {
     # source is specified in config_hash
     $config_source = {}
-    $frag_name = $config_hash_real['source']
+    $frag_name = $_config_hash['source']
     $fragment_requires = undef
   } else {
     # source is specified as a template
@@ -45,7 +45,7 @@ define consul_template::watch (
     $fragment_requires = File[$source]
   }
 
-  $config_hash_all = deep_merge($config_hash_real, $config_source)
+  $config_hash_all = deep_merge($_config_hash, $config_source)
   $content_full = consul_sorted_json($config_hash_all, $consul_template::pretty_config, $consul_template::pretty_config_indent)
   $content = regsubst(regsubst($content_full, "}\n$", '}'), "\n", "\n    ", 'G')
 

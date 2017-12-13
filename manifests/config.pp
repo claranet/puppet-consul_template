@@ -3,17 +3,22 @@
 # This class is called from consul_template for service config.
 #
 class consul_template::config (
-  $config_hash = {},
-  $purge       = true,
+  $config_hash           = $consul_template::config_hash,
+  $config_defaults       = $consul_template::config_defaults,
+  $purge                 = true,
 ) {
 
+  $config_base = {
+    consul => 'localhost:8500',
+  }
+  $_config_hash = deep_merge($config_base, $config_defaults, $config_hash)
+
   # Using our parent module's pretty_config & pretty_config_indent just because
-  $content_full = consul_sorted_json($config_hash, $consul_template::pretty_config, $consul_template::pretty_config_indent)
+  $content_full = consul_sorted_json($_config_hash, $consul_template::pretty_config, $consul_template::pretty_config_indent)
   # remove the closing } and it's surrounding newlines
   $content = regsubst($content_full, "\n}\n$", '')
 
   $concat_name = 'consul-template/config.json'
-
   concat::fragment { 'consul-service-pre':
     target  => $concat_name,
     # add the opening template array so that we can insert watch fragments
@@ -47,5 +52,5 @@ class consul_template::config (
     mode   => $consul_template::config_mode,
     notify => Service['consul-template'],
   }
-
 }
+

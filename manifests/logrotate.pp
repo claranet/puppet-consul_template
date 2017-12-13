@@ -1,28 +1,22 @@
 # == Class consul_template::logrotate
 #
 class consul_template::logrotate(
-  $logrotate_compress,
-  $logrotate_files,
-  $logrotate_on,
-  $logrotate_period,
-  $restart_sysv = '/sbin/service consul-template restart',
-  $restart_systemd = '/bin/systemctl restart consul-template.service',
+  $logrotate_compress     = $consul_template::logrotate_compress,
+  $logrotate_files        = $consul_template::logrotate_files,
+  $logrotate_on           = $consul_template::logrotate_on,
+  $logrotate_period       = $consul_template::logrotate_period,
+  String $restart_sysv    = '/sbin/service consul-template restart',
+  String $restart_systemd = '/bin/systemctl restart consul-template.service',
 ) {
-  validate_string($logrotate_compress)
-  validate_integer($logrotate_files)
-  validate_bool($logrotate_on)
-  validate_string($logrotate_period)
-  validate_string($restart_sysv)
-  validate_string($restart_systemd)
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'RedHat': {
-      case $::operatingsystem {
+      case $facts['os']['name'] {
         'RedHat', 'CentOS', 'OracleLinux', 'Scientific': {
-          if(versioncmp($::operatingsystemmajrelease, '7') > 0) {
+          if(versioncmp($facts['os']['release']['major'], '7') > 0) {
             $postrotate_command = $restart_systemd
           }
-          elsif (versioncmp($::operatingsystemmajrelease, '7') < 0) {
+          elsif (versioncmp($facts['os']['release']['major'], '7') < 0) {
             $postrotate_command = $restart_sysv
           }
           else {
