@@ -18,6 +18,12 @@ This module:
 * Installs a configuration file to `/etc/consul-template/config.json`
 * Manages the consul-template service via upstart, sysv, or systemd
 
+## Puppet 3 Support
+
+**Please note that the master branch of this module does not support Puppet 3!**
+
+On 31st December 2016, support for Puppet 3.x was withdrawn. As such, this module no longer supports Puppet 3 - if you require Puppet 3 compatibility, please use the latest version [1.x version from the Puppet Forge](https://forge.puppet.com/Claranet/consul_template), or the [puppet3](https://github.com/claranet/puppet-consul_template/tree/puppet3) branch in Git.
+
 ## Usage
 
 The simplest way to use this module is:
