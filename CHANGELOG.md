@@ -4,6 +4,18 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
+## 2.0.0 - TBD
+
+### Breaking/Backwards-Incompatible Changes - Puppet 4 Syntax
+
+  * Parameters are validated against Puppet 4 data types
+  * Stdlib version requirements have been raised
+  * Restructure class inclusion by replacing anchor pattern with 'contain' and class ordering
+  * Rename `$::foo` to `$foo`
+  * Switch to structured facts
+  * Move from `$foo_real` to `$_foo` pattern
+  * Thanks to [Will Yardley](https://github.com/wyardley) for raising [#108](https://github.com/claranet/puppet-consul_template/pull/108)
+
 ## 1.0.0 - 2017-12-07
 
 ### Breaking/Backwards-Incompatible Changes
