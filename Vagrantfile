@@ -23,7 +23,7 @@ MODULES = [
   { name: "puppetlabs-concat", version: "2.2.1" },
   { name: "puppetlabs-stdlib" },
   { name: "puppet-staging", version: "3.0.0" },
-  { name: "KyleAnderson-consul", version: "3.2.4" },
+  { name: "KyleAnderson-consul", version: "3.2.3" },
   # Test depdendencies
   { name: "puppet-nginx", git: "https://github.com/voxpupuli/puppet-nginx.git" }
 ]
@@ -44,7 +44,24 @@ Vagrant.configure("2") do |config|
     name = definition[:name]
     ip = 254 - idx
 
-    config.puppet_install.puppet_version = PUPPET_VERSION
+    # == Allow passing a Puppet version via environment variable
+    if ENV['PUPPET_VERSION'].nil?
+      config.puppet_install.puppet_version = ENV['PUPPET_VERSION']
+    else
+      config.puppet_install.puppet_version = PUPPET_VERSION
+    end
+
+
+    # Handle Puppet 3 and 4/5 paths
+    if PUPPET_VERSION.start_with?('3')
+      puppet_bin_path = '/usr/bin/puppet'
+      module_path = '/etc/puppet/modules'
+    else
+      puppet_bin_path = '/opt/puppetlabs/bin/puppet'
+      module_path = '/etc/puppetlabs/code/environments/production/modules'
+    end
+
+
     config.vm.define name, autostart: false do |c|
 
       # == Basic box setup
@@ -87,7 +104,7 @@ Vagrant.configure("2") do |config|
       end
 
       # == Install git ... with Puppet!
-      c.vm.provision :shell, :inline => "/opt/puppetlabs/bin/puppet resource package git ensure=present"
+      c.vm.provision :shell, :inline => "#{puppet_bin_path} resource package git ensure=present"
 
       # == Install modules
       MODULES.each do |mod|
@@ -97,16 +114,16 @@ Vagrant.configure("2") do |config|
           else
             mod_version = " --version #{mod[:version]}"
           end
-          c.vm.provision :shell, :inline => "/opt/puppetlabs/bin/puppet module install #{mod[:name]}#{mod_version}"
+          c.vm.provision :shell, :inline => "#{puppet_bin_path} module install #{mod[:name]}#{mod_version}"
         else
           mod_name = mod[:name].split('-').last
-          c.vm.provision :shell, :inline => "if [ ! -d /etc/puppetlabs/code/environments/production/modules/#{mod_name} ]; then git clone #{mod[:git]} /etc/puppetlabs/code/environments/production/modules/#{mod_name}; fi"
+          c.vm.provision :shell, :inline => "if [ ! -d #{module_path}/#{mod_name} ]; then git clone #{mod[:git]} #{module_path}/#{mod_name}; fi"
         end
       end
-      c.vm.provision :shell, :inline => "if [ ! -L /etc/puppetlabs/code/environments/production/modules/consul_template ]; then ln -s /vagrant /etc/puppetlabs/code/environments/production/modules/consul_template; fi"
+      c.vm.provision :shell, :inline => "if [ ! -L #{module_path}/consul_template ]; then ln -s /vagrant #{module_path}/consul_template; fi"
 
       # == Finally, run Puppet!
-      c.vm.provision :shell, :inline => "STDLIB_LOG_DEPRECATIONS=false /opt/puppetlabs/puppet/bin/puppet apply --verbose --show_diff /vagrant/examples/#{test_file}.pp"
+      c.vm.provision :shell, :inline => "STDLIB_LOG_DEPRECATIONS=false #{puppet_bin_path} apply --verbose --show_diff /vagrant/examples/#{test_file}.pp"
 
       c.vm.provision :shell, :inline => "echo 'Consul Web UI: http://localhost:#{web_port}'"
     end
