@@ -6,7 +6,7 @@ Vagrant.require_version ">= 1.6.5"
 
 SSH_BASE_PORT  = 2600
 WEB_BASE_PORT  = 8500
-PUPPET_VERSION = "4.10.9"
+PUPPET_VERSION = "3.8.7"
 DEFAULT_TEST   = "init"
 
 BOXES = [
