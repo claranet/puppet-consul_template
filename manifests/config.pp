@@ -15,8 +15,8 @@ class consul_template::config (
 
   # Using our parent module's pretty_config & pretty_config_indent just because
   $content_full = consul_sorted_json($_config_hash, $consul_template::pretty_config, $consul_template::pretty_config_indent)
-  # remove the closing } and it's surrounding newlines
-  $content = regsubst($content_full, "\n}\n$", '')
+  # remove the closing }
+  $content = regsubst($content_full, "}$", '')
 
   $concat_name = 'consul-template/config.json'
   concat::fragment { 'consul-service-pre':
@@ -33,7 +33,7 @@ class consul_template::config (
   concat::fragment { 'consul-service-post':
     target  => $concat_name,
     # close off the template array and the whole object
-    content => "    ],\n}",
+    content => "    ]\n}",
     order   => '99',
   }
 
@@ -53,4 +53,3 @@ class consul_template::config (
     notify => Service['consul-template'],
   }
 }
-

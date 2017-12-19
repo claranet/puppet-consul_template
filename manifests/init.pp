@@ -82,7 +82,7 @@ class consul_template (
   Hash $watches                              = {},
 ) inherits consul_template::params {
 
-  $_download_url = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
+  $_download_url = pick($download_url, "${download_url_base}/${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
 
   if $watches {
     create_resources('consul_template::watch', $watches)
