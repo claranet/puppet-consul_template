@@ -46,11 +46,10 @@ Vagrant.configure("2") do |config|
 
     # == Allow passing a Puppet version via environment variable
     if ENV['PUPPET_VERSION'].nil?
-      config.puppet_install.puppet_version = ENV['PUPPET_VERSION']
-    else
       config.puppet_install.puppet_version = PUPPET_VERSION
+    else
+      config.puppet_install.puppet_version = ENV['PUPPET_VERSION']
     end
-
 
     # Handle Puppet 3 and 4/5 paths
     if PUPPET_VERSION.start_with?('3')
