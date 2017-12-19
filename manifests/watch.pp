@@ -20,12 +20,7 @@ define consul_template::watch (
     err ('Specify either template parameter or config_hash["source"] for consul_template::watch - but not both')
   }
 
-  unless $template {
-    # source is specified in config_hash
-    $config_source = {}
-    $frag_name = $config_hash_real['source']
-    $fragment_requires = undef
-  } else {
+  if $template {
     # source is specified as a template
     $source = "${consul_template::config_dir}/${name}.ctmpl"
     $config_source = {
@@ -43,6 +38,11 @@ define consul_template::watch (
 
     $frag_name = $source
     $fragment_requires = File[$source]
+  } else {
+    # source is specified in config_hash
+    $config_source = {}
+    $frag_name = $config_hash_real['source']
+    $fragment_requires = undef
   }
 
   $config_hash_all = deep_merge($config_hash_real, $config_source)
@@ -53,7 +53,7 @@ define consul_template::watch (
     target  => 'consul-template/config.json',
     # NOTE: this will result in all watches having , after them in the JSON
     # array. That won't pass strict JSON parsing, but luckily HCL is fine with it.
-    content => "    ${content},\n",
+    content => "      ${content},\n",
     order   => '50',
     notify  => Service['consul-template'],
     require => $fragment_requires,
