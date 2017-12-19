@@ -3,8 +3,8 @@ node default {
   ensure_packages('unzip')
 
   class { '::consul_template':
-    version       => '0.19.3',
-    config_hash   => {
+    version     => '0.19.3',
+    config_hash => {
       log_level => 'debug',
       wait      => '5s:30s',
       max_stale => '1s'
