@@ -4,6 +4,13 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
+## 1.0.1 - 2017-12-19
+
+### Bug Fix and Deprecation
+
+  * This is the last version of the module to be released with compatibility for Puppet 3
+  * Backported fix for [#115](https://github.com/claranet/puppet-consul_template/issues/115)
+
 ## 1.0.0 - 2017-12-07
 
 ### Breaking/Backwards-Incompatible Changes

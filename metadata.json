@@ -1,6 +1,6 @@
 {
   "name"                    : "claranet-consul_template",
-  "version"                 : "1.0.1-rc",
+  "version"                 : "1.0.1",
   "author"                  : "Claranet",
   "summary"                 : "Install and manage Consul Template and its jobs",
   "license"                 : "Apache-2.0",
