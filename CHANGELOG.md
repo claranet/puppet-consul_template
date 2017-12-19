@@ -4,7 +4,7 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
-## 2.0.0 - TBD
+## 2.0.0 - 2017-12-19
 
 ### Breaking/Backwards-Incompatible Changes - Puppet 4 Syntax
 
@@ -15,6 +15,13 @@ Release notes for the claranet/puppet-varnish module.
   * Switch to structured facts
   * Move from `$foo_real` to `$_foo` pattern
   * Thanks to [Will Yardley](https://github.com/wyardley) for raising [#108](https://github.com/claranet/puppet-consul_template/pull/108)
+
+## 1.0.1 - 2017-12-19
+
+### Bug Fix and Deprecation
+
+  * This is the last version of the module to be released with compatibility for Puppet 3
+  * Backported fix for [#115](https://github.com/claranet/puppet-consul_template/issues/115)
 
 ## 1.0.0 - 2017-12-07
 
