@@ -1,8 +1,8 @@
 # puppet-consul_template
 
 [![Build Status](https://travis-ci.org/claranet/puppet-consul_template.svg?branch=master)](https://travis-ci.org/claranet/puppet-consul_template)
-[![Puppet Forge](http://img.shields.io/puppetforge/v/claranet/consul-template.svg)](https://forge.puppetlabs.com/claranet/consul-template)
-[![Forge Downloads](https://img.shields.io/puppetforge/dt/claranet/consul-template.svg)](https://forge.puppetlabs.com/claranet/consul-template)
+[![Puppet Forge](http://img.shields.io/puppetforge/v/claranet/consul_template.svg)](https://forge.puppetlabs.com/claranet/consul_template)
+[![Forge Downloads](https://img.shields.io/puppetforge/dt/claranet/consul_template.svg)](https://forge.puppetlabs.com/claranet/consul_template)
 
 ## Table of Contents
 
