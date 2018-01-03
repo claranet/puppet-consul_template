@@ -4,6 +4,12 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
+## 2.1.0 - TBD
+
+### Dependency Changes
+
+  * The `consul_sorted_json` function has been forked from `solarkennedy-consul` at commit [993dd2b](https://github.com/solarkennedy/puppet-consul/blob/993dd2b80d7d49a20bfe1cb400d2b4113fe3c888/lib/puppet/parser/functions/consul_sorted_json.rb) to remove upstream dependency issues and renamed to `consul_template_sorted_json`.
+
 ## 2.0.0 - 2017-12-19
 
 ### Breaking/Backwards-Incompatible Changes - Puppet 4 Syntax
