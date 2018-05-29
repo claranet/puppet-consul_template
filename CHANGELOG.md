@@ -4,7 +4,10 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
-## 2.1.0 - TBD
+## 2.1.0 - 2018-05-29
+
+### Ubuntu Support
+  * Support for Ubuntu 18.04 and newer has been added by defaulting to `systemd` in `params.pp` - [#116](https://github.com/claranet/puppet-consul_template/pull/116)
 
 ### Dependency Changes
 
