@@ -25,6 +25,7 @@ class consul_template::params {
     'Ubuntu' => $facts['os']['release']['major'] ? {
       '15.04' => 'systemd',
       '16.04' => 'systemd',
+      '18.04' => 'systemd',
       default => 'upstart'
     },
 
