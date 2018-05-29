@@ -17,7 +17,7 @@
     { "operatingsystem": "RedHat", "operatingsystemrelease": [ "6.0", "7.0" ]},
     { "operatingsystem": "CentOS", "operatingsystemrelease": [ "6.0", "7.0" ]},
     { "operatingsystem": "Debian", "operatingsystemrelease": [ "7.0", "8.0" ]},
-    { "operatingsystem": "Ubuntu", "operatingsystemrelease" : [ "14.04", "16.04" ]}
+    { "operatingsystem": "Ubuntu", "operatingsystemrelease" : [ "14.04", "16.04", "18.04" ]}
   ],
   "dependencies": [
     { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.13.1 < 6.0.0" },
