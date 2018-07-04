@@ -22,7 +22,7 @@ MODULES = [
   # Module dependencies
   { name: "puppetlabs-concat", version: "2.2.1" },
   { name: "puppetlabs-stdlib" },
-  { name: "puppet-staging", version: "3.0.0" },
+  { name: "puppet-staging", version: "3.2.0" },
   # Test depdendencies
   { name: "KyleAnderson-consul", version: "3.2.3" },
   { name: "puppet-nginx", git: "https://github.com/voxpupuli/puppet-nginx.git" }
