@@ -1,4 +1,7 @@
 node default {
+
+  ensure_packages('unzip')
+
   class { '::consul_template':
     version       => '0.19.3',
     pretty_config => true,
@@ -7,5 +10,6 @@ node default {
       wait      => '5s:30s',
       max_stale => '1s'
     },
+    require       => Package['unzip'],
   }
 }
