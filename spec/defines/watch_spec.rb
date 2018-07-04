@@ -29,10 +29,7 @@ describe 'consul_template::watch', :type => :define do
 
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_class('consul_template') }
-          it {
-            skip "can't realize virtual concat::fragment"
-            is_expected.to contain_concat__fragment('test_watcher.ctmpl')
-          }
+          it { is_expected.to contain_concat__fragment('/etc/consul-template/test_watcher.ctmpl') }
         end
       end
     end
