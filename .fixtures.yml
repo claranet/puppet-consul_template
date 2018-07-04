@@ -5,7 +5,7 @@ fixtures:
       ref: "4.23.0"
     staging:
       repo: "git://github.com/voxpupuli/puppet-staging.git"
-      ref: "v2.2.0"
+      ref: "v3.2.0"
     concat:
       repo: "git://github.com/puppetlabs/puppet-concat.git"
       ref: "2.2.1"
