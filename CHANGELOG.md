@@ -4,6 +4,12 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
+## 2.1.1 - 2018-08-30
+
+### PDK Support
+  * This module is now compatible with the Puppet Development Kit - this can be verified by running `pdk validate`
+  * Testing has also been extended to the `consul_template_sorted_json` function, originally forked from `solarkennedy-consul`
+
 ## 2.1.0 - 2018-05-29
 
 ### Ubuntu Support
