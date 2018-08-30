@@ -1,4 +1,14 @@
 ---
-Rakefile:
-  extra_disabled_lint_checks:
-    - 'disable_empty_string_assignment'
+.gitignore:
+  paths:
+  - '*.log'
+  - 'convert_report.txt'
+
+.gitlab-ci.yml:
+  delete: true
+
+appveyor.yml:
+  delete: true
+
+.yardopts:
+  delete: true
