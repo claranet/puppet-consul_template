@@ -106,8 +106,8 @@ consul_template::watch { 'common':
 | `package_ensure`       | `latest`                | Version of package to install |
 | `config_dir`           | `/etc/consul-template`  | Path to store the consul-template configuration |
 | `extra_options`        | `''`                    | Extra options to be passed to the consul-template agent. See https://github.com/hashicorp/consul-template#options |
-| `service_enable`       | `true                   | |
-| `service_ensure`       | `running                | |
+| `service_enable`       | `true`                  | |
+| `service_ensure`       | `running`               | |
 | `user`                 | `root`                  | This used to be a default of `consul-template` and this caused much out-of-box pain for people. |
 | `group`                | `root`                  | |
 | `manage_user`          | `false`                 | Module handles creating the user. |
