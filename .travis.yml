@@ -13,7 +13,7 @@ script:
   - 'bundle exec rake $CHECK'
 bundler_args: --without system_tests
 rvm:
-  - 2.4.4
+  - 2.5.3
 env:
   global:
     - BEAKER_PUPPET_COLLECTION=puppet5 PUPPET_GEM_VERSION="~> 6.0"
@@ -26,7 +26,7 @@ matrix:
       env: CHECK=parallel_spec
     -
       env: PUPPET_GEM_VERSION="~> 5.0" CHECK=parallel_spec
-      rvm: 2.1.9
+      rvm: 2.4.4
     -
       env: PUPPET_GEM_VERSION="~> 4.0" CHECK=parallel_spec
       rvm: 2.1.9
