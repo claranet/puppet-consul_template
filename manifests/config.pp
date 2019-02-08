@@ -14,7 +14,7 @@ class consul_template::config (
   $_config_hash = deep_merge($config_base, $config_defaults, $config_hash)
 
   # Using our parent module's pretty_config & pretty_config_indent just because
-  $content_full = consul_template_sorted_json($_config_hash, $consul_template::pretty_config, $consul_template::pretty_config_indent)
+  $content_full = consul_template::sorted_json($_config_hash, $consul_template::pretty_config, $consul_template::pretty_config_indent)
   # remove the closing }
   $content = regsubst($content_full, '}$', '')
 
