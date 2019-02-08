@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'consul_template_sorted_json' do
+describe 'consul_template::sorted_json' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
