@@ -23,6 +23,7 @@ class consul_template::params {
 
   $init_style = $facts['os']['name'] ? {
     'Ubuntu' => $facts['os']['release']['major'] ? {
+      '12.04' => 'upstart',
       '14.04' => 'upstart',
       default => 'systemd'
     },
