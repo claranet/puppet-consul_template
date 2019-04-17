@@ -5,10 +5,10 @@
 #
 class consul_template::service {
 
-  if $::consul_template::init_style == 'sysv' {
-    $service_provider = 'redhat'
-  } else {
-    $service_provider = $::consul_template::init_style
+  $service_provider = $::consul_template::init_style ? {
+    'sysv'      => 'redhat',
+    'unmanaged' => undef,
+    default     => $::consul_template::init_style,
   }
 
   service { 'consul-template':

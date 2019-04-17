@@ -112,7 +112,7 @@ consul_template::watch { 'common':
 | `group`                | `root`                  | |
 | `manage_user`          | `false`                 | Module handles creating the user. |
 | `manage_group`         | `false`                 | Module handles creating the group. |
-| `init_style`           | See `params.pp`         | Init style to use for consul-template service.
+| `init_style`           | See `params.pp`         | Init style to use for consul-template service. Set to 'unmanaged' to not create a service file.
 | `log_level`            | `info`                  | Logging level to use for consul-template service. Can be 'debug', 'warn', 'err', 'info'
 | `config_hash`          | `{}`                    | Consul-template configuration options. See https://github.com/hashicorp/consul-template#options
 | `config_defaults`      | `{}`                    | Consul-template configuration option defaults.
