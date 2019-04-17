@@ -1,8 +1,8 @@
 ---
 .gitignore:
   paths:
-  - '*.log'
-  - 'convert_report.txt'
+    - '*.log'
+    - 'convert_report.txt'
 
 .gitlab-ci.yml:
   delete: true
@@ -12,3 +12,13 @@ appveyor.yml:
 
 .yardopts:
   delete: true
+
+.travis.yml:
+  includes:
+    - env: PUPPET_GEM_VERSION="~> 4.0" CHECK=parallel_spec RUBYGEMS_VERSION=2.7.8
+      rvm: 2.1.9
+      stage: spec
+  remove_includes:
+    - env: PUPPET_GEM_VERSION="~> 6.0" CHECK=parallel_spec
+      rvm: 2.5.3
+      stage: spec
