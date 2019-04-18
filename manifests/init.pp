@@ -20,7 +20,7 @@
 #   Extra arguments to be passed to the consul-template agent
 #
 # [*init_style*]
-#   What style of init system your system uses.
+#   What style of init system your system uses. Set to 'unmanaged' to not create a service file.
 #
 # [*config_hash*]
 #   Consul-template configuration options. See https://github.com/hashicorp/consul-template#options

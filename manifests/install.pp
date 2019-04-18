@@ -97,6 +97,9 @@ class consul_template::install {
           content => template('consul_template/consul-template.sles.erb')
         }
       }
+      'unmanaged' : {
+        # Do nothing if init_style == 'unmanaged'
+      }
       default : {
         fail("I don't know how to create an init script for style ${consul_template::init_style}")
       }
