@@ -14,7 +14,6 @@ NAME="consul-template"
 CONSUL_TEMPLATE=<%= scope.lookupvar('consul_template::bin_dir') %>/consul-template
 CONFIG=<%= scope.lookupvar('consul_template::config_dir') %>/config
 OPTIONS=<%= scope.lookupvar('consul_template::extra_options') %>
-LOGLEVEL=<%= scope.lookupvar('consul_template::log_level') %>
 CMD="${CONSUL_TEMPLATE} -config ${CONFIG} ${OPTIONS}"
 
 PIDFILE="/var/run/$NAME.pid"
@@ -36,7 +35,7 @@ case "$1" in
         echo "$NAME already running"
     else
         echo "Starting $NAME"
-        CONSUL_TEMPLATE_LOG=${LOGLEVEL} $CMD >> "$LOGFILE" 2>&1 &
+        CONSUL_TEMPLATE_LOG=$CMD >> "$LOGFILE" 2>&1 &
         echo $! > "$PIDFILE"
         if ! is_running; then
             echo "Unable to start $NAME, see $LOGFILE"
