@@ -16,6 +16,10 @@ class consul_template::params {
       $arch = '386'
     }
 
+    'aarch64': {
+      $arch = 'arm64'
+    }
+
     default:           {
       fail("Unsupported kernel architecture: ${facts['architecture']}")
     }
