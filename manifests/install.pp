@@ -66,7 +66,7 @@ class consul_template::install {
         }
       }
       'systemd' : {
-        file { '/lib/systemd/system/consul-template.service':
+        file { '/etc/systemd/system/consul-template.service':
           mode    => '0644',
           owner   => 'root',
           group   => 'root',
