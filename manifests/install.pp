@@ -66,11 +66,20 @@ class consul_template::install {
         }
       }
       'systemd' : {
-        file { '/lib/systemd/system/consul-template.service':
+        file { '/etc/systemd/system/consul-template.service':
           mode    => '0644',
           owner   => 'root',
           group   => 'root',
           content => template('consul_template/consul-template.systemd.erb'),
+          notify  => Exec['systemctl daemon-reload'],
+        }
+        if (!defined(Exec['systemctl daemon-reload'])) {
+          exec { 'systemctl daemon-reload':
+            command     => 'systemctl daemon-reload',
+            path        => '/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin',
+            refreshonly => true,
+            before      => Service['consul-template'],
+          }
         }
       }
       'sysv' : {
